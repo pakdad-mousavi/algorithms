@@ -39,48 +39,8 @@ const pages = [
     icon: "DeveloperBoard24Regular",
     algorithms: [
       "Round Robin",
-      "First Come First Serve",
-      "Priority",
-      "Shortest Job First",
     ],
   },
-  {
-    name: "Deadlock Management",
-    icon: "LockClosed24Regular",
-    algorithms: [
-      "Banker's Algorithm",
-    ]
-  },
-  {
-    name: "Memory Management",
-    icon: "Database20Regular",
-    algorithms: [
-      "First Fit",
-      "Best Fit",
-      "Worst Fit"
-    ],
-  },
-  {
-    name: "Virtual Memory Management",
-    icon: "Storage24Regular",
-    subgroups: null,
-    algorithms: [
-      "First In First Out",
-      "Optimal Replacement",
-      "Least Recently Used"
-    ]
-  },
-  {
-    name: "Disk Scheduling",
-    icon: "VmdkDisk",
-    algorithms: [
-      "First Come First Serve",
-      "Shortest Seek Time First",
-      "SCAN",
-      "CSCAN",
-      "LOOK",
-      "CLOOK"
-    ]
-  }
+
 ];
 </script>
