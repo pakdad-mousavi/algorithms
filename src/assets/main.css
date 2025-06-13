@@ -1,1 +1,19 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
 @import "tailwindcss";
+
+@theme {
+  --font-roboto: "Roboto", sans-serif;
+}
+
+body {
+  @apply bg-neutral-950 text-gray-200 font-roboto;
+}
+
+.is-minimized + div,
+.is-minimized + ul {
+  @apply hidden mb-4;
+}
+
+.is-minimized span.chevron {
+  @apply !rotate-0;
+}
