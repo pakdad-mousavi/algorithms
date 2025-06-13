@@ -12,14 +12,7 @@
       </Icon>
     </div>
 
-    <!-- Render subgroups recursively if they exist -->
-    <div v-if="group.subgroups && group.subgroups.length" :class="{ 'mb-6': !isMinimized }">
-      <GroupTree v-for="(subgroup, index) in group.subgroups" :key="index" :group="subgroup"
-        :path="[...path, group.name]" :showTreeLines="true" />
-    </div>
-
-    <!-- Render algorithms if they exist -->
-    <ul v-if="group.algorithms && group.algorithms.length">
+    <ul>
       <li v-for="(algorithm, index) in group.algorithms" :key="index"
         :class="{ 'mb-6': !isMinimized & index === group.algorithms.length - 1 }"
         class="ml-3 border-l-[1px] border-neutral-700 hover:bg-neutral-800 rounded-r-md duration-100">
@@ -48,7 +41,7 @@ defineProps({
 
 });
 
-const isMinimized = ref(true);
+const isMinimized = ref(false);
 
 // Utility to construct URL-safe path
 const buildPath = (segments) => {

@@ -36,69 +36,42 @@ const pages = [
   {
     name: "CPU Scheduling",
     icon: "DeveloperBoard24Regular",
-    subgroups: [
-      {
-        name: "Pre-emptive Algorithms",
-        subgroups: null,
-        algorithms: [
-          "Round Robin",
-        ],
-      },
-      {
-        name: "Non Pre-emptive Algorithms",
-        subgroups: null,
-        algorithms: [
-          "First Come First Serve",
-          "Priority",
-          "Shortest Job First",
-        ],
-      }
+    algorithms: [
+      "Round Robin",
+      "First Come First Serve",
+      "Priority",
+      "Shortest Job First",
     ],
   },
   {
     name: "Deadlock Management",
     icon: "LockClosed24Regular",
-    subgroups: null,
     algorithms: [
-      "Bankers Algorithm",
+      "Banker's Algorithm",
     ]
   },
   {
     name: "Memory Management",
     icon: "Database20Regular",
-    subgroups: [
-      {
-        name: "External Fragmentation",
-        subgroups: null,
-        algorithms: [
-          "First Fit",
-          "Best Fit",
-          "Worst Fit"
-        ],
-      }
+    algorithms: [
+      "First Fit",
+      "Best Fit",
+      "Worst Fit"
     ],
   },
   {
     name: "Virtual Memory Management",
     icon: "Storage24Regular",
-    subgroups: [
-      {
-        name: "Page Replacements",
-        subgroups: null,
-        algorithms: [
-          "First In First Out",
-          "Optimal Replacement",
-          "Least Recently Used"
-        ]
-      }
+    subgroups: null,
+    algorithms: [
+      "First In First Out",
+      "Optimal Replacement",
+      "Least Recently Used"
     ]
   },
   {
     name: "Disk Scheduling",
     icon: "VmdkDisk",
-    subgroups: [
-
-    ],
     algorithms: [
       "First Come First Serve",
       "Shortest Seek Time First",
