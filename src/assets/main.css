@@ -5,6 +5,14 @@
   --font-roboto: "Roboto", sans-serif;
 }
 
+.scrollbar::-webkit-scrollbar {
+  @apply hidden;
+}
+
+.scrollbar {
+  scrollbar-width: none;
+}
+
 body {
   @apply bg-neutral-950 text-gray-200 font-roboto;
 }

@@ -1,7 +1,8 @@
 <template>
   <header></header>
   <main class="flex p-4">
-    <nav class="flex flex-col bg-neutral-800/55 rounded-l-xl border-[1px] border-neutral-800">
+    <nav
+      class="flex flex-col bg-neutral-800/55 rounded-l-xl border-[1px] border-neutral-800 h-dvh overflow-y-scroll scrollbar">
       <div class="flex p-4 font-bold border-b-[1px] border-neutral-800 mb-4">
         ALGORITHMS
       </div>
