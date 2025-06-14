@@ -3,7 +3,7 @@
   </div>
 
   <aside
-    class="md:flex flex-col absolute -translate-x-[calc(100%+17px)] md:translate-x-0 duration-300 z-20 md:relative w-72 2xl:w-92 bg-neutral-900 border-r-[1px] border-neutral-800 h-[calc(100dvh-16px)] overflow-y-scroll scrollbar"
+    class="md:flex flex-col absolute -translate-x-[calc(100%+17px)] md:translate-x-0 duration-300 z-20 md:relative w-72 2xl:w-92 bg-zinc-900 border-r-[1px] border-neutral-800 h-[calc(100dvh-16px)] overflow-y-scroll scrollbar"
     :class="{ 'translate-x-0': isSidebarVisible }">
     <div class="flex items-center p-4 border-b-[1px] border-neutral-800">
       <div class="flex-1">
