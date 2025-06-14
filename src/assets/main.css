@@ -1,8 +1,8 @@
-@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --font-roboto: "Roboto", sans-serif;
+  --font-geist: "Geist", sans-serif;
 }
 
 .scrollbar::-webkit-scrollbar {
@@ -14,7 +14,7 @@
 }
 
 body {
-  @apply bg-neutral-950 text-gray-200 font-roboto;
+  @apply bg-neutral-950 text-gray-200 font-geist font-light;
 }
 
 .is-minimized + div,
