@@ -8,28 +8,33 @@
       <aside
         class="md:flex flex-col absolute -translate-x-[calc(100%+17px)] md:translate-x-0 duration-300 z-20 md:relative w-72 2xl:w-92 bg-neutral-900 border-r-[1px] border-neutral-800 h-[calc(100dvh-16px)] overflow-y-scroll scrollbar"
         :class="{ 'translate-x-0': isSidebarVisible }">
-        <div class="flex p-4 border-b-[1px] border-neutral-800">
+        <div class="flex items-center p-4 border-b-[1px] border-neutral-800">
           <div class="flex-1">
             ALGORITHMS
           </div>
-          <div>
-            <div class="flex items-center md:hidden cursor-pointer" @click="isSidebarVisible = !isSidebarVisible">
+          <div class="flex items-center gap-x-2">
+            <div class="flex items-center cursor-pointer" @click="updateMinimizedAll">
+              <Icon size="24px" color="oklch(87% 0 0)" class="duration-300" :class="{ 'rotate-180': minimizeAll }">
+                <ArrowCollapseAll20Filled />
+              </Icon>
+            </div>
+            <div class="flex items-center cursor-pointer md:hidden" @click="isSidebarVisible = !isSidebarVisible">
               <Icon size="24px" color="oklch(87% 0 0)">
                 <LayoutSidebarLeftCollapse />
               </Icon>
             </div>
-
           </div>
         </div>
         <div class="p-4 text-sm">
           <GroupTree v-for="(page, index) in pages" :key="index" :group="page" :icons="pageIcons" :path="[]"
-            :showTreeLines="false" class="!ml-0 mb-2" />
+            :showTreeLines="false" :minimizeAll="minimizeAll" :updateMinimizedAll="updateMinimizedAll"
+            class="!ml-0 mb-2" />
         </div>
       </aside>
 
       <div class="w-full md:w-[calc(100%-288px)] 2xl:w-[calc(100%-368px)]">
         <nav class="flex items-center w-full p-4 border-b-[1px] border-neutral-800">
-          <div class="flex items-center md:hidden cursor-pointer" @click="isSidebarVisible = !isSidebarVisible">
+          <div class="flex items-center cursor-pointer md:hidden" @click="isSidebarVisible = !isSidebarVisible">
             <Icon size="24px" color="oklch(87% 0 0)">
               <LayoutSidebarLeftExpand />
             </Icon>
@@ -56,13 +61,17 @@ import { LayoutSidebarLeftCollapse, LayoutSidebarLeftExpand } from "@vicons/tabl
 import { VmdkDisk } from "@vicons/carbon";
 
 const isSidebarVisible = ref(false);
+const minimizeAll = ref(false);
+
+const updateMinimizedAll = () => {
+  minimizeAll.value = !minimizeAll.value;
+}
 
 const pageIcons = {
   DeveloperBoard24Regular,
   LockClosed24Regular,
   Storage24Regular,
   Database20Regular,
-  ArrowCollapseAll20Filled,
   VmdkDisk
 };
 
