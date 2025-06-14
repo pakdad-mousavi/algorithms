@@ -7,7 +7,9 @@
     :class="{ 'translate-x-0': isSidebarVisible }">
     <div class="flex items-center p-4 border-b-[1px] border-neutral-800">
       <div class="flex-1">
-        ALGORITHMS
+        <RouterLink :to="'/'">
+          ALGORITHMS
+        </RouterLink>
       </div>
       <div class="flex items-center gap-x-2">
         <div class="flex items-center cursor-pointer" @click="updateMinimizedAll">
@@ -35,6 +37,7 @@ import { VmdkDisk } from "@vicons/carbon";
 import { LayoutSidebarLeftCollapse } from "@vicons/tabler";
 import GroupTree from "./GroupTree.vue";
 import { Icon } from "@vicons/utils";
+import { RouterLink } from "vue-router";
 
 const props = defineProps({
   pages: Array,
