@@ -3,10 +3,12 @@
     <div class="flex items-center hover:bg-neutral-800 py-1.5 duration-100 px-1 rounded-md border-neutral-700"
       @click="isMinimized = !isMinimized"
       :class="{ 'is-minimized': isMinimized, 'border-l-[1px] rounded-none !rounded-r-md pl-2': showTreeLines }">
-      <Icon v-if="group.icon" tag="span" size="20" class="mr-1">
-        <component :is="icons[group.icon]"></component>
-      </Icon>
-      <div class="flex-1 mr-6">{{ group.name }}</div>
+      <div class="flex flex-1">
+        <Icon v-if="group.icon" tag="span" size="20" class="mr-1">
+          <component :is="icons[group.icon]"></component>
+        </Icon>
+        <div>{{ group.name }}</div>
+      </div>
       <Icon tag="span" size="16" class="duration-300 rotate-90 chevron">
         <ChevronRight24Filled />
       </Icon>
