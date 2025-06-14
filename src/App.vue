@@ -2,39 +2,11 @@
   <header></header>
   <main>
     <div class="flex">
-      <div v-if="isSidebarVisible" class="absolute inset-0 z-10 h-dvh bg-black/30"
-        @click.self="isSidebarVisible = false"></div>
-
-      <aside
-        class="md:flex flex-col absolute -translate-x-[calc(100%+17px)] md:translate-x-0 duration-300 z-20 md:relative w-72 2xl:w-92 bg-neutral-900 border-r-[1px] border-neutral-800 h-[calc(100dvh-16px)] overflow-y-scroll scrollbar"
-        :class="{ 'translate-x-0': isSidebarVisible }">
-        <div class="flex items-center p-4 border-b-[1px] border-neutral-800">
-          <div class="flex-1">
-            ALGORITHMS
-          </div>
-          <div class="flex items-center gap-x-2">
-            <div class="flex items-center cursor-pointer" @click="updateMinimizedAll">
-              <Icon size="24px" color="oklch(87% 0 0)" class="duration-300" :class="{ 'rotate-180': minimizeAll }">
-                <ArrowCollapseAll20Filled />
-              </Icon>
-            </div>
-            <div class="flex items-center cursor-pointer md:hidden" @click="isSidebarVisible = !isSidebarVisible">
-              <Icon size="24px" color="oklch(87% 0 0)">
-                <LayoutSidebarLeftCollapse />
-              </Icon>
-            </div>
-          </div>
-        </div>
-        <div class="p-4 text-sm">
-          <GroupTree v-for="(page, index) in pages" :key="index" :group="page" :icons="pageIcons" :path="[]"
-            :showTreeLines="false" :minimizeAll="minimizeAll" :updateMinimizedAll="updateMinimizedAll"
-            class="!ml-0 mb-2" />
-        </div>
-      </aside>
-
+      <Sidebar :pages="pages" :isSidebarVisible="isSidebarVisible" :minimizeAll="minimizeAll"
+        :updateMinimizedAll="updateMinimizedAll" , :updateIsSidebarVisible="updateIsSidebarVisible" />
       <div class="w-full md:w-[calc(100%-288px)] 2xl:w-[calc(100%-368px)]">
         <nav class="flex items-center w-full p-4 border-b-[1px] border-neutral-800">
-          <div class="flex items-center cursor-pointer md:hidden" @click="isSidebarVisible = !isSidebarVisible">
+          <div class="flex items-center cursor-pointer md:hidden" @click="updateIsSidebarVisible">
             <Icon size="24px" color="oklch(87% 0 0)">
               <LayoutSidebarLeftExpand />
             </Icon>
@@ -53,27 +25,21 @@
 
 <script setup>
 import { RouterView } from "vue-router";
-import GroupTree from "./components/GroupTree.vue";
 import { ref } from "vue";
 import { Icon } from "@vicons/utils";
-import { DeveloperBoard24Regular, LockClosed24Regular, Storage24Regular, Database20Regular, ArrowCollapseAll20Filled } from '@vicons/fluent';
-import { LayoutSidebarLeftCollapse, LayoutSidebarLeftExpand } from "@vicons/tabler";
-import { VmdkDisk } from "@vicons/carbon";
+import { LayoutSidebarLeftExpand } from "@vicons/tabler";
+import Sidebar from "./components/Sidebar.vue";
 
 const isSidebarVisible = ref(false);
 const minimizeAll = ref(false);
 
+const updateIsSidebarVisible = () => {
+  isSidebarVisible.value = !isSidebarVisible.value;
+}
+
 const updateMinimizedAll = () => {
   minimizeAll.value = !minimizeAll.value;
 }
-
-const pageIcons = {
-  DeveloperBoard24Regular,
-  LockClosed24Regular,
-  Storage24Regular,
-  Database20Regular,
-  VmdkDisk
-};
 
 const pages = [
   {
