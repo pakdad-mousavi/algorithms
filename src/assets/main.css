@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap");
 @import "tailwindcss";
 
 @theme {
@@ -24,4 +24,16 @@ body {
 
 .is-minimized span.chevron {
   @apply !rotate-0;
+}
+
+.v-enter-active,
+.v-leave-active {
+  position: relative;
+  transition: opacity 0.5s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  position: absolute;
+  opacity: 0;
 }

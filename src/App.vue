@@ -3,7 +3,7 @@
   <main>
     <div class="flex">
       <Sidebar :pages="pages" :isSidebarVisible="isSidebarVisible" :minimizeAll="minimizeAll"
-        :updateMinimizedAll="updateMinimizedAll" , :updateIsSidebarVisible="updateIsSidebarVisible" />
+        :updateMinimizedAll="updateMinimizedAll" :updateIsSidebarVisible="updateIsSidebarVisible" />
       <div class="w-full md:w-[calc(100%-288px)] 2xl:w-[calc(100%-368px)]">
         <nav class="flex items-center w-full p-4 border-b-[1px] border-neutral-800">
           <div class="flex items-center cursor-pointer md:hidden" @click="updateIsSidebarVisible">
@@ -15,8 +15,12 @@
             My nav bar
           </div>
         </nav>
-        <div class="p-4">
-          <RouterView />
+        <div class="relative">
+          <RouterView v-slot="{ Component }">
+            <Transition>
+              <component :is="Component"></component>
+            </Transition>
+          </RouterView>
         </div>
       </div>
     </div>
@@ -25,7 +29,7 @@
 
 <script setup>
 import { RouterView } from "vue-router";
-import { ref } from "vue";
+import { ref, Transition } from "vue";
 import { Icon } from "@vicons/utils";
 import { LayoutSidebarLeftExpand } from "@vicons/tabler";
 import Sidebar from "./components/Sidebar.vue";
