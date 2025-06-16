@@ -3,8 +3,10 @@
 
 @theme {
   --font-geist: "Geist", sans-serif;
+  --color-main: oklch(0.72 0.11 178);
 }
 
+/* Remove scrollbar classes */
 .scrollbar::-webkit-scrollbar {
   @apply hidden;
 }
@@ -17,6 +19,7 @@ body {
   @apply bg-zinc-950 text-gray-200 font-geist font-light;
 }
 
+/* Sidebar item styles */
 .is-minimized + div,
 .is-minimized + ul {
   @apply hidden mb-4;
@@ -26,14 +29,63 @@ body {
   @apply !rotate-0;
 }
 
+/* Table styles */
+table {
+  @apply text-sm w-full border border-separate rounded-md shadow-md border-zinc-700 border-spacing-0 bg-neutral-900 text-neutral-100;
+}
+
+table thead tr {
+  @apply text-left bg-zinc-800 text-neutral-200;
+}
+
+table th {
+  @apply px-6 py-3 font-semibold border-b border-zinc-700;
+}
+
+table td {
+  @apply px-6 py-4 has-[input]:p-0;
+}
+
+table input {
+  @apply w-full h-full px-6 py-4 outline-0 duration-100 focus:bg-zinc-700 focus:border-main rounded-md border border-transparent invalid:!border-rose-500;
+}
+
+table tr {
+  @apply bg-neutral-800 odd:not-only:bg-neutral-900;
+}
+
+table tbody.highlight-first-column tr td {
+  /* Only used if first row should be highlighted */
+  @apply first-of-type:!font-medium;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  @apply m-0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.field {
+  @apply bg-zinc-800 border border-zinc-700 duration-100 focus:border-main rounded-md px-2 py-1.5 outline-0 text-sm invalid:!border-rose-500;
+}
+
+.btn {
+  @apply bg-zinc-800 border border-zinc-700 duration-100 hover:border-main active:translate-y-0.5 rounded-md px-6 py-1.5 cursor-pointer text-sm font-medium;
+}
+
 .v-enter-active,
 .v-leave-active {
-  position: relative;
-  transition: opacity 0.5s ease;
+  @apply relative transition-opacity duration-75 ease-in;
+  /* position: relative;
+  transition: opacity 0.1s ease; */
 }
 
 .v-enter-from,
 .v-leave-to {
-  position: absolute;
-  opacity: 0;
+  @apply absolute opacity-0;
 }
