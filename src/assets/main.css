@@ -126,6 +126,10 @@ input[type="number"] {
   @apply bg-zinc-800 border border-zinc-700 duration-100 hover:border-main active:translate-y-0.5 rounded-md px-6 py-1.5 cursor-pointer text-sm font-medium;
 }
 
+.btn.disabled {
+  @apply text-zinc-500 !bg-zinc-900 hover:border-zinc-700 active:translate-y-0 rounded-md px-6 py-1.5 cursor-default;
+}
+
 .v-enter-active,
 .v-leave-active {
   @apply relative transition-opacity duration-75 ease-in;

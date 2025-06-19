@@ -43,7 +43,10 @@
             </div>
             <div class="flex gap-2">
               <button class="btn" @click.prevent="zeroOutArrivalTimes">Set All Arrival Times to Zero</button>
-              <button class="btn" @click.prevent="addRow">Add Row</button>
+              <button class="btn" @click.prevent="addRow" :disabled="processData.length === processLimit"
+                :class="{ 'disabled': processData.length === processLimit }">
+                Add Row
+              </button>
             </div>
           </div>
           <div class="overflow-x-scroll">
@@ -86,6 +89,16 @@
           <h3 class="mb-2 text-lg font-medium">Results:</h3>
           <GanttChart v-if="hasAlgorithmBeenRan" :queueLog="groupedQueueLog" :processLog="processLog"
             :quantum="Number(timeSlice)"></GanttChart>
+          <EmptySpace v-else>
+            <template v-slot>
+              <p class="mb-4">
+                No results to display yet, try running the algorithm...
+              </p>
+              <button @click.prevent="runAlgorithm" class="btn">
+                Run Algorithm
+              </button>
+            </template>
+          </EmptySpace>
         </div>
       </div>
     </section>
@@ -95,9 +108,12 @@
 <script setup>
 import { Trash } from '@vicons/tabler';
 import { Icon } from '@vicons/utils';
-import { ref, reactive, computed } from 'vue';
+import { ref, reactive, computed, watch } from 'vue';
 import GanttChart from '@/components/algorithms/cpu-scheduling/GanttChart.vue';
+import EmptySpace from '@/components/EmptySpace.vue';
 
+
+// Reactive variables and constants
 const form = ref(null);
 const timeSlice = ref(2);
 const processData = reactive([
@@ -106,17 +122,23 @@ const processData = reactive([
   [2, 4],
   [3, 5]
 ]);
-
 const hasAlgorithmBeenRan = ref(false);
-
 const queueLog = reactive([]);
 const processLog = reactive([]);
+const processLimit = 6;
 
+// Reset algorithm results if the time slice is edited
+watch(timeSlice, () => {
+  resetAlgorithmResults();
+});
+
+// Group the queuelog based on the time of each log
 const groupedQueueLog = computed(() => {
   const grouped = Object.groupBy(queueLog, (log) => log[0]);
   return Object.values(grouped);
 });
 
+// Get rid of old algorithm results
 const resetAlgorithmResults = () => {
   hasAlgorithmBeenRan.value = false;
   queueLog.length = 0;
@@ -164,7 +186,6 @@ const updateQueueLog = (currentTime, queue) => {
 
 const updateProcessLog = (currentProcess, currentTime, quantum) => {
   const processCopy = currentProcess.slice();
-  // processCopy[3] = Math.max(0, processCopy[3] - quantum);
   processLog.push([currentTime, processCopy]);
 }
 
