@@ -2,11 +2,11 @@
   <main class="p-4 space-y-4 text-neutral-300">
     <section class="p-4 rounded-xl bg-zinc-900">
       <div class="w-11/12 mx-auto">
-        <h1 class="mb-4 text-2xl font-semibold leading-relaxed">
+        <h1 class="mb-4 text-2xl font-semibold">
           Round Robin Algorithm
         </h1>
         <hr class="mb-4 border-neutral-800">
-        <div class="mb-10 space-y-4 leading-relaxed">
+        <div class="mb-10 space-y-4">
           <p>
             The <span class="text-main">Round Robin Algorithm</span> is a widely used CPU scheduling method,
             particularly effective in time-sharing systems. Its main objective is to allocate CPU time fairly among all
@@ -37,21 +37,39 @@
             <div class="space-y-4">
               <p>
                 This implementation of the round robin algorithm is biased towards arriving processes rather than
-                completed
-                processes. This means that if a process arrives and finishes at the same time, the process which has
-                arrived
-                will enter the queue first.
+                completed processes. This means that if a process arrives and finishes at the same time, the process
+                which has arrived will enter the queue first.
               </p>
               <p>
                 Only after the arriving process(es) are added to the queue, will the finished process leave the CPU and
-                go
-                to the back of the queue.
+                go to the back of the queue.
               </p>
             </div>
           </template>
         </Alert>
 
-        <h1 class="mb-4 text-xl font-semibold leading-relaxed">
+        <div class="mb-10 space-y-4">
+          <p>
+            Additional details may also be needed to measure the performance of each process in the operating
+            system, such as <span class="text-main">waiting time</span> and <span class="text-main">turnaround
+              time</span>.
+          </p>
+          <p>
+            Waiting time is the total time that a process spends in the queue, and turnaround time is the total time
+            taken from when a process arrives to when it completes execution. The following formulae are used to
+            calculate each value respectively:
+          </p>
+          <div class="flex flex-col gap-y-2">
+            <p class="w-max px-4 py-1.5 border rounded-md bg-zinc-800 border-zinc-700">
+              Turnaround Time = Completion Time - Arrival Time
+            </p>
+            <p class="w-max px-4 py-1.5 border rounded-md bg-zinc-800 border-zinc-700">
+              Waiting Time = Turnaround Time - Burst Time
+            </p>
+          </div>
+        </div>
+
+        <h1 class="mb-4 text-xl font-semibold">
           Step By Step Illustration
         </h1>
         <hr class="mb-4 border-neutral-800">
@@ -111,6 +129,8 @@
           <h3 class="mb-2 text-lg font-medium">Results:</h3>
           <GanttChart v-if="hasAlgorithmBeenRan" :queueLog="groupedQueueLog" :processLog="processLog"
             :quantum="Number(timeSlice)"></GanttChart>
+          <ProcessDetails v-if="hasAlgorithmBeenRan" :processData="processData" :finished-processes="finishedProcesses">
+          </ProcessDetails>
           <EmptySpace v-else>
             <template v-slot>
               <p class="mb-4">
@@ -132,6 +152,7 @@ import { Trash } from '@vicons/tabler';
 import { Icon } from '@vicons/utils';
 import { ref, reactive, computed, watch } from 'vue';
 import GanttChart from '@/components/algorithms/cpu-scheduling/GanttChart.vue';
+import ProcessDetails from '@/components/algorithms/cpu-scheduling/ProcessDetails.vue';
 import EmptySpace from '@/components/general/EmptySpace.vue';
 import Alert from '@/components/general/Alert.vue';
 
@@ -147,6 +168,7 @@ const processData = reactive([
 const hasAlgorithmBeenRan = ref(false);
 const queueLog = reactive([]);
 const processLog = reactive([]);
+const finishedProcesses = reactive([]);
 const processLimit = 6;
 
 // Reset algorithm results if the time slice is edited
@@ -165,6 +187,7 @@ const resetAlgorithmResults = () => {
   hasAlgorithmBeenRan.value = false;
   queueLog.length = 0;
   processLog.length = 0;
+  finishedProcesses.length = 0;
 }
 
 const addRow = () => {
@@ -206,7 +229,7 @@ const updateQueueLog = (currentTime, queue) => {
   }
 };
 
-const updateProcessLog = (currentProcess, currentTime, quantum) => {
+const updateProcessLog = (currentProcess, currentTime) => {
   const processCopy = currentProcess.slice();
   processLog.push([currentTime, processCopy]);
 }
@@ -225,9 +248,6 @@ const runAlgorithm = () => {
   const processes = processData.map(p => [id++, p[0], p[1], p[1]]);
 
   const queue = [];
-  const ganttChart = [];
-  const timeChart = [];
-  const finishedProcesses = [];
 
   let currentTime = 0;
   let currentProcess = null;
@@ -252,13 +272,8 @@ const runAlgorithm = () => {
     if (!currentProcess && queue.length > 0) {
       currentProcess = queue.shift();
       updateQueueLog(currentTime, queue);
-      updateProcessLog(currentProcess, currentTime, quantum);
-      const pid = currentProcess[0];
+      updateProcessLog(currentProcess, currentTime);
       timeLeftInSlice = Math.min(quantum, currentProcess[3]);
-
-      // Add to Gantt chart
-      ganttChart.push(pid);
-      timeChart.push(`${currentTime} --> ${currentTime + timeLeftInSlice}`);
     }
 
     // Run current process for 1 unit
@@ -299,8 +314,6 @@ const runAlgorithm = () => {
   }
 
   // Output
-  console.log("Gantt Chart:", ganttChart);
-  console.log("Time Chart:", timeChart);
   console.log("Finished Processes:", finishedProcesses);
   console.log();
   console.log("Process log:", processLog);
