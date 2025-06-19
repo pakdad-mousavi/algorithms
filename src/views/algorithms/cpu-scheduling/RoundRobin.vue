@@ -70,7 +70,7 @@
                       class="flex items-center justify-center duration-100 border border-transparent rounded-md cursor-pointer bg-zinc-700 aspect-square w-7 group hover:border-rose-600 active:translate-y-1"
                       @click="removeRow(index)">
                       <Icon class="text-rose-500" tag="span" size="20px">
-                        <X></X>
+                        <Trash></Trash>
                       </Icon>
                     </div>
                   </td>
@@ -82,15 +82,21 @@
             Run Algorithm
           </button>
         </form>
+        <div class="mt-16">
+          <h3 class="mb-2 text-lg font-medium">Results:</h3>
+          <GanttChart v-if="hasAlgorithmBeenRan" :queueLog="groupedQueueLog" :processLog="processLog"
+            :quantum="Number(timeSlice)"></GanttChart>
+        </div>
       </div>
     </section>
   </main>
 </template>
 
 <script setup>
-import { X } from '@vicons/tabler';
+import { Trash } from '@vicons/tabler';
 import { Icon } from '@vicons/utils';
-import { ref, reactive } from 'vue';
+import { ref, reactive, computed } from 'vue';
+import GanttChart from '@/components/algorithms/cpu-scheduling/GanttChart.vue';
 
 const form = ref(null);
 const timeSlice = ref(2);
@@ -101,13 +107,33 @@ const processData = reactive([
   [3, 5]
 ]);
 
+const hasAlgorithmBeenRan = ref(false);
+
+const queueLog = reactive([]);
+const processLog = reactive([]);
+
+const groupedQueueLog = computed(() => {
+  const grouped = Object.groupBy(queueLog, (log) => log[0]);
+  return Object.values(grouped);
+});
+
+const resetAlgorithmResults = () => {
+  hasAlgorithmBeenRan.value = false;
+  queueLog.length = 0;
+  processLog.length = 0;
+}
+
 const addRow = () => {
+  // Reset algorithm
+  resetAlgorithmResults();
+  // Add new row
   const lastItem = processData[processData.length - 1];
   const newItem = [lastItem[0] + 1, Math.round(Math.random() * 10)];
   processData.push(newItem);
 }
 
 const removeRow = (rowIndex) => {
+  resetAlgorithmResults();
   processData.splice(rowIndex, 1);
 }
 
@@ -117,15 +143,43 @@ const zeroOutArrivalTimes = () => {
   });
 }
 
+let lastQueueSnapshot = null;
+let lastSnapshotTime = -1;
+
+const updateQueueLog = (currentTime, queue) => {
+  const queueProcessIds = queue.map((x) => `P${x[0]}`);
+  while (queueProcessIds.length < 6) {
+    queueProcessIds.push('-');
+  }
+
+  const snapshot = queueProcessIds.join(',');
+
+  // Only skip if snapshot is same AND time hasn't moved (e.g., multiple calls in the same ms)
+  if (snapshot !== lastQueueSnapshot || currentTime !== lastSnapshotTime) {
+    queueLog.push([currentTime, queueProcessIds]);
+    lastQueueSnapshot = snapshot;
+    lastSnapshotTime = currentTime;
+  }
+};
+
+const updateProcessLog = (currentProcess, currentTime, quantum) => {
+  const processCopy = currentProcess.slice();
+  // processCopy[3] = Math.max(0, processCopy[3] - quantum);
+  processLog.push([currentTime, processCopy]);
+}
+
 const runAlgorithm = () => {
   const isFormValid = form.value.checkValidity();
   if (!isFormValid) return form.value.reportValidity();
+
+  resetAlgorithmResults();
+  hasAlgorithmBeenRan.value = true;
+
 
   const quantum = Number(timeSlice.value);
 
   let id = 1;
   const processes = processData.map(p => [id++, p[0], p[1], p[1]]);
-  const processMap = new Map(processes.map(p => [p[0], p]));
 
   const queue = [];
   const ganttChart = [];
@@ -139,11 +193,14 @@ const runAlgorithm = () => {
   const arrived = new Set();
 
   while (true) {
+    updateQueueLog(currentTime, queue);
+
     // Enqueue new arrivals first
     processes.forEach(p => {
       const [pid, arrivalTime] = p;
       if (arrivalTime === currentTime && !arrived.has(pid)) {
         queue.push(p);
+        updateQueueLog(currentTime, queue);
         arrived.add(pid);
       }
     });
@@ -151,6 +208,8 @@ const runAlgorithm = () => {
     // If there's no current process, get one from the queue
     if (!currentProcess && queue.length > 0) {
       currentProcess = queue.shift();
+      updateQueueLog(currentTime, queue);
+      updateProcessLog(currentProcess, currentTime, quantum);
       const pid = currentProcess[0];
       timeLeftInSlice = Math.min(quantum, currentProcess[3]);
 
@@ -182,11 +241,13 @@ const runAlgorithm = () => {
           const [pid, arrivalTime] = p;
           if (arrivalTime === currentTime && !arrived.has(pid)) {
             queue.push(p);
+            updateQueueLog(currentTime, queue);
             arrived.add(pid);
           }
         });
 
         queue.push(justFinished); // Re-queue after arrivals
+        updateQueueLog(currentTime, queue);
       }
     }
 
@@ -198,5 +259,7 @@ const runAlgorithm = () => {
   console.log("Gantt Chart:", ganttChart);
   console.log("Time Chart:", timeChart);
   console.log("Finished Processes:", finishedProcesses);
+  console.log();
+  console.log("Process log:", processLog);
 }
 </script>

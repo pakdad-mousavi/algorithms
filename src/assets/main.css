@@ -59,6 +59,54 @@ table tbody.highlight-first-column tr td {
   @apply first-of-type:!font-medium;
 }
 
+.gantt-chart-container {
+  @apply relative overflow-x-scroll;
+}
+
+.gantt-chart-container .lines {
+  @apply absolute border-r-[1.5px] border-dashed border-rose-800 w-px h-[calc(100%-6.5px)] top-0 z-20;
+}
+
+.gantt-chart {
+  @apply relative inline-block overflow-hidden text-sm border-2 border-zinc-700 rounded-md;
+}
+
+.gantt-chart .timeline {
+  @apply flex border-b border-zinc-800 font-medium bg-neutral-800 top-0 z-30;
+}
+
+.gantt-chart .timeline div {
+  @apply min-w-24 p-1;
+}
+
+.gantt-chart .interval {
+  @apply mb-2 border-b border-b-zinc-700 last:border-0 last:mb-0;
+}
+
+.gantt-chart .interval .queue {
+  @apply last:mb-2 first:mt-2;
+}
+
+.gantt-chart .interval .queue {
+  @apply flex text-center relative z-20 mt-1;
+}
+
+.gantt-chart .interval .queue .queue-item {
+  @apply w-7 aspect-square flex items-center justify-center border bg-zinc-800 border-zinc-700 first:rounded-l-md last:rounded-r-md;
+}
+
+.gantt-chart .interval .process {
+  @apply flex mb-3 mt-1 font-bold;
+}
+
+.gantt-chart .interval .process div {
+  @apply min-w-24 px-1 first:border-l first:rounded-l-md last:rounded-r-md;
+}
+
+.gantt-chart .interval .process .processing {
+  @apply bg-[size:10px_10px] border border-l-0;
+}
+
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
