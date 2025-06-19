@@ -25,11 +25,31 @@
             paused after the quantum expires and placed at the end of the queue to wait for another turn.
           </p>
         </div>
+
         <figure class="my-20">
           <img src="/algorithms/cpu-scheduling/round-robin.svg" alt="Round Robin CPU Scheduling Algorithm">
           <figcaption class="mt-2 text-sm italic text-center text-zinc-400">Round Robin CPU Scheduling Algorithm
           </figcaption>
         </figure>
+
+        <Alert alertStyle="warning">
+          <template v-slot>
+            <div class="space-y-4">
+              <p>
+                This implementation of the round robin algorithm is biased towards arriving processes rather than
+                completed
+                processes. This means that if a process arrives and finishes at the same time, the process which has
+                arrived
+                will enter the queue first.
+              </p>
+              <p>
+                Only after the arriving process(es) are added to the queue, will the finished process leave the CPU and
+                go
+                to the back of the queue.
+              </p>
+            </div>
+          </template>
+        </Alert>
 
         <h1 class="mb-4 text-xl font-semibold leading-relaxed">
           Step By Step Illustration
@@ -112,8 +132,8 @@ import { Trash } from '@vicons/tabler';
 import { Icon } from '@vicons/utils';
 import { ref, reactive, computed, watch } from 'vue';
 import GanttChart from '@/components/algorithms/cpu-scheduling/GanttChart.vue';
-import EmptySpace from '@/components/EmptySpace.vue';
-
+import EmptySpace from '@/components/general/EmptySpace.vue';
+import Alert from '@/components/general/Alert.vue';
 
 // Reactive variables and constants
 const form = ref(null);
