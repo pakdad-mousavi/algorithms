@@ -13,7 +13,7 @@
 </template>
 
 <script setup>
-import { Warning24Regular } from '@vicons/fluent';
+import { SmsFailedOutlined } from '@vicons/material';
 import { Icon } from '@vicons/utils';
 
 const props = defineProps({
@@ -24,7 +24,7 @@ const props = defineProps({
 });
 
 const icons = {
-  Warning24Regular,
+  SmsFailedOutlined,
 };
 
 const styles = {
@@ -32,7 +32,7 @@ const styles = {
     title: "Warning",
     borderColor: "border-yellow-600",
     textColor: "text-yellow-600",
-    icon: "Warning24Regular"
+    icon: "SmsFailedOutlined"
   },
 };
 
