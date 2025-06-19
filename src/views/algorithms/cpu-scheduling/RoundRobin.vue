@@ -42,8 +42,10 @@
               <input type="number" class="w-full field sm:w-60" v-model="timeSlice" min="1" max="20" required>
             </div>
             <div class="flex gap-2">
-              <button class="btn" @click.prevent="zeroOutArrivalTimes">Set All Arrival Times to Zero</button>
-              <button class="btn" @click.prevent="addRow" :disabled="processData.length === processLimit"
+              <button class="btn" type="button" @click.prevent="zeroOutArrivalTimes">
+                Set All Arrival Times to Zero
+              </button>
+              <button class="btn" type="button" @click.prevent="addRow" :disabled="processData.length === processLimit"
                 :class="{ 'disabled': processData.length === processLimit }">
                 Add Row
               </button>
@@ -81,7 +83,7 @@
               </tbody>
             </table>
           </div>
-          <button @click.prevent="runAlgorithm" class="btn">
+          <button @click.prevent="runAlgorithm" class="btn" type="submit">
             Run Algorithm
           </button>
         </form>
