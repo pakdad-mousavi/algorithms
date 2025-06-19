@@ -4,7 +4,7 @@
       <div v-for="index in queueLog.length" class="lines" :style="calcLeft(index)"></div>
       <div class="gantt-chart">
         <Timeline :totalTime="queueLog.length + 1"></Timeline>
-        <div class="interval" v-for="(queueGroup, currentTime) in queueLog" :key="index">
+        <div class="interval" v-for="(queueGroup, currentTime) in queueLog" :key="currentTime">
           <Queue :queue-group="queueGroup"></Queue>
           <Process :current-aligned-process="alignedProcessLog[currentTime]" :quantum="quantum"></Process>
         </div>
