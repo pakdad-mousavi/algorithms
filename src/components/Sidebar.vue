@@ -39,7 +39,7 @@ import { LayoutSidebarLeftCollapse } from "@vicons/tabler";
 import GroupTree from "./GroupTree.vue";
 import { Icon } from "@vicons/utils";
 import { RouterLink } from "vue-router";
-import { ref } from "vue";
+import { onMounted, onUnmounted, ref } from "vue";
 
 const props = defineProps({
   pages: Array,
@@ -57,5 +57,21 @@ const pageIcons = {
   Database20Regular,
   VmdkDisk
 };
+
+const mediaQuery = window.matchMedia('(min-width: 1024px)');
+const handleResize = () => {
+  if (mediaQuery.matches && props.isSidebarVisible) {
+    emit('toggle-sidebar');
+  }
+};
+
+onMounted(() => {
+  mediaQuery.addEventListener('change', handleResize);
+  handleResize(); // Run once on mount
+});
+
+onUnmounted(() => {
+  mediaQuery.removeEventListener('change', handleResize);
+});
 
 </script>
