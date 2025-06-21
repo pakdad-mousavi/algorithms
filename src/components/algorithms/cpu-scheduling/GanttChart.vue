@@ -1,9 +1,11 @@
 <template>
   <div>
-    <div class="gantt-chart-container">
+    <div class="gantt-chart-container" ref="chartContainer">
       <div v-for="index in queueLog.length" class="lines" :style="calcLeft(index)"></div>
-      <div class="gantt-chart">
-        <Timeline :totalTime="queueLog.length + 1"></Timeline>
+      <div class="gantt-chart" :style="chartWidth">
+        <Timeline :totalTime="queueLog.length + 1" :class="{ 'border-y-2': isTimelineFixed }"
+          :style="`margin-top: ${horizontalScroll}px;`">
+        </Timeline>
         <div class="interval" v-for="(queueGroup, currentTime) in queueLog" :key="currentTime">
           <Queue :queue-group="queueGroup"></Queue>
           <Process :current-aligned-process="alignedProcessLog[currentTime]" :quantum="quantum"></Process>
@@ -14,11 +16,10 @@
 </template>
 
 <script setup>
-import { computed, provide } from 'vue';
+import { computed, onMounted, onUnmounted, provide, ref } from 'vue';
 import Process from './Process.vue';
 import Queue from './Queue.vue';
 import Timeline from './Timeline.vue';
-
 
 const props = defineProps({
   queueLog: {
@@ -35,7 +36,12 @@ const props = defineProps({
   },
 });
 
+const chartContainer = ref(null);
+const isTimelineFixed = ref(false);
+const horizontalScroll = ref(0);
+
 const widthFactor = 24;
+const chartWidth = `width: calc(var(--spacing) * ${widthFactor} * ${props.queueLog.length + 1})`;
 
 // Computes a formatted version of the process log, aligning each process entry to its corresponding time slot in the queue log
 const alignedProcessLog = computed(() => {
@@ -63,6 +69,27 @@ const calcTranslate = (value) => `transform: translateX(calc(var(--spacing) * ${
 
 // Calculates the CSS left style for absolute positioning
 const calcLeft = (value) => `left: calc(var(--spacing) * ${widthFactor} * ${value});`;
+
+const handleScroll = () => {
+  const container = chartContainer.value;
+  const topPos = container.getBoundingClientRect().top;
+
+  if (topPos <= 0) {
+    horizontalScroll.value = Math.abs(topPos) - 4;
+    isTimelineFixed.value = true;
+  } else {
+    horizontalScroll.value = 0;
+    isTimelineFixed.value = false;
+  }
+};
+
+onMounted(() => {
+  window.addEventListener('scroll', handleScroll);
+});
+
+onUnmounted(() => {
+  window.removeEventListener('scroll', handleScroll);
+});
 
 // Provide utility function to inner components
 provide("calcTranslate", calcTranslate);

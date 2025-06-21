@@ -64,15 +64,15 @@ table tbody.highlight-first-column tr td {
 }
 
 .gantt-chart-container .lines {
-  @apply absolute border-r-[1.5px] border-dashed border-rose-800 w-px h-[calc(100%-6.5px)] top-0 z-20;
+  @apply absolute border-r-[1.5px] border-dashed border-rose-800 w-px h-[calc(100%-10px)] top-0.5 z-20;
 }
 
 .gantt-chart {
-  @apply relative inline-block overflow-hidden text-sm border-2 border-zinc-700 rounded-md;
+  @apply relative inline-block text-sm border-2 border-zinc-700 rounded-md !overflow-hidden pt-8;
 }
 
 .gantt-chart .timeline {
-  @apply flex border-b border-zinc-800 font-medium bg-neutral-800 top-0 z-30;
+  @apply flex border-b-2 border-zinc-700 font-medium bg-neutral-800 z-30 rounded-t-sm absolute top-0 left-0;
 }
 
 .gantt-chart .timeline div {
@@ -88,7 +88,7 @@ table tbody.highlight-first-column tr td {
 }
 
 .gantt-chart .interval .queue {
-  @apply flex text-center relative z-20 mt-1;
+  @apply flex text-center relative z-20 mt-1 w-min;
 }
 
 .gantt-chart .interval .queue .queue-item {
@@ -96,7 +96,7 @@ table tbody.highlight-first-column tr td {
 }
 
 .gantt-chart .interval .process {
-  @apply flex mb-3 mt-1 font-bold;
+  @apply flex mb-3 mt-1 font-bold w-min;
 }
 
 .gantt-chart .interval .process div {
