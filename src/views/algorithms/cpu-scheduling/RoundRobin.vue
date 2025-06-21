@@ -26,8 +26,8 @@
           </p>
         </div>
 
-        <figure class="my-20">
-          <img src="/algorithms/cpu-scheduling/round-robin.svg" alt="Round Robin CPU Scheduling Algorithm">
+        <figure class="my-10">
+          <img src="/algorithms/cpu-scheduling/round-robin/round-robin.svg" alt="Round Robin CPU Scheduling Algorithm">
           <figcaption class="mt-2 text-sm italic text-center text-zinc-400">Round Robin CPU Scheduling Algorithm
           </figcaption>
         </figure>
