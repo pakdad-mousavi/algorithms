@@ -1,8 +1,45 @@
 <template>
   <div>
-    <div class="gantt-chart-container" ref="chartContainer">
-      <div v-for="index in queueLog.length" class="lines" :style="calcLeft(index)"></div>
-      <div class="gantt-chart" :style="chartWidth">
+    <Legend>
+      <div class="space-y-2">
+        <div class="font-medium">
+          Queue
+        </div>
+        <div class="flex rounded-md [&>div]:first:rounded-l-md [&>div]:last:rounded-r-md">
+          <div class="!w-min-max queue-item">-</div>
+          <div class="!w-min-max queue-item">-</div>
+          <div class="!w-min-max queue-item">-</div>
+          <div class="!w-min-max queue-item">-</div>
+          <div class="!w-min-max queue-item">-</div>
+          <div class="!w-min-max queue-item">-</div>
+        </div>
+      </div>
+      <div class="space-y-2">
+        <div class="font-medium">
+          Finished Segment
+        </div>
+        <div
+          class="border border-gray-600 h-7 bg-[image:repeating-linear-gradient(315deg,var(--color-gray-600)_0,var(--color-gray-600)_1px,_transparent_1px,_transparent_50%)] bg-[size:10px_10px] rounded-md">
+        </div>
+      </div>
+      <div class="space-y-2">
+        <div class="font-medium">
+          Processing Segment
+        </div>
+        <div
+          class="border border-gray-400 h-7 bg-[image:repeating-linear-gradient(315deg,var(--color-gray-400)_0,var(--color-gray-400)_1px,_transparent_1px,_transparent_50%)] bg-[size:10px_10px] rounded-md">
+        </div>
+      </div>
+      <div class="space-y-2">
+        <div class="font-medium">
+          Incomplete Segment
+        </div>
+        <div class="bg-gray-400 rounded-md h-7"></div>
+      </div>
+    </Legend>
+    <div class="gantt-chart-container">
+      <div class="gantt-chart" :style="chartWidth" ref="chart">
+        <div v-for="index in queueLog.length" class="lines" :style="calcLeft(index)"></div>
         <Timeline :totalTime="queueLog.length + 1" :class="{ 'border-y-2': isTimelineFixed }"
           :style="`margin-top: ${horizontalScroll}px;`">
         </Timeline>
@@ -20,6 +57,7 @@ import { computed, onMounted, onUnmounted, provide, ref } from 'vue';
 import Process from './Process.vue';
 import Queue from './Queue.vue';
 import Timeline from './Timeline.vue';
+import Legend from './Legend.vue';
 
 const props = defineProps({
   queueLog: {
@@ -36,7 +74,7 @@ const props = defineProps({
   },
 });
 
-const chartContainer = ref(null);
+const chart = ref(null);
 const isTimelineFixed = ref(false);
 const horizontalScroll = ref(0);
 
@@ -71,7 +109,7 @@ const calcTranslate = (value) => `transform: translateX(calc(var(--spacing) * ${
 const calcLeft = (value) => `left: calc(var(--spacing) * ${widthFactor} * ${value});`;
 
 const handleScroll = () => {
-  const container = chartContainer.value;
+  const container = chart.value;
   const topPos = container.getBoundingClientRect().top;
 
   if (topPos <= 0) {

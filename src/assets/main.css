@@ -64,7 +64,7 @@ table tbody.highlight-first-column tr td {
 }
 
 .gantt-chart-container .lines {
-  @apply absolute border-r-[1.5px] border-dashed border-rose-800 w-px h-[calc(100%-10px)] top-0.5 z-20;
+  @apply absolute border-r-[1.5px] border-dashed border-rose-800 w-px h-full z-20;
 }
 
 .gantt-chart {
@@ -92,6 +92,10 @@ table tbody.highlight-first-column tr td {
 }
 
 .gantt-chart .interval .queue .queue-item {
+  @apply w-7 aspect-square flex items-center justify-center border bg-zinc-800 border-zinc-700 first:rounded-l-md last:rounded-r-md;
+}
+
+.legend .queue-item {
   @apply w-7 aspect-square flex items-center justify-center border bg-zinc-800 border-zinc-700 first:rounded-l-md last:rounded-r-md;
 }
 

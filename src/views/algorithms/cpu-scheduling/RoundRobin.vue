@@ -1,7 +1,7 @@
 <template>
   <main class="p-4 space-y-4 text-neutral-300">
     <section class="p-4 rounded-xl bg-zinc-900">
-      <div class="w-11/12 mx-auto">
+      <div class="sm:w-11/12 mx-auto">
         <h1 class="mb-4 text-2xl font-semibold">
           Round Robin Algorithm
         </h1>
