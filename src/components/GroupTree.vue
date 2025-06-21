@@ -42,11 +42,9 @@ const props = defineProps({
   },
   showTreeLines: Boolean,
   minimizeAll: Boolean,
-  updateMinimizedAll: {
-    type: Function,
-    default: () => { },
-  },
 });
+
+const emit = defineEmits(['toggle-minimized-all']);
 
 const isMinimized = ref(false);
 
@@ -58,7 +56,7 @@ watch(() => props.minimizeAll, (newVal) => {
 // Call updateMinimizedAll when a group is opened (isMinimized set to false)
 watch(isMinimized, (value) => {
   if (!value && props.minimizeAll) {
-    props.updateMinimizedAll();
+    emit('toggle-minimized-all');
   }
 });
 

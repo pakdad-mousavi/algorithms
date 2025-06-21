@@ -1,5 +1,5 @@
 <template>
-  <div v-if="isSidebarVisible" class="absolute inset-0 z-10 h-svh bg-black/30" @click.self="updateIsSidebarVisible">
+  <div v-if="isSidebarVisible" class="absolute inset-0 z-10 h-svh bg-black/30" @click.self="emit('toggle-sidebar')">
   </div>
 
   <aside
@@ -12,12 +12,12 @@
         </RouterLink>
       </div>
       <div class="flex items-center gap-x-2">
-        <div class="flex items-center cursor-pointer" @click="updateMinimizedAll">
+        <div class="flex items-center cursor-pointer" @click="minimizeAll = !minimizeAll">
           <Icon size="24px" color="oklch(87% 0 0)" class="duration-300" :class="{ 'rotate-180': minimizeAll }">
             <ArrowCollapseAll20Filled />
           </Icon>
         </div>
-        <div class="flex items-center cursor-pointer md:hidden" @click="updateIsSidebarVisible">
+        <div class="flex items-center cursor-pointer md:hidden" @click="emit('toggle-sidebar')">
           <Icon size="24px" color="oklch(87% 0 0)">
             <LayoutSidebarLeftCollapse />
           </Icon>
@@ -26,7 +26,8 @@
     </div>
     <div class="p-4 text-sm">
       <GroupTree v-for="(page, index) in pages" :key="index" :group="page" :icons="pageIcons" :path="[]"
-        :showTreeLines="false" :minimizeAll="minimizeAll" :updateMinimizedAll="updateMinimizedAll" class="!ml-0 mb-2" />
+        :showTreeLines="false" :minimizeAll="minimizeAll" @toggle-minimized-all="minimizeAll = !minimizeAll"
+        class="!ml-0 mb-2" />
     </div>
   </aside>
 </template>
@@ -38,20 +39,16 @@ import { LayoutSidebarLeftCollapse } from "@vicons/tabler";
 import GroupTree from "./GroupTree.vue";
 import { Icon } from "@vicons/utils";
 import { RouterLink } from "vue-router";
+import { ref } from "vue";
 
 const props = defineProps({
   pages: Array,
   isSidebarVisible: Boolean,
-  minimizeAll: Boolean,
-  updateIsSidebarVisible: {
-    type: Function,
-    default: () => { },
-  },
-  updateMinimizedAll: {
-    type: Function,
-    default: () => { },
-  },
 });
+
+const emit = defineEmits(['toggle-sidebar']);
+
+const minimizeAll = ref(false);
 
 const pageIcons = {
   DeveloperBoard24Regular,
