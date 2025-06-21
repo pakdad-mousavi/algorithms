@@ -16,6 +16,11 @@ const router = createRouter({
       component: () =>
         import("../views/algorithms/cpu-scheduling/RoundRobin.vue"),
     },
+    {
+      path: "/cpu-scheduling/first-come-first-serve",
+      component: () =>
+        import("../views/algorithms/cpu-scheduling/FirstComeFirstServe.vue"),
+    },
   ],
 });
 

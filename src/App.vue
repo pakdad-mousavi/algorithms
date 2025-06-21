@@ -42,6 +42,7 @@ const pages = [
     icon: "DeveloperBoard24Regular",
     algorithms: [
       "Round Robin",
+      "First Come First Serve",
     ],
   },
 ];
