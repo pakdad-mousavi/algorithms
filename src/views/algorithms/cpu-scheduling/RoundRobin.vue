@@ -1,7 +1,7 @@
 <template>
   <main class="p-4 space-y-4 text-neutral-300">
     <section class="p-4 rounded-xl bg-zinc-900">
-      <div class="sm:w-11/12 mx-auto">
+      <div class="mx-auto sm:w-11/12">
         <h1 class="mb-4 text-2xl font-semibold">
           Round Robin Algorithm
         </h1>
@@ -59,11 +59,13 @@
             taken from when a process arrives to when it completes execution. The following formulae are used to
             calculate each value respectively:
           </p>
-          <div class="flex flex-col gap-y-2">
-            <p class="w-max px-4 py-1.5 border rounded-md bg-zinc-800 border-zinc-700">
+          <div>
+            <p class="inline-block px-4 py-1.5 border rounded-md bg-zinc-800 border-zinc-700">
               Turnaround Time = Completion Time - Arrival Time
             </p>
-            <p class="w-max px-4 py-1.5 border rounded-md bg-zinc-800 border-zinc-700">
+          </div>
+          <div>
+            <p class="inline-block px-4 py-1.5 border rounded-md bg-zinc-800 border-zinc-700">
               Waiting Time = Turnaround Time - Burst Time
             </p>
           </div>

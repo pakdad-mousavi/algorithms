@@ -1,25 +1,27 @@
 <template>
-  <table class="my-10">
-    <thead>
-      <tr>
-        <th>Process</th>
-        <th>Waiting Time</th>
-        <th>Turnaround Time</th>
-      </tr>
-    </thead>
-    <tbody class="highlight-first-column">
-      <tr v-for="([waitingTime, turnaroundTime], index) in waitingAndTurnaroundTimes" :key="index">
-        <td>P{{ index + 1 }}</td>
-        <td>{{ waitingTime }} ms</td>
-        <td>{{ turnaroundTime }} ms</td>
-      </tr>
-      <tr>
-        <td>Average Per Process:</td>
-        <td class="font-medium">{{ averageWaitingTime }} ms</td>
-        <td class="font-medium">{{ averageTurnaroundTime }} ms</td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="overflow-x-scroll">
+    <table class="my-10">
+      <thead>
+        <tr>
+          <th>Process</th>
+          <th>Waiting Time</th>
+          <th>Turnaround Time</th>
+        </tr>
+      </thead>
+      <tbody class="highlight-first-column">
+        <tr v-for="([waitingTime, turnaroundTime], index) in waitingAndTurnaroundTimes" :key="index">
+          <td>P{{ index + 1 }}</td>
+          <td>{{ waitingTime }} ms</td>
+          <td>{{ turnaroundTime }} ms</td>
+        </tr>
+        <tr>
+          <td>Average Per Process:</td>
+          <td class="font-medium">{{ averageWaitingTime }} ms</td>
+          <td class="font-medium">{{ averageTurnaroundTime }} ms</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </template>
 
 <script setup>
