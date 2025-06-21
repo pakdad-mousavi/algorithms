@@ -26,11 +26,9 @@
           </p>
         </div>
 
-        <figure class="my-10">
-          <img src="/algorithms/cpu-scheduling/round-robin/round-robin.svg" alt="Round Robin CPU Scheduling Algorithm">
-          <figcaption class="mt-2 text-sm italic text-center text-zinc-400">Round Robin CPU Scheduling Algorithm
-          </figcaption>
-        </figure>
+        <Figure src="/algorithms/cpu-scheduling/round-robin/round-robin.svg"
+          caption="Round Robin CPU Scheduling Algorithm">
+        </Figure>
 
         <Alert alertStyle="warning">
           <template v-slot>
@@ -157,6 +155,7 @@ import GanttChart from '@/components/algorithms/cpu-scheduling/GanttChart.vue';
 import ProcessDetails from '@/components/algorithms/cpu-scheduling/ProcessDetails.vue';
 import EmptySpace from '@/components/general/EmptySpace.vue';
 import Alert from '@/components/general/Alert.vue';
+import Figure from '@/components/general/Figure.vue';
 
 // Reactive variables and constants
 const form = ref(null);

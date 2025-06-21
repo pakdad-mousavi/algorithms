@@ -1,0 +1,21 @@
+<template>
+  <figure class="my-10">
+    <img :src="src" :alt="caption" class="mx-auto">
+    <figcaption class="mt-2 text-sm italic text-center text-zinc-400">
+      {{ caption }}
+    </figcaption>
+  </figure>
+</template>
+
+<script setup>
+defineProps({
+  src: {
+    type: String,
+    required: true,
+  },
+  caption: {
+    type: String,
+    required: true,
+  }
+});
+</script>

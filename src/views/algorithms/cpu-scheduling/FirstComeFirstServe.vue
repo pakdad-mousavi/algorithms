@@ -33,16 +33,14 @@
             Regardless of the shortcomings of the FCFS algorithm, it is still one of the most well known methods and can
             provide a base for comparision against other algorithms.
           </p>
-          <figure class="my-10">
-            <img src="/algorithms/cpu-scheduling/fcfs/customer-analogy.svg" alt="FCFS Customer Queue Analogy"
-              class="mx-auto">
-            <figcaption class="mt-2 text-sm italic text-center text-zinc-400">FCFS Customer Queue Analogy
-            </figcaption>
-          </figure>
+          <Figure src="/algorithms/cpu-scheduling/fcfs/customer-analogy.svg" caption="FCFS Customer Queue Analogy">
+          </Figure>
         </div>
       </div>
     </section>
   </main>
 </template>
 
-<script setup></script>
+<script setup>
+import Figure from '@/components/general/Figure.vue';
+</script>
