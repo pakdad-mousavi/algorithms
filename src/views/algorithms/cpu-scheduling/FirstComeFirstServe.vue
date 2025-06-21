@@ -35,6 +35,71 @@
           </p>
           <Figure src="/algorithms/cpu-scheduling/fcfs/customer-analogy.svg" caption="FCFS Customer Queue Analogy">
           </Figure>
+          <h1 class="mb-4 text-xl font-semibold">
+            Understanding the Process
+          </h1>
+          <hr class="mb-4 border-neutral-800">
+          <ol class="grid grid-cols-1 space-y-4 gap-x-4">
+            <li class="p-4 border rounded-md border-zinc-700">
+              <span class="font-medium text-main">
+                Step 1: Gather process info
+              </span>
+              <p>
+                Each process is given an arrival time (when it enters the queue) and a burst time (how long it needs the
+                CPU). The algorithm will be charged with running these processes one by one.
+              </p>
+            </li>
+            <li class="p-4 border rounded-md border-zinc-700">
+              <span class="font-medium text-main">
+                Step 2: Sort by arrival time
+              </span>
+              <p>
+                The processes are sorted in the order they arrive. FCFS is all about who comes first, no jumping the
+                line and no interruptions. By sorting the processes, it is clear in which order to run the processes.
+              </p>
+            </li>
+            <li class="p-4 border rounded-md border-zinc-700">
+              <span class="font-medium text-main">
+                Step 3: Execute each process one by one
+              </span>
+              <p>
+                The CPU starts at time 0. The first process in the sorted list gets the CPU right away, and the rest of
+                the processes must wait until the process in the CPU is entirely executed. Once the process is
+                completed, the next process leaves the queue and enters the process.
+              </p>
+            </li>
+            <li class="p-4 border rounded-md border-zinc-700">
+              <span class="font-medium text-main">
+                Step 4: Calculate start and finish times
+              </span>
+              <p>
+                For each process, record when it started and when it finished based on the burst times and the current
+                time. These are important for later calculating the waiting time and turnaround times of the processes.
+              </p>
+            </li>
+            <li class="p-4 border rounded-md border-zinc-700">
+              <span class="font-medium text-main">
+                Step 5: Compute turnaround and waiting times
+              </span>
+              <p>
+                Turnaround time = Finish time - Arrival time.
+              </p>
+              <p>
+                Waiting time = Turnaround time - Burst time.
+              </p>
+              <p>
+                These help evaluate how efficient the scheduling was.
+              </p>
+            </li>
+          </ol>
+          <Figure src="/algorithms/cpu-scheduling/fcfs/fcfs-scheduling-algorithm.svg"
+            caption="FCFS Scheduling Algorithm">
+          </Figure>
+          <h1 class="mb-4 text-xl font-semibold">
+            Step by Step Illustration
+          </h1>
+          <hr class="mb-4 border-neutral-800">
+          
         </div>
       </div>
     </section>
