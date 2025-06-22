@@ -3,7 +3,7 @@
     <section class="p-4 rounded-xl bg-zinc-900">
       <div class="mx-auto sm:w-11/12">
         <h1 class="mb-4 text-2xl font-semibold">
-          First Come First Serve Algorithm
+          First Come First Serve Algorithm (FCFS)
         </h1>
         <hr class="mb-4 border-neutral-800">
         <div class="mb-10 space-y-4">
@@ -174,7 +174,6 @@ import { ref, reactive, computed } from 'vue';
 import GanttChart from '@/components/algorithms/cpu-scheduling/GanttChart.vue';
 import ProcessDetails from '@/components/algorithms/cpu-scheduling/ProcessDetails.vue';
 import EmptySpace from '@/components/general/EmptySpace.vue';
-import Alert from '@/components/general/Alert.vue';
 
 // Reactive variables and constants
 const form = ref(null);
