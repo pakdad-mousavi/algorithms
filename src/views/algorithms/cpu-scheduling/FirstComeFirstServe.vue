@@ -170,7 +170,7 @@
 import Figure from '@/components/general/Figure.vue';
 import { Trash } from '@vicons/tabler';
 import { Icon } from '@vicons/utils';
-import { ref, reactive, computed, watch } from 'vue';
+import { ref, reactive, computed } from 'vue';
 import GanttChart from '@/components/algorithms/cpu-scheduling/GanttChart.vue';
 import ProcessDetails from '@/components/algorithms/cpu-scheduling/ProcessDetails.vue';
 import EmptySpace from '@/components/general/EmptySpace.vue';
@@ -282,17 +282,21 @@ const runAlgorithm = () => {
     // Queue log gets updated regardless of whether the queue changed or not
     updateQueueLog(currentTime, queue);
 
-    // run the process for 1ms
-    currentProcess[3] -= 1;
+    // Update the time
     currentTime += 1;
 
-
     // Update finished processes
-    if (currentProcess[3] === 0) {
-      finishedProcesses.push([currentProcess[0], currentTime]);
-      currentProcess = null;
-    } else {
-      updateProcessLog(currentProcess, currentTime);
+    if (currentProcess !== null) {
+      // Run process for 1ms
+      currentProcess[3] -= 1;
+
+      // update finished processes if processes has finished
+      if (currentProcess[3] === 0) {
+        finishedProcesses.push([currentProcess[0], currentTime]);
+        currentProcess = null;
+      } else {
+        updateProcessLog(currentProcess, currentTime);
+      }
     }
 
     // Check to see if all processes are completed

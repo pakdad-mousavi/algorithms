@@ -1,10 +1,10 @@
 <template>
   <div class="process" v-if="currentAlignedProcess" :style="calculateProcessBarPosition(currentAlignedProcess)">
     <div class="processing" v-for="i in getVisibleProcessingSteps(currentAlignedProcess)" :key="i"
-      :class="getCompositeProcessClass(currentAlignedProcess, i)" v-if="currentAlignedProcess">
+      :class="getCompositeProcessClass(currentAlignedProcess, i)" v-if="currentAlignedProcess && currentAlignedProcess[1]">
       <span v-if="i === 1">P{{ currentAlignedProcess[1][0] }}</span>
     </div>
-    <div :class="getProcessClass(currentAlignedProcess, 'incomplete')" v-if="currentAlignedProcess"
+    <div :class="getProcessClass(currentAlignedProcess, 'incomplete')" v-if="currentAlignedProcess && currentAlignedProcess[1]"
       v-for="i in Math.max(0, currentAlignedProcess[1][3] - quantum)">
     </div>
   </div>
