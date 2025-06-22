@@ -99,7 +99,67 @@
             Step by Step Illustration
           </h1>
           <hr class="mb-4 border-neutral-800">
-          
+          <form ref="form" class="w-full space-y-4 gap-x-4">
+            <div class="flex items-end gap-4">
+              <div class="flex flex-wrap justify-end w-full gap-2">
+                <button class="btn" type="button" @click.prevent="zeroOutArrivalTimes">
+                  Set All Arrival Times to Zero
+                </button>
+                <button class="btn" type="button" @click.prevent="addRow"
+                  :disabled="processData.length === processLimit"
+                  :class="{ 'disabled': processData.length === processLimit }">
+                  Add Row
+                </button>
+              </div>
+            </div>
+            <div class="overflow-x-scroll">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Process</th>
+                    <th>Arrival Time</th>
+                    <th>Burst Time</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody class="highlight-first-column">
+                  <tr v-for="(process, index) in processData" :key="index">
+                    <td class="flex items-center">
+                      <span>
+                        P{{ index + 1 }}
+                      </span>
+                    </td>
+                    <td><input type="number" min="0" max="10" required v-model="process[0]"></td>
+                    <td><input type="number" min="1" max="20" required v-model="process[1]"></td>
+                    <td class="w-20 mx-auto text-center">
+                      <div v-if="processData.length > 1"
+                        class="flex items-center justify-center duration-100 border border-transparent rounded-md cursor-pointer bg-zinc-700 aspect-square w-7 group hover:border-rose-600 active:translate-y-1"
+                        @click="removeRow(index)">
+                        <Icon class="text-rose-500" tag="span" size="20px">
+                          <Trash></Trash>
+                        </Icon>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <button @click.prevent="runAlgorithm" class="btn" type="submit">
+              Run Algorithm
+            </button>
+          </form>
+          <GanttChart v-if="hasAlgorithmBeenRan" :process-log="processLog" :queue-log="groupedQueueLog" :quantum="1">
+          </GanttChart>
+          <ProcessDetails v-if="hasAlgorithmBeenRan" :process-data="processData"
+            :finished-processes="finishedProcesses"></ProcessDetails>
+          <EmptySpace v-else>
+            <p class="mb-4">
+              No results to display yet, try running the algorithm...
+            </p>
+            <button @click.prevent="runAlgorithm" class="btn">
+              Run Algorithm
+            </button>
+          </EmptySpace>
         </div>
       </div>
     </section>
@@ -108,4 +168,136 @@
 
 <script setup>
 import Figure from '@/components/general/Figure.vue';
+import { Trash } from '@vicons/tabler';
+import { Icon } from '@vicons/utils';
+import { ref, reactive, computed, watch } from 'vue';
+import GanttChart from '@/components/algorithms/cpu-scheduling/GanttChart.vue';
+import ProcessDetails from '@/components/algorithms/cpu-scheduling/ProcessDetails.vue';
+import EmptySpace from '@/components/general/EmptySpace.vue';
+import Alert from '@/components/general/Alert.vue';
+
+// Reactive variables and constants
+const form = ref(null);
+const processData = reactive([
+  [0, 4],
+  [0, 6],
+  [0, 4],
+  [0, 5]
+]);
+const hasAlgorithmBeenRan = ref(false);
+const queueLog = reactive([]);
+const processLog = reactive([]);
+const finishedProcesses = reactive([]);
+const processLimit = 6;
+
+// Group the queuelog based on the time of each log
+const groupedQueueLog = computed(() => {
+  const grouped = Object.groupBy(queueLog, (log) => log[0]);
+  return Object.values(grouped);
+});
+
+// Get rid of old algorithm results
+const resetAlgorithmResults = () => {
+  hasAlgorithmBeenRan.value = false;
+  queueLog.length = 0;
+  processLog.length = 0;
+  finishedProcesses.length = 0;
+}
+
+const addRow = () => {
+  // Reset algorithm
+  resetAlgorithmResults();
+  // Add new row
+  const lastItem = processData[processData.length - 1];
+  const newItem = [lastItem[0] + 1, Math.round(Math.random() * 10)];
+  processData.push(newItem);
+}
+
+const removeRow = (rowIndex) => {
+  resetAlgorithmResults();
+  processData.splice(rowIndex, 1);
+}
+
+const zeroOutArrivalTimes = () => {
+  processData.forEach(process => {
+    process[0] = 0;
+  });
+}
+
+let lastQueueSnapshot = null;
+let lastSnapshotTime = -1;
+
+const updateQueueLog = (currentTime, queue) => {
+  const queueProcessIds = queue.map((x) => `P${x[0]}`);
+  while (queueProcessIds.length < 6) {
+    queueProcessIds.push('-');
+  }
+
+  const snapshot = queueProcessIds.join(',');
+
+  // Only skip if snapshot is same AND time hasn't moved (e.g., multiple calls in the same ms)
+  if (snapshot !== lastQueueSnapshot || currentTime !== lastSnapshotTime) {
+    queueLog.push([currentTime, queueProcessIds]);
+    lastQueueSnapshot = snapshot;
+    lastSnapshotTime = currentTime;
+  }
+};
+
+const updateProcessLog = (currentProcess, currentTime) => {
+  const processCopy = currentProcess.slice();
+  processLog.push([currentTime, processCopy]);
+}
+
+const runAlgorithm = () => {
+  const isFormValid = form.value.checkValidity();
+  if (!isFormValid) return form.value.reportValidity();
+
+  resetAlgorithmResults();
+  hasAlgorithmBeenRan.value = true;
+
+  // Each process needs: pid, arrival time, burst time, time left
+  let id = 1;
+  const processes = processData.map(p => [id++, p[0], p[1], p[1]]);
+
+  let currentTime = 0;
+  let currentProcess = null;
+  const queue = [];
+
+  while (true) {
+
+    // Add any processes that have arrived to the queue
+    for (const process of processes) {
+      const arrivalTime = process[1];
+      if (arrivalTime === currentTime) {
+        queue.push(process);
+        updateQueueLog(currentTime, queue);
+      }
+    }
+
+    // Get a new process from the queue if cpu is idle
+    if (currentProcess === null && queue.length) {
+      currentProcess = queue.shift();
+      updateProcessLog(currentProcess, currentTime);
+    }
+    // Queue log gets updated regardless of whether the queue changed or not
+    updateQueueLog(currentTime, queue);
+
+    // run the process for 1ms
+    currentProcess[3] -= 1;
+    currentTime += 1;
+
+
+    // Update finished processes
+    if (currentProcess[3] === 0) {
+      finishedProcesses.push([currentProcess[0], currentTime]);
+      currentProcess = null;
+    } else {
+      updateProcessLog(currentProcess, currentTime);
+    }
+
+    // Check to see if all processes are completed
+    const allDone = processes.every(p => p[3] === 0);
+    if (!currentProcess && queue.length === 0 && allDone) break;
+  }
+};
 </script>

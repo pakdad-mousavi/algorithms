@@ -39,8 +39,8 @@
     </Legend>
     <div class="gantt-chart-container">
       <div class="gantt-chart" :style="chartWidth" ref="chart">
-        <div v-for="index in queueLog.length" class="lines" :style="calcLeft(index)"></div>
-        <Timeline :totalTime="queueLog.length + 1" :class="{ 'border-y-2': isTimelineFixed }"
+        <div v-for="index in totalTime" class="lines" :style="calcLeft(index)"></div>
+        <Timeline :totalTime="totalTime + 1" :class="{ 'border-y-2': isTimelineFixed }"
           :style="`margin-top: ${horizontalScroll}px;`">
         </Timeline>
         <div class="interval" v-for="(queueGroup, currentTime) in queueLog" :key="currentTime">
@@ -79,7 +79,8 @@ const isTimelineFixed = ref(false);
 const horizontalScroll = ref(0);
 
 const widthFactor = 24;
-const chartWidth = `width: calc(var(--spacing) * ${widthFactor} * ${props.queueLog.length + 1})`;
+const totalTime = props.queueLog[props.queueLog.length - 1][0][0] + 1;
+const chartWidth = `width: calc(var(--spacing) * ${widthFactor} * ${totalTime + 1})`;
 
 // Computes a formatted version of the process log, aligning each process entry to its corresponding time slot in the queue log
 const alignedProcessLog = computed(() => {
@@ -87,7 +88,7 @@ const alignedProcessLog = computed(() => {
   // Extract the start times of each process from the process log
   const processTimes = props.processLog.map((p) => p[0]);
   // Iterate over each time slot in the queue log
-  for (let i = 0; i < props.queueLog.length; i++) {
+  for (let i = 0; i < totalTime; i++) {
     // Find the index of the process that starts at this time slot
     const pos = processTimes.findIndex((p) => p === i);
     if (pos < 0) {
