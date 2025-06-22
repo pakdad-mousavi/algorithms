@@ -313,10 +313,5 @@ const runAlgorithm = () => {
     const allDone = processes.every(p => p[3] === 0);
     if (!currentProcess && queue.length === 0 && allDone) break;
   }
-
-  // Output
-  console.log("Finished Processes:", finishedProcesses);
-  console.log();
-  console.log("Process log:", processLog);
 }
 </script>

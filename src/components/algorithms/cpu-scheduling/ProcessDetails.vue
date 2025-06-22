@@ -45,7 +45,6 @@ const waitingAndTurnaroundTimes = computed(() => {
   for (let i = 0; i < props.processData.length; i++) {
     // Extract data
     const process = props.processData?.[i];
-    console.log(sortedFinishedProcesses[1]);
     const [arrivalTime, burstTime] = process;
     const finishTime = sortedFinishedProcesses[i][1];
     []
