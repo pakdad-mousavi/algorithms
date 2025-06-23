@@ -1,11 +1,13 @@
 <template>
   <div class="process" v-if="currentAlignedProcess" :style="calculateProcessBarPosition(currentAlignedProcess)">
     <div class="processing" v-for="i in getVisibleProcessingSteps(currentAlignedProcess)" :key="i"
-      :class="getCompositeProcessClass(currentAlignedProcess, i)" v-if="currentAlignedProcess && currentAlignedProcess[1]">
+      :class="getCompositeProcessClass(currentAlignedProcess, i)"
+      v-if="currentAlignedProcess && currentAlignedProcess[1]">
       <span v-if="i === 1">P{{ currentAlignedProcess[1][0] }}</span>
     </div>
-    <div :class="getProcessClass(currentAlignedProcess, 'incomplete')" v-if="currentAlignedProcess && currentAlignedProcess[1]"
-      v-for="i in Math.max(0, currentAlignedProcess[1][3] - quantum)">
+    <div :class="getProcessClass(currentAlignedProcess, 'incomplete')"
+      v-if="currentAlignedProcess && currentAlignedProcess[1]"
+      v-for="i in Math.max(0, currentAlignedProcess[1][remainingTimePos] - quantum)">
     </div>
   </div>
 </template>
@@ -56,8 +58,12 @@ const processColors = [
 ];
 
 // Extracts process info from a process log entry
+const remainingTimePos = props.currentAlignedProcess?.[1]?.length - 1;
+
 const extractProcessInfo = (entry) => {
-  const [pid, , start, remaining] = entry?.[1] || [];
+  const pid = entry?.[1][0];
+  const start = entry?.[1][2];
+  const remaining = entry?.[1][remainingTimePos];
   return { pid, start, remaining };
 };
 
