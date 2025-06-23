@@ -21,6 +21,11 @@ const router = createRouter({
       component: () =>
         import("../views/algorithms/cpu-scheduling/FirstComeFirstServe.vue"),
     },
+    {
+      path: "/cpu-scheduling/priority",
+      component: () =>
+        import("../views/algorithms/cpu-scheduling/Priority.vue"),
+    },
   ],
 });
 

@@ -43,6 +43,7 @@ const pages = [
     algorithms: [
       "Round Robin",
       "First Come First Serve",
+      "Priority",
     ],
   },
 ];
