@@ -151,7 +151,7 @@
                 </tbody>
               </table>
             </div>
-            <button @click.prevent="runAlgorithm" class="btn" type="submit">
+            <button @click.prevent="() => runAlgorithm(parameters)" class="btn" type="submit">
               Run Algorithm
             </button>
           </form>
@@ -163,7 +163,7 @@
             <p class="mb-4">
               No results to display yet, try running the algorithm...
             </p>
-            <button @click.prevent="runAlgorithm" class="btn">
+            <button @click.prevent="() => runAlgorithm(parameters)" class="btn">
               Run Algorithm
             </button>
           </EmptySpace>
@@ -182,6 +182,7 @@ import GanttChart from '@/components/algorithms/cpu-scheduling/GanttChart.vue';
 import ProcessDetails from '@/components/algorithms/cpu-scheduling/ProcessDetails.vue';
 import EmptySpace from '@/components/general/EmptySpace.vue';
 import Alert from '@/components/general/Alert.vue';
+import { useScheduler } from '../../../composables/useScheduler';
 
 // Reactive variables and constants
 const form = ref(null);
@@ -192,10 +193,34 @@ const processData = reactive([
   [0, 5, 4]
 ]);
 const hasAlgorithmBeenRan = ref(false);
-const queueLog = reactive([]);
-const processLog = reactive([]);
-const finishedProcesses = reactive([]);
 const processLimit = 6;
+
+// Compute runtime processes
+const runtimeProcesses = computed(() => {
+  let id = 1;
+  return processData.slice().map((p) => [id++, ...p, p[1]]);
+});
+
+// Compute parameters for runAlgorithm
+const parameters = computed(() => {
+  const sortFn = (a, b) => a[3] - b[3];
+
+  return {
+    runtimeProcesses,
+    form,
+    hasAlgorithmBeenRan,
+    sortFn
+  };
+});
+
+// Get respective functions and results from scheduler
+const {
+  runAlgorithm,
+  resetAlgorithmResults,
+  queueLog,
+  processLog,
+  finishedProcesses
+} = useScheduler();
 
 // Group the queuelog based on the time of each log
 const groupedQueueLog = computed(() => {
@@ -203,14 +228,7 @@ const groupedQueueLog = computed(() => {
   return Object.values(grouped);
 });
 
-// Get rid of old algorithm results
-const resetAlgorithmResults = () => {
-  hasAlgorithmBeenRan.value = false;
-  queueLog.length = 0;
-  processLog.length = 0;
-  finishedProcesses.length = 0;
-}
-
+// Helper table object
 const addRow = () => {
   // Reset algorithm
   resetAlgorithmResults();
@@ -231,87 +249,4 @@ const zeroOutArrivalTimes = () => {
     process[0] = 0;
   });
 }
-
-let lastQueueSnapshot = null;
-let lastSnapshotTime = -1;
-
-const updateQueueLog = (currentTime, queue) => {
-  const queueProcessIds = queue.map((x) => `P${x[0]}`);
-  while (queueProcessIds.length < 6) {
-    queueProcessIds.push('-');
-  }
-
-  const snapshot = queueProcessIds.join(',');
-
-  // Only skip if snapshot is same AND time hasn't moved (e.g., multiple calls in the same ms)
-  if (snapshot !== lastQueueSnapshot || currentTime !== lastSnapshotTime) {
-    queueLog.push([currentTime, queueProcessIds]);
-    lastQueueSnapshot = snapshot;
-    lastSnapshotTime = currentTime;
-  }
-};
-
-const updateProcessLog = (currentProcess, currentTime) => {
-  const processCopy = currentProcess.slice();
-  processLog.push([currentTime, processCopy]);
-}
-
-const runAlgorithm = () => {
-  const isFormValid = form.value.checkValidity();
-  if (!isFormValid) return form.value.reportValidity();
-
-  resetAlgorithmResults();
-  hasAlgorithmBeenRan.value = true;
-
-  // Each process needs: pid, arrival time, burst time, priority, time left
-  let id = 1;
-  const processes = processData.map(p => [id++, p[0], p[1], p[2], p[1]]);
-
-  let currentTime = 0;
-  let currentProcess = null;
-  const queue = [];
-
-  while (true) {
-
-    // Add any processes that have arrived to the queue
-    for (const process of processes) {
-      const arrivalTime = process[1];
-      if (arrivalTime === currentTime) {
-        queue.push(process);
-        // Sort based on priority
-        queue.sort((a, b) => a[3] - b[3]);
-        updateQueueLog(currentTime, queue);
-      }
-    }
-
-    // Get a new process from the queue if cpu is idle
-    if (currentProcess === null && queue.length) {
-      currentProcess = queue.shift();
-      updateProcessLog(currentProcess, currentTime);
-    }
-    // Queue log gets updated regardless of whether the queue changed or not
-    updateQueueLog(currentTime, queue);
-
-    // Update the time
-    currentTime += 1;
-
-    // Update finished processes
-    if (currentProcess !== null) {
-      // Run process for 1ms
-      currentProcess[4] -= 1;
-
-      // update finished processes if processes has finished
-      if (currentProcess[4] === 0) {
-        finishedProcesses.push([currentProcess[0], currentTime]);
-        currentProcess = null;
-      } else {
-        updateProcessLog(currentProcess, currentTime);
-      }
-    }
-
-    // Check to see if all processes are completed
-    const allDone = processes.every(p => p[4] === 0);
-    if (!currentProcess && queue.length === 0 && allDone) break;
-  }
-};
 </script>
