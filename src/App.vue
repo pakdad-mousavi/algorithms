@@ -44,6 +44,7 @@ const pages = [
       "Round Robin",
       "First Come First Serve",
       "Priority",
+      "Shortest Job First",
     ],
   },
 ];
