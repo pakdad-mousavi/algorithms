@@ -79,8 +79,19 @@ const isTimelineFixed = ref(false);
 const horizontalScroll = ref(0);
 
 const widthFactor = 24;
-const totalTime = props.queueLog[props.queueLog.length - 1][0][0] + 1;
-const chartWidth = `width: calc(var(--spacing) * ${widthFactor} * ${totalTime + 1})`;
+
+// Compute the totalTime
+const totalTime = computed(() => {
+  const lastQueue = props.queueLog[props.queueLog.length - 1];
+  return lastQueue && lastQueue[0] && lastQueue[0][0] !== undefined
+    ? lastQueue[0][0] + 1
+    : 0;
+});
+
+// Compute the chartWidth
+const chartWidth = computed(() =>
+  `width: calc(var(--spacing) * ${widthFactor} * ${totalTime.value + 1})`
+);
 
 // Computes a formatted version of the process log, aligning each process entry to its corresponding time slot in the queue log
 const alignedProcessLog = computed(() => {
@@ -88,7 +99,7 @@ const alignedProcessLog = computed(() => {
   // Extract the start times of each process from the process log
   const processTimes = props.processLog.map((p) => p[0]);
   // Iterate over each time slot in the queue log
-  for (let i = 0; i < totalTime; i++) {
+  for (let i = 0; i < totalTime.value; i++) {
     // Find the index of the process that starts at this time slot
     const pos = processTimes.findIndex((p) => p === i);
     if (pos < 0) {

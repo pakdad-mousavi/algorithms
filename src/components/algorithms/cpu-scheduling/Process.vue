@@ -7,7 +7,7 @@
     </div>
     <div :class="getProcessClass(currentAlignedProcess, 'incomplete')"
       v-if="currentAlignedProcess && currentAlignedProcess[1]"
-      v-for="i in Math.max(0, currentAlignedProcess[1][remainingTimePos] - quantum)">
+      v-for="_ in Math.max(0, currentAlignedProcess[1][remainingTimePos] - quantum)">
     </div>
   </div>
 </template>
