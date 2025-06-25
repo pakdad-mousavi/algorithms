@@ -13,6 +13,7 @@
 </template>
 
 <script setup>
+import { Info24Regular } from '@vicons/fluent';
 import { SmsFailedOutlined } from '@vicons/material';
 import { Icon } from '@vicons/utils';
 
@@ -25,6 +26,7 @@ const props = defineProps({
 
 const icons = {
   SmsFailedOutlined,
+  Info24Regular
 };
 
 const styles = {
@@ -33,6 +35,12 @@ const styles = {
     borderColor: "border-yellow-600",
     textColor: "text-yellow-600",
     icon: "SmsFailedOutlined"
+  },
+  note: {
+    title: "Note",
+    borderColor: "border-main",
+    textColor: "text-main",
+    icon: "Info24Regular"
   },
 };
 
