@@ -31,6 +31,12 @@ const router = createRouter({
       component: () =>
         import("../views/algorithms/cpu-scheduling/ShortestJobFirst.vue"),
     },
+    // Deadlock management
+    {
+      path: "/deadlock-management/banker's-algorithm",
+      component: () =>
+        import("../views/algorithms/deadlock-management/BankersAlgorithm.vue"),
+    },
   ],
 });
 

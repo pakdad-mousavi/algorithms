@@ -47,5 +47,12 @@ const pages = [
       "Shortest Job First",
     ],
   },
+  {
+    name: "Deadlock Management",
+    icon: "LockClosed24Regular",
+    algorithms: [
+      "Banker's Algorithm",
+    ]
+  },
 ];
 </script>
