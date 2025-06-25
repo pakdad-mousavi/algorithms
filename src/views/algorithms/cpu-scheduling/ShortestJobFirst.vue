@@ -12,7 +12,7 @@
             schedule the order by which processes are ran by the CPU. As the name suggests, the processes which require
             the shortest amount of time to complete (lowest burst time) are the ones which will be ran first.
           </p>
-          <Alert :alert-style="'warning'">
+          <Alert alert-style="warning">
             <p>
               This is a non-preemptive version of this algorithm, meaning that processes are not interrupted until they
               are completed, similar to how the first come first serve (FCFS) algorithm works. The latter is known as
