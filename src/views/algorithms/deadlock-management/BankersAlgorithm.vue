@@ -180,6 +180,111 @@
         <Figure src="/algorithms/deadlock-management/bankers-algorithm/bankers-algorithm.svg"
           caption="Banker's Algorithm Overview">
         </Figure>
+        <h2 class="mb-4 text-xl font-semibold">
+          Step by step illustration
+        </h2>
+        <hr class="mb-4 border-neutral-800">
+        <form ref="form" class="w-full space-y-4 gap-x-4">
+          <!-- Total resource instances -->
+          <p class="font-medium">Total Resource Instances:</p>
+          <table class="mb-10">
+            <thead>
+              <tr>
+                <th v-for="index in resourceInstances.length">R{{ index }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td v-for="pos in resourceInstances.length">
+                  <input type="number" min="0" max="10" required v-model="resourceInstances[pos - 1]">
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="flex items-end justify-end gap-x-2">
+            <button class="btn" type="button" :disabled="maxMatrix.length === processLimit"
+              :class="{ 'disabled': maxMatrix.length === processLimit }" @click="addProcess">
+              Add Process
+            </button>
+            <button class="btn" type="button" :disabled="maxMatrix.length === resourceLimit"
+              :class="{ 'disabled': resourceInstances.length === resourceLimit }">
+              Add Resource
+            </button>
+          </div>
+          <div class="flex flex-col gap-x-4 xl:flex-row gap-y-10">
+            <!-- Allocation Matrix -->
+            <div class="w-full overflow-x-scroll xl:w-1/2">
+              <div class="w-full p-2 sm:-mb-2 sm:border sm:bg-zinc-800 sm:border-zinc-700 sm:rounded-t-md">
+                <h3 class="font-medium sm:mb-2 sm:text-center">
+                  Allocation
+                </h3>
+              </div>
+              <table>
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th v-for="index in resourceInstances.length">R{{ index }}</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody class="highlight-first-column">
+                  <tr v-for="(vector, outerIndex) in allocationMatrix">
+                    <td>P{{ outerIndex + 1 }}</td>
+                    <td v-for="(_, innerIndex) in vector">
+                      <input type="number" min="0" max="10" required v-model="allocationMatrix[outerIndex][innerIndex]">
+                    </td>
+                    <td class="w-20">
+                      <div v-if="allocationMatrix.length > 1"
+                        class="flex items-center justify-center duration-100 border border-transparent rounded-md cursor-pointer bg-zinc-700 aspect-square w-7 group hover:border-rose-600 active:translate-y-1"
+                        @click="removeProcess(outerIndex)">
+                        <Icon class="text-rose-500" tag="span" size="20px">
+                          <Trash></Trash>
+                        </Icon>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <!-- Max Matrix -->
+            <div class="w-full overflow-x-scroll xl:w-1/2">
+              <div class="w-full p-2 sm:-mb-2 sm:border sm:bg-zinc-800 sm:border-zinc-700 sm:rounded-t-md">
+                <h3 class="font-medium sm:mb-2 sm:text-center">
+                  Max
+                </h3>
+              </div>
+              <table>
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th v-for="index in resourceInstances.length">R{{ index }}</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody class="highlight-first-column">
+                  <tr v-for="(vector, outerIndex) in maxMatrix">
+                    <td>P{{ outerIndex + 1 }}</td>
+                    <td v-for="(_, innerIndex) in vector">
+                      <input type="number" min="0" max="10" required v-model="maxMatrix[outerIndex][innerIndex]">
+                    </td>
+                    <td class="w-20">
+                      <div v-if="maxMatrix.length > 1"
+                        class="flex items-center justify-center duration-100 border border-transparent rounded-md cursor-pointer bg-zinc-700 aspect-square w-7 group hover:border-rose-600 active:translate-y-1"
+                        @click="removeProcess(outerIndex)">
+                        <Icon class="text-rose-500" tag="span" size="20px">
+                          <Trash></Trash>
+                        </Icon>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <button type="submit" class="btn" @click.prevent="runAlgorithm">Run Algorithm</button>
+        </form>
+
+        
       </div>
     </section>
   </main>
@@ -188,4 +293,107 @@
 <script setup>
 import Alert from '@/components/general/Alert.vue';
 import Figure from '@/components/general/Figure.vue';
+import { Trash } from '@vicons/tabler';
+import { Icon } from '@vicons/utils';
+import { reactive, ref } from 'vue';
+
+const resourceInstances = reactive([10, 5, 7]);
+const allocationMatrix = reactive([
+  [0, 1, 0],
+  [2, 0, 0],
+  [3, 0, 2],
+  [2, 1, 1],
+  [0, 0, 2],
+]);
+const maxMatrix = reactive([
+  [7, 5, 3],
+  [3, 2, 2],
+  [9, 0, 2],
+  [2, 2, 2],
+  [4, 3, 3],
+]);
+const processFeasibilityLog = reactive([]);
+const safeSequence = reactive([]);
+const form = ref(null);
+const processLimit = 6;
+const resourceLimit = 6;
+
+const addProcess = () => {
+  const newProcessVector = new Array(resourceInstances.length).fill(0);
+  allocationMatrix.push(newProcessVector);
+  maxMatrix.push(newProcessVector);
+};
+
+const removeProcess = (index) => {
+  allocationMatrix.splice(index, 1);
+  maxMatrix.splice(index, 1);
+};
+
+const runAlgorithm = () => {
+  const isFormValid = form.value.checkValidity();
+  if (!isFormValid) return form.value.reportValidity();
+
+  // Calculate total allocations per resource
+  const totalAllocations = Array(resourceInstances.length).fill(0);
+  allocationMatrix.forEach(process => {
+    process.forEach((val, idx) => {
+      totalAllocations[idx] += val;
+    });
+  });
+
+  // Calculate available resources
+  const available = resourceInstances.map((total, idx) => total - totalAllocations[idx]);
+
+  // Calculate need matrix
+  const needMatrix = allocationMatrix.map((row, i) => {
+    return row.map((alloc, j) => maxMatrix[i][j] - alloc);
+  });
+
+  // Initialize finished array
+  const finished = new Set();
+  let madeProgress = true;
+
+  while (finished.size < needMatrix.length && madeProgress) {
+    console.log("Start run");
+    for (let i = 0; i < needMatrix.length; i++) {
+      if (finished.has(i)) continue;
+      console.log("Currently at: ", i);
+
+      const curNeed = needMatrix[i];
+      const curAllocation = allocationMatrix[i];
+
+      const canRun = curNeed.every((need, j) => need <= available[j]);
+
+      if (canRun) {
+        curAllocation.forEach((alloc, j) => {
+          available[j] += alloc;
+        });
+
+        finished.add(i);
+        safeSequence.push(i);
+        madeProgress = true;
+      }
+    }
+  }
+
+  console.log(safeSequence);
+  // Show the calculated available vector
+
+  // Show the calculated need matrix
+
+  // Show the step by step algorithm process
+  // 1. Check if P1 can run - yes, so update
+  // 2. Simulate completion and update available, then go to next process
+  // 3. Check if P2 can run - no, need > available, so skip
+  // 4. Check if p3 can run - yes, so update
+  // 5. Simulate completion and update available, then go to next process
+  // 6. Check if p4 can run - yes, so update
+  // 7. Simulate completion and update available, then go to next process
+  // 8. Restart run, check if p1 can run - no, already finished, so skip
+  // 9. Check if P2 can run - no, need > available, so skip
+
+  // Show the final safe sequence
+
+  // Is the system in a safe state or not?
+};
 </script>
