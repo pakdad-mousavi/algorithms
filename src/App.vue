@@ -4,6 +4,7 @@
     <div class="flex">
       <Sidebar :pages="pages" :isSidebarVisible="isSidebarVisible"
         @toggle-sidebar="isSidebarVisible = !isSidebarVisible" />
+      <div class="flex-1"></div>
       <div class="w-full lg:w-[calc(100%-288px)] 2xl:w-[calc(100%-368px)]">
         <nav class="flex items-center w-full p-4 border-b-[1px] border-neutral-800">
           <div class="flex items-center cursor-pointer lg:hidden" @click="isSidebarVisible = !isSidebarVisible">
@@ -29,12 +30,16 @@
 
 <script setup>
 import { RouterView } from "vue-router";
-import { ref, Transition } from "vue";
+import { ref, Transition, watch } from "vue";
 import { Icon } from "@vicons/utils";
 import { LayoutSidebarLeftExpand } from "@vicons/tabler";
 import Sidebar from "./components/Sidebar.vue";
 
 const isSidebarVisible = ref(false);
+
+watch(isSidebarVisible, (visible) => {
+  document.body.classList.toggle('overflow-hidden', visible);
+});
 
 const pages = [
   {

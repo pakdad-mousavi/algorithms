@@ -1,9 +1,8 @@
 <template>
   <div v-if="isSidebarVisible" class="absolute inset-0 z-10 h-vh bg-black/30" @click.self="emit('toggle-sidebar')">
   </div>
-
   <aside
-    class="lg:flex flex-col absolute -translate-x-[calc(100%+17px)] lg:translate-x-0 duration-300 z-20 lg:relative w-72 2xl:w-92 bg-zinc-900 border-r-[1px] border-neutral-800 min-h-dvh h-svh lg:h-auto overflow-y-scroll scrollbar"
+    class="lg:flex flex-col absolute -translate-x-[calc(100%+17px)] lg:translate-x-0 duration-300 z-20 lg:fixed w-72 2xl:w-92 bg-zinc-900 border-r-[1px] border-neutral-800 min-h-dvh h-svh overflow-y-scroll scrollbar"
     :class="{ 'translate-x-0': isSidebarVisible }">
     <div class="flex items-center p-4 border-b-[1px] border-neutral-800">
       <div class="flex-1">
