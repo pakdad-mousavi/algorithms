@@ -7,9 +7,7 @@
           <thead>
             <tr>
               <th></th>
-              <th class="text-center">R1</th>
-              <th class="text-center">R2</th>
-              <th class="text-center">R3</th>
+              <th class="text-center" v-for="resource in curAllocation.length">R{{ resource }}</th>
             </tr>
           </thead>
           <tbody>
@@ -61,9 +59,7 @@
           <thead>
             <tr>
               <th></th>
-              <th class="text-center">R1</th>
-              <th class="text-center">R2</th>
-              <th class="text-center">R3</th>
+              <th class="text-center" v-for="resource in curAllocation.length">R{{ resource }}</th>
             </tr>
           </thead>
           <tbody>
