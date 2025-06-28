@@ -50,7 +50,8 @@ const isMinimized = ref(false);
 
 // Minimize if all groups need to be minimized
 watch(() => props.minimizeAll, (newVal) => {
-  isMinimized.value = newVal;
+  if (newVal === true)
+    isMinimized.value = newVal;
 });
 
 // Call updateMinimizedAll when a group is opened (isMinimized set to false)

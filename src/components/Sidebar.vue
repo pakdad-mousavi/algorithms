@@ -26,7 +26,7 @@
     </div>
     <div class="p-4 text-sm">
       <GroupTree v-for="(page, index) in pages" :key="index" :group="page" :icons="pageIcons" :path="[]"
-        :showTreeLines="false" :minimizeAll="minimizeAll" @toggle-minimized-all="minimizeAll = !minimizeAll"
+        :showTreeLines="false" :minimizeAll="minimizeAll" @toggle-minimized-all="minimizeAll = false"
         class="!ml-0 mb-2" />
     </div>
   </aside>
