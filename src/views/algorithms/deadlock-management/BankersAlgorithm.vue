@@ -187,31 +187,33 @@
         <form ref="form" class="w-full mb-10 space-y-4 gap-x-4">
           <!-- Total resource instances -->
           <p class="font-medium">Total Resource Instances:</p>
-          <table class="mb-10">
-            <thead>
-              <tr>
-                <th v-for="resourceNumber in resourceInstances.length">
-                  <div class="flex items-center gap-x-2">
-                    <span>R{{ resourceNumber }}</span>
-                    <div v-if="resourceInstances.length > 1"
-                      class="flex items-center justify-center duration-100 border border-transparent rounded-md cursor-pointer bg-zinc-700 aspect-square w-7 group hover:border-rose-600 active:translate-y-1"
-                      @click="removeResource(resourceNumber - 1)">
-                      <Icon class="text-rose-500" tag="span" size="20px">
-                        <Trash></Trash>
-                      </Icon>
+          <div class="mb-10 overflow-x-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th v-for="resourceNumber in resourceInstances.length">
+                    <div class="flex items-center gap-x-2">
+                      <span>R{{ resourceNumber }}</span>
+                      <div v-if="resourceInstances.length > 1"
+                        class="flex items-center justify-center duration-100 border border-transparent rounded-md cursor-pointer bg-zinc-700 aspect-square w-7 group hover:border-rose-600 active:translate-y-1"
+                        @click="removeResource(resourceNumber - 1)">
+                        <Icon class="text-rose-500" tag="span" size="20px">
+                          <Trash></Trash>
+                        </Icon>
+                      </div>
                     </div>
-                  </div>
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td v-for="pos in resourceInstances.length">
-                  <input type="number" min="1" max="20" required v-model="resourceInstances[pos - 1]">
-                </td>
-              </tr>
-            </tbody>
-          </table>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td v-for="pos in resourceInstances.length">
+                    <input type="number" min="1" :max="maxResources" required v-model="resourceInstances[pos - 1]">
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
           <div class="flex items-end justify-end gap-x-2">
             <button class="btn" type="button" :disabled="maxMatrix.length === processLimit"
               :class="{ 'disabled': maxMatrix.length === processLimit }" @click="addProcess">
@@ -235,17 +237,18 @@
                   <tr>
                     <th></th>
                     <th v-for="index in resourceInstances.length">R{{ index }}</th>
-                    <th></th>
+                    <th v-if="allocationMatrix.length > 1"></th>
                   </tr>
                 </thead>
                 <tbody class="highlight-first-column">
                   <tr v-for="(vector, outerIndex) in allocationMatrix">
                     <td>P{{ outerIndex + 1 }}</td>
                     <td v-for="(_, innerIndex) in vector">
-                      <input type="number" min="0" max="10" required v-model="allocationMatrix[outerIndex][innerIndex]">
+                      <input type="number" min="0" :max="maxResources" required
+                        v-model="allocationMatrix[outerIndex][innerIndex]">
                     </td>
-                    <td class="w-20">
-                      <div v-if="allocationMatrix.length > 1"
+                    <td class="w-20" v-if="allocationMatrix.length > 1">
+                      <div
                         class="flex items-center justify-center duration-100 border border-transparent rounded-md cursor-pointer bg-zinc-700 aspect-square w-7 group hover:border-rose-600 active:translate-y-1"
                         @click="removeProcess(outerIndex)">
                         <Icon class="text-rose-500" tag="span" size="20px">
@@ -269,17 +272,18 @@
                   <tr>
                     <th></th>
                     <th v-for="index in resourceInstances.length">R{{ index }}</th>
-                    <th></th>
+                    <th v-if="maxMatrix.length > 1"></th>
                   </tr>
                 </thead>
                 <tbody class="highlight-first-column">
                   <tr v-for="(vector, outerIndex) in maxMatrix">
                     <td>P{{ outerIndex + 1 }}</td>
                     <td v-for="(_, innerIndex) in vector">
-                      <input type="number" min="0" max="10" required v-model="maxMatrix[outerIndex][innerIndex]">
+                      <input type="number" min="0" :max="maxResources" required
+                        v-model="maxMatrix[outerIndex][innerIndex]">
                     </td>
-                    <td class="w-20">
-                      <div v-if="maxMatrix.length > 1"
+                    <td class="w-20" v-if="maxMatrix.length > 1">
+                      <div
                         class="flex items-center justify-center duration-100 border border-transparent rounded-md cursor-pointer bg-zinc-700 aspect-square w-7 group hover:border-rose-600 active:translate-y-1"
                         @click="removeProcess(outerIndex)">
                         <Icon class="text-rose-500" tag="span" size="20px">
