@@ -304,9 +304,12 @@
         </h1>
         <hr class="mb-4 border-neutral-800">
         <div class="flex flex-col gap-y-16" v-if="hasAlgorithmBeenRan">
-          <Need :number-of-resources="resourceInstances.length" :need-matrix="needMatrix"></Need>
-          <BankerSimulation :process-log="processLog" :number-of-processes="allocationMatrix.length"></BankerSimulation>
-          <SafeSequence :formatted-safe-sequence="formattedSafeSequence" :is-system-in-safe-state="isSystemInSafeState">
+          <Need :number-of-resources="resourceInstances.length" :need-matrix="algResult.needMatrix"></Need>
+          <BankerSimulation :process-log="algResult.processLog" :number-of-processes="allocationMatrix.length"
+            :number-of-resources="resourceInstances.length">
+          </BankerSimulation>
+          <SafeSequence :formatted-safe-sequence="formattedSafeSequence"
+            :is-system-in-safe-state="algResult.isSystemInSafeState">
           </SafeSequence>
         </div>
         <EmptySpace v-else>
@@ -329,9 +332,10 @@ import SafeSequence from '@/components/algorithms/deadlock-management/bankers-al
 import Alert from '@/components/general/Alert.vue';
 import EmptySpace from '@/components/general/EmptySpace.vue';
 import Figure from '@/components/general/Figure.vue';
+import { runBankersAlgorithm } from '@/composables/bankers-algorithm';
 import { Trash } from '@vicons/tabler';
 import { Icon } from '@vicons/utils';
-import { computed, reactive, ref, watch } from 'vue';
+import { computed, reactive, ref, toRaw, watch } from 'vue';
 
 // Given values
 const resourceInstances = reactive([10, 5, 7]);
@@ -351,10 +355,12 @@ const maxMatrix = reactive([
 ]);
 
 // Values given by the algorithm
-const needMatrix = reactive([]);
-const processLog = reactive([]);
-const safeSequence = reactive([]);
-const isSystemInSafeState = ref(false);
+const algResult = reactive({
+  needMatrix: [],
+  processLog: [],
+  safeSequence: [],
+  isSystemInSafeState: false,
+});
 
 // Generic refs
 const form = ref(null);
@@ -362,8 +368,8 @@ const hasAlgorithmBeenRan = ref(false);
 
 // Computed values
 const formattedSafeSequence = computed(() => {
-  const result = safeSequence.slice().map((p) => `P${p + 1}`);
-  while (result.length < needMatrix.length) {
+  const result = algResult.safeSequence.slice().map((p) => `P${p + 1}`);
+  while (result.length < algResult.needMatrix.length) {
     result.push('-');
   }
   return result;
@@ -377,9 +383,9 @@ const resourceLimit = 4;
 const maxResources = 20;
 
 const resetResults = () => {
-  needMatrix.length = 0;
-  processLog.length = 0;
-  safeSequence.length = 0;
+  algResult.needMatrix.length = 0;
+  algResult.processLog.length = 0;
+  algResult.safeSequence.length = 0;
   hasAlgorithmBeenRan.value = false;
 };
 
@@ -435,93 +441,17 @@ const runAlgorithm = () => {
   const isFormValid = form.value.checkValidity();
   if (!isFormValid) return form.value.reportValidity();
 
-  // Calculate total allocations per resource
-  const totalAllocations = Array(resourceInstances.length).fill(0);
-  allocationMatrix.forEach(process => {
-    process.forEach((val, idx) => {
-      totalAllocations[idx] += val;
-    });
+  const { needMatrix, safeSequence, isSafe, processLog } = runBankersAlgorithm({
+    allocationMatrix: toRaw(allocationMatrix).map(row => row.slice()),
+    maxMatrix: toRaw(maxMatrix).map(row => row.slice()),
+    resourceInstances: toRaw(resourceInstances).slice()
   });
 
-  const addToProcessLog = ({
-    i,
-    runCount,
-    isFinished,
-    finished,
-    need,
-    available,
-    allocation,
-    canRun,
-  }) => {
-    processLog.push({
-      processId: i,
-      runCount,
-      isFinished,
-      finished: new Set(finished),
-      need: need?.slice() ?? null,
-      available: available?.slice() ?? null,
-      allocation: allocation?.slice() ?? null,
-      canRun,
-    });
-  };
-
-  // Calculate available resources
-  const available = resourceInstances.map((total, idx) => total - totalAllocations[idx]);
-
-  // Calculate need
-  for (let i = 0; i < allocationMatrix.length; i++) {
-    needMatrix.push([]);
-    for (let j = 0; j < maxMatrix[i].length; j++) {
-      const need = maxMatrix[i][j] - allocationMatrix[i][j];
-      needMatrix[i][j] = need;
-    }
-  }
-
-  // Initialize finished set
-  const finished = new Set();
-  let runCount = 0;
-  let madeProgress = true;
-
-  while (finished.size < needMatrix.length && madeProgress) {
-    madeProgress = false;
-    runCount++;
-
-    for (let i = 0; i < needMatrix.length; i++) {
-      // Get the details for this process
-      const curNeed = needMatrix[i];
-      const curAllocation = allocationMatrix[i];
-
-      // Check if the process is already finished
-      const isFinished = finished.has(i);
-      if (isFinished) continue;
-
-      // Check if the process can run
-      const canRun = !isFinished && curNeed.every((need, j) => need <= available[j]);
-      const availableCopy = available.slice();
-      // Simulate running the process
-      if (canRun) {
-        curAllocation.forEach((alloc, j) => {
-          available[j] += alloc;
-        });
-        finished.add(i);
-        safeSequence.push(i);
-        madeProgress = true;
-      }
-
-      // Update process log
-      addToProcessLog({
-        i,
-        runCount,
-        isFinished,
-        finished,
-        need: curNeed,
-        available: availableCopy,
-        allocation: curAllocation,
-        canRun,
-      });
-    }
-  }
-  isSystemInSafeState.value = finished.size === needMatrix.length;
+  // Update respective properties and references
+  algResult.needMatrix = needMatrix;
+  algResult.safeSequence = safeSequence;
+  algResult.isSystemInSafeState = isSafe;
+  algResult.processLog = processLog;
   hasAlgorithmBeenRan.value = true;
 };
 </script>

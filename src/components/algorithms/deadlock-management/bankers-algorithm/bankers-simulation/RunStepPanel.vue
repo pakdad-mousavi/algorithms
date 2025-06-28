@@ -7,7 +7,7 @@
           <thead>
             <tr>
               <th></th>
-              <th class="text-center" v-for="resource in curAllocation.length">R{{ resource }}</th>
+              <th class="text-center" v-for="resource in numberOfResources">R{{ resource }}</th>
             </tr>
           </thead>
           <tbody>
@@ -27,7 +27,7 @@
                   'bg-rose-700': need > curAvailable[index]
                 }">
                   <Icon>
-                    <Check v-if="canRun"></Check>
+                    <Check v-if="need <= curAvailable[index]"></Check>
                     <X v-else></X>
                   </Icon>
                 </div>
@@ -59,7 +59,7 @@
           <thead>
             <tr>
               <th></th>
-              <th class="text-center" v-for="resource in curAllocation.length">R{{ resource }}</th>
+              <th class="text-center" v-for="resource in numberOfResources">R{{ resource }}</th>
             </tr>
           </thead>
           <tbody>
@@ -118,5 +118,9 @@ defineProps({
     type: Number,
     required: true,
   },
+  numberOfResources: {
+    type: Number,
+    required: true,
+  }
 });
 </script>

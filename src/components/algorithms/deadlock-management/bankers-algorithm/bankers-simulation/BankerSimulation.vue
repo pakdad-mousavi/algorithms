@@ -8,7 +8,7 @@
       <ProcessBar :finished-processes="log.finished" :number-of-processes="numberOfProcesses"
         :process-id="log.processId"></ProcessBar>
       <RunStepPanel :cur-need="log.need" :cur-available="log.available" :cur-allocation="log.allocation"
-        :can-run="log.canRun" :process-id="log.processId"></RunStepPanel>
+        :can-run="log.canRun" :process-id="log.processId" :number-of-resources="numberOfResources"></RunStepPanel>
       <!-- Arrow Divider -->
       <div class="flex mt-10 justify-evenly" v-if="!isLastLog(logIndex)">
         <Icon class="text-6xl text-zinc-700">
@@ -32,6 +32,10 @@ const props = defineProps({
     default: () => [],
   },
   numberOfProcesses: {
+    type: Number,
+    required: true,
+  },
+  numberOfResources: {
     type: Number,
     required: true,
   },
