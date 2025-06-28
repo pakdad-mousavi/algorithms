@@ -184,7 +184,7 @@
           Step by step illustration
         </h2>
         <hr class="mb-4 border-neutral-800">
-        <form ref="form" class="w-full space-y-4 gap-x-4">
+        <form ref="form" class="w-full mb-10 space-y-4 gap-x-4">
           <!-- Total resource instances -->
           <p class="font-medium">Total Resource Instances:</p>
           <table class="mb-10">
@@ -284,18 +284,39 @@
           <button type="submit" class="btn" @click.prevent="runAlgorithm">Run Algorithm</button>
         </form>
 
-        
+        <h1 class="mb-4 text-xl font-semibold">
+          Results
+        </h1>
+        <hr class="mb-4 border-neutral-800">
+        <div class="flex flex-col gap-y-16" v-if="hasAlgorithmBeenRan">
+          <Need :number-of-resources="resourceInstances.length" :need-matrix="needMatrix"></Need>
+          <BankerSimulation :process-log="processLog" :number-of-processes="allocationMatrix.length"></BankerSimulation>
+          <SafeSequence :formatted-safe-sequence="formattedSafeSequence" :is-system-in-safe-state="isSystemInSafeState">
+          </SafeSequence>
+        </div>
+        <EmptySpace v-else>
+          <p class="mb-4">
+            No results to display yet, try running the algorithm...
+          </p>
+          <button @click.prevent="() => runAlgorithm(parameters)" class="btn">
+            Run Algorithm
+          </button>
+        </EmptySpace>
       </div>
     </section>
   </main>
 </template>
 
 <script setup>
+import BankerSimulation from '@/components/algorithms/deadlock-management/bankers-algorithm/bankers-simulation/BankerSimulation.vue';
+import Need from '@/components/algorithms/deadlock-management/bankers-algorithm/Need.vue';
+import SafeSequence from '@/components/algorithms/deadlock-management/bankers-algorithm/SafeSequence.vue';
 import Alert from '@/components/general/Alert.vue';
+import EmptySpace from '@/components/general/EmptySpace.vue';
 import Figure from '@/components/general/Figure.vue';
 import { Trash } from '@vicons/tabler';
 import { Icon } from '@vicons/utils';
-import { reactive, ref } from 'vue';
+import { computed, reactive, ref, watch } from 'vue';
 
 const resourceInstances = reactive([10, 5, 7]);
 const allocationMatrix = reactive([
@@ -312,19 +333,42 @@ const maxMatrix = reactive([
   [2, 2, 2],
   [4, 3, 3],
 ]);
-const processFeasibilityLog = reactive([]);
+const needMatrix = reactive([]);
+const processLog = reactive([]);
 const safeSequence = reactive([]);
+const isSystemInSafeState = ref(false);
 const form = ref(null);
 const processLimit = 6;
 const resourceLimit = 6;
+const hasAlgorithmBeenRan = ref(false);
+
+const formattedSafeSequence = computed(() => {
+  const result = safeSequence.slice().map((p) => `P${p + 1}`);
+  while (result.length < needMatrix.length) {
+    result.push('-');
+  }
+  return result;
+});
+
+const resetResults = () => {
+  needMatrix.length = 0;
+  processLog.length = 0;
+  safeSequence.length = 0;
+};
+
+watch(resourceInstances, resetResults);
+watch(allocationMatrix, resetResults);
+watch(maxMatrix, resetResults);
 
 const addProcess = () => {
+  resetResults();
   const newProcessVector = new Array(resourceInstances.length).fill(0);
   allocationMatrix.push(newProcessVector);
   maxMatrix.push(newProcessVector);
 };
 
 const removeProcess = (index) => {
+  resetResults();
   allocationMatrix.splice(index, 1);
   maxMatrix.splice(index, 1);
 };
@@ -341,59 +385,85 @@ const runAlgorithm = () => {
     });
   });
 
+  const addToProcessLog = ({
+    i,
+    runCount,
+    isFinished,
+    finished,
+    need,
+    available,
+    allocation,
+    canRun,
+  }) => {
+    processLog.push({
+      processId: i,
+      runCount,
+      isFinished,
+      finished: new Set(finished),
+      need: need?.slice() ?? null,
+      available: available?.slice() ?? null,
+      allocation: allocation?.slice() ?? null,
+      canRun,
+    });
+  };
+
   // Calculate available resources
   const available = resourceInstances.map((total, idx) => total - totalAllocations[idx]);
 
-  // Calculate need matrix
-  const needMatrix = allocationMatrix.map((row, i) => {
-    return row.map((alloc, j) => maxMatrix[i][j] - alloc);
-  });
+  // Calculate need
+  for (let i = 0; i < allocationMatrix.length; i++) {
+    needMatrix.push([]);
+    for (let j = 0; j < maxMatrix[i].length; j++) {
+      const need = maxMatrix[i][j] - allocationMatrix[i][j];
+      needMatrix[i][j] = need;
+    }
+  }
 
-  // Initialize finished array
+  // Initialize finished set
   const finished = new Set();
+  let runCount = 0;
   let madeProgress = true;
 
   while (finished.size < needMatrix.length && madeProgress) {
-    console.log("Start run");
-    for (let i = 0; i < needMatrix.length; i++) {
-      if (finished.has(i)) continue;
-      console.log("Currently at: ", i);
+    madeProgress = false;
+    runCount++;
 
+    for (let i = 0; i < needMatrix.length; i++) {
+      // Get the details for this process
       const curNeed = needMatrix[i];
       const curAllocation = allocationMatrix[i];
 
-      const canRun = curNeed.every((need, j) => need <= available[j]);
+      // Check if the process is already finished
+      const isFinished = finished.has(i);
+      if (isFinished) continue;
 
+      // Check if the process can run
+      const canRun = !isFinished && curNeed.every((need, j) => need <= available[j]);
+      const availableCopy = available.slice();
+      // Simulate running the process
       if (canRun) {
         curAllocation.forEach((alloc, j) => {
           available[j] += alloc;
         });
-
         finished.add(i);
         safeSequence.push(i);
         madeProgress = true;
       }
+
+      // Update process log
+      addToProcessLog({
+        i,
+        runCount,
+        isFinished,
+        finished,
+        need: curNeed,
+        available: availableCopy,
+        allocation: curAllocation,
+        canRun,
+      });
     }
   }
-
-  console.log(safeSequence);
-  // Show the calculated available vector
-
-  // Show the calculated need matrix
-
-  // Show the step by step algorithm process
-  // 1. Check if P1 can run - yes, so update
-  // 2. Simulate completion and update available, then go to next process
-  // 3. Check if P2 can run - no, need > available, so skip
-  // 4. Check if p3 can run - yes, so update
-  // 5. Simulate completion and update available, then go to next process
-  // 6. Check if p4 can run - yes, so update
-  // 7. Simulate completion and update available, then go to next process
-  // 8. Restart run, check if p1 can run - no, already finished, so skip
-  // 9. Check if P2 can run - no, need > available, so skip
-
-  // Show the final safe sequence
-
-  // Is the system in a safe state or not?
+  isSystemInSafeState.value = finished.size === needMatrix.length;
+  hasAlgorithmBeenRan.value = true;
 };
 </script>
