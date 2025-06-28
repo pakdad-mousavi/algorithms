@@ -190,13 +190,24 @@
           <table class="mb-10">
             <thead>
               <tr>
-                <th v-for="index in resourceInstances.length">R{{ index }}</th>
+                <th v-for="resourceNumber in resourceInstances.length">
+                  <div class="flex items-center gap-x-2">
+                    <span>R{{ resourceNumber }}</span>
+                    <div v-if="resourceInstances.length > 1"
+                      class="flex items-center justify-center duration-100 border border-transparent rounded-md cursor-pointer bg-zinc-700 aspect-square w-7 group hover:border-rose-600 active:translate-y-1"
+                      @click="removeResource(resourceNumber - 1)">
+                      <Icon class="text-rose-500" tag="span" size="20px">
+                        <Trash></Trash>
+                      </Icon>
+                    </div>
+                  </div>
+                </th>
               </tr>
             </thead>
             <tbody>
               <tr>
                 <td v-for="pos in resourceInstances.length">
-                  <input type="number" min="0" max="10" required v-model="resourceInstances[pos - 1]">
+                  <input type="number" min="1" max="20" required v-model="resourceInstances[pos - 1]">
                 </td>
               </tr>
             </tbody>
@@ -207,7 +218,7 @@
               Add Process
             </button>
             <button class="btn" type="button" :disabled="maxMatrix.length === resourceLimit"
-              :class="{ 'disabled': resourceInstances.length === resourceLimit }">
+              :class="{ 'disabled': resourceInstances.length === resourceLimit }" @click="addResource">
               Add Resource
             </button>
           </div>
@@ -318,6 +329,7 @@ import { Trash } from '@vicons/tabler';
 import { Icon } from '@vicons/utils';
 import { computed, reactive, ref, watch } from 'vue';
 
+// Given values
 const resourceInstances = reactive([10, 5, 7]);
 const allocationMatrix = reactive([
   [0, 1, 0],
@@ -333,15 +345,18 @@ const maxMatrix = reactive([
   [2, 2, 2],
   [4, 3, 3],
 ]);
+
+// Values given by the algorithm
 const needMatrix = reactive([]);
 const processLog = reactive([]);
 const safeSequence = reactive([]);
 const isSystemInSafeState = ref(false);
+
+// Generic refs
 const form = ref(null);
-const processLimit = 6;
-const resourceLimit = 6;
 const hasAlgorithmBeenRan = ref(false);
 
+// Computed values
 const formattedSafeSequence = computed(() => {
   const result = safeSequence.slice().map((p) => `P${p + 1}`);
   while (result.length < needMatrix.length) {
@@ -350,10 +365,18 @@ const formattedSafeSequence = computed(() => {
   return result;
 });
 
+const numberOfProcesses = computed(() => allocationMatrix.length);
+
+// Constants
+const processLimit = 6;
+const resourceLimit = 4;
+const maxResources = 20;
+
 const resetResults = () => {
   needMatrix.length = 0;
   processLog.length = 0;
   safeSequence.length = 0;
+  hasAlgorithmBeenRan.value = false;
 };
 
 watch(resourceInstances, resetResults);
@@ -367,10 +390,41 @@ const addProcess = () => {
   maxMatrix.push(newProcessVector);
 };
 
+const addResource = () => {
+  // Calculate the maximum value each resource allocation can be
+  const maximumRandomVal = Math.floor(maxResources / numberOfProcesses.value);
+
+  // Total resources available should be greater than or equal to total allocated resources
+  let resourceInstance = Math.floor(Math.random() * 3);
+  for (let i = 0; i < numberOfProcesses.value; i++) {
+    // Get the random allocation
+    const randAlloc = Math.floor(Math.random() * maximumRandomVal);
+    resourceInstance += randAlloc;
+    // The max is greater than (maximum by 3) or equal to alloc
+    const randIncrement = Math.floor(Math.random() * 3);
+    const max = randAlloc + randIncrement;
+
+    allocationMatrix[i].push(randAlloc);
+    maxMatrix[i].push(max);
+  }
+
+  // Ensure that the total does not exceed the max
+  resourceInstance = resourceInstance > maxResources ? maxResources : resourceInstance;
+  resourceInstances.push(resourceInstance);
+};
+
 const removeProcess = (index) => {
   resetResults();
   allocationMatrix.splice(index, 1);
   maxMatrix.splice(index, 1);
+};
+
+const removeResource = (index) => {
+  for (let i = 0; i < numberOfProcesses.value; i++) {
+    allocationMatrix[i].splice(index, 1);
+    maxMatrix[i].splice(index, 1);
+  }
+  resourceInstances.splice(index, 1);
 };
 
 const runAlgorithm = () => {
