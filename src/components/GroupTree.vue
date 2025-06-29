@@ -2,8 +2,7 @@
   <div class="ml-3">
     <div
       class="flex items-center hover:bg-neutral-800 py-1.5 duration-100 px-1 rounded-md border-neutral-700 cursor-pointer"
-      @click="isMinimized = !isMinimized"
-      :class="{ 'is-minimized': isMinimized, 'border-l-[1px] rounded-none !rounded-r-md pl-2': showTreeLines }">
+      @click="isMinimized = !isMinimized" :class="{ 'is-minimized': isMinimized }">
       <div class="flex flex-1">
         <Icon v-if="group.icon" tag="div" size="20" class="mr-1">
           <component :is="icons[group.icon]"></component>
@@ -15,11 +14,12 @@
       </Icon>
     </div>
 
-    <ul>
+    <ul class="ml-3 border-l-[1px] border-neutral-700 space-y-1">
       <li v-for="(algorithm, index) in group.algorithms" :key="index"
         :class="{ 'mb-6': !isMinimized & index === group.algorithms.length - 1 }"
-        class="ml-3 border-l-[1px] border-neutral-700 hover:bg-neutral-800 rounded-r-md duration-100 cursor-pointer">
-        <RouterLink :to="buildPath([...path, group.name, algorithm])" class="block w-full h-full p-2 py-2">
+        class="duration-100 cursor-pointer hover:bg-neutral-800 rounded-r-md first:mt-1">
+        <RouterLink :to="buildPath([...path, group.name, algorithm])" class="block w-full h-full p-2 py-2 rounded-r-md"
+          @click="emit('on-change-algorithm', [...path, group.name, algorithm])">
           {{ algorithm }}
         </RouterLink>
       </li>
@@ -40,11 +40,9 @@ const props = defineProps({
     type: Array,
     default: () => [],
   },
-  showTreeLines: Boolean,
-  minimizeAll: Boolean,
 });
 
-const emit = defineEmits(['toggle-minimized-all']);
+const emit = defineEmits(['on-change-algorithm']);
 
 const isMinimized = ref(false);
 
@@ -52,13 +50,6 @@ const isMinimized = ref(false);
 watch(() => props.minimizeAll, (newVal) => {
   if (newVal === true)
     isMinimized.value = newVal;
-});
-
-// Call updateMinimizedAll when a group is opened (isMinimized set to false)
-watch(isMinimized, (value) => {
-  if (!value && props.minimizeAll) {
-    emit('toggle-minimized-all');
-  }
 });
 
 // Utility to construct URL-safe path
