@@ -123,9 +123,10 @@ const calcLeft = (value) => `left: calc(var(--spacing) * ${widthFactor} * ${valu
 const handleScroll = () => {
   const container = chart.value;
   const topPos = container.getBoundingClientRect().top;
+  const navbarHeight = 52; // 3.25 rem for the sticky header
 
-  if (topPos <= 0) {
-    horizontalScroll.value = Math.abs(topPos) - 4;
+  if (topPos - navbarHeight <= 0) {
+    horizontalScroll.value = Math.abs(topPos - navbarHeight) - 4;
     isTimelineFixed.value = true;
   } else {
     horizontalScroll.value = 0;

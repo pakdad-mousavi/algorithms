@@ -3,20 +3,12 @@
   <main>
     <div class="flex">
       <Sidebar :pages="pages" :isSidebarVisible="isSidebarVisible"
-        @toggle-sidebar="isSidebarVisible = !isSidebarVisible" />
+        @toggle-sidebar="isSidebarVisible = !isSidebarVisible" @on-change-algorithm="(alg) => activeAlgorithm = alg">
+      </Sidebar>
       <div class="flex-1"></div>
       <div class="w-full lg:w-[calc(100%-288px)] 2xl:w-[calc(100%-368px)]">
-        <nav class="flex items-center w-full p-4 border-b-[1px] border-neutral-800">
-          <div class="flex items-center cursor-pointer lg:hidden" @click="isSidebarVisible = !isSidebarVisible">
-            <Icon size="24px" color="oklch(87% 0 0)">
-              <LayoutSidebarLeftExpand />
-            </Icon>
-          </div>
-          <div>
-            My nav bar
-          </div>
-        </nav>
-        <div class="relative">
+        <NavBar @toggle-sidebar="isSidebarVisible = !isSidebarVisible" :algorithm="activeAlgorithm"></NavBar>
+        <div class="relative mt-13">
           <RouterView v-slot="{ Component }">
             <Transition>
               <component :is="Component"></component>
@@ -31,15 +23,17 @@
 <script setup>
 import { RouterView } from "vue-router";
 import { ref, Transition, watch } from "vue";
-import { Icon } from "@vicons/utils";
-import { LayoutSidebarLeftExpand } from "@vicons/tabler";
 import Sidebar from "./components/Sidebar.vue";
+import NavBar from "./components/NavBar.vue";
 
 const isSidebarVisible = ref(false);
+const activeAlgorithm = ref(["Learning Algorithms"]);
 
 watch(isSidebarVisible, (visible) => {
   document.body.classList.toggle('overflow-hidden', visible);
 });
+
+const emit = defineEmits(['on-change-algorithm']);
 
 const pages = [
   {
