@@ -2,10 +2,10 @@
   <nav
     class="flex items-center gap-4 px-4 py-3.25 sm:py-2 border-b-[1px] border-neutral-800 fixed bg-zinc-900 w-full lg:w-[calc(100%-288px)] 2xl:w-[calc(100%-368px)] z-40 text-sm">
     <!-- Banner -->
-    <RouterLink class="flex items-center flex-1 gap-x-2 lg:hidden" to="/">
+    <div class="flex items-center mr-auto gap-x-2 lg:hidden cursor-pointer" @click="goToHomePage()">
       <img src="/logo.svg" alt="" class="w-6">
       <span class="font-medium">Learning Algorithms</span>
-    </RouterLink>
+    </div>
     <!-- Sidebar toggle -->
     <div class="flex items-center cursor-pointer gap-x-1 lg:hidden" @click="emit('toggle-sidebar')">
       <Icon size="18px" color="oklch(87% 0 0)">
@@ -38,7 +38,7 @@
 import { ChevronRight, LayoutSidebarLeftExpand } from "@vicons/tabler";
 import { Github } from "@vicons/fa";
 import { Icon } from "@vicons/utils";
-import { RouterLink } from "vue-router";
+import { useRouter } from "vue-router";
 
 defineProps({
   algorithm: {
@@ -47,6 +47,15 @@ defineProps({
   }
 });
 
-const emit = defineEmits(['toggle-sidebar']);
+const emit = defineEmits(['toggle-sidebar', 'on-change-algorithm']);
+const router = useRouter();
+
+const goToHomePage = () => {
+  // Update algorithm
+  emit('on-change-algorithm', ['Learning Algorithms']);
+  // Send to home page
+  router.push('/');
+};
+
 
 </script>

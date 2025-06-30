@@ -7,7 +7,8 @@
       </Sidebar>
       <div class="flex-1"></div>
       <div class="w-full lg:w-[calc(100%-288px)] 2xl:w-[calc(100%-368px)]">
-        <NavBar @toggle-sidebar="isSidebarVisible = !isSidebarVisible" :algorithm="activeAlgorithm"></NavBar>
+        <NavBar @toggle-sidebar="isSidebarVisible = !isSidebarVisible" :algorithm="activeAlgorithm"
+          @on-change-algorithm="activeAlgorithm = ['Home']"></NavBar>
         <div class="relative mt-13">
           <RouterView v-slot="{ Component }">
             <Transition>
@@ -27,7 +28,7 @@ import Sidebar from "./components/Sidebar.vue";
 import NavBar from "./components/NavBar.vue";
 
 const isSidebarVisible = ref(false);
-const activeAlgorithm = ref(["Learning Algorithms"]);
+const activeAlgorithm = ref(["Home"]);
 
 watch(isSidebarVisible, (visible) => {
   document.body.classList.toggle('overflow-hidden', visible);

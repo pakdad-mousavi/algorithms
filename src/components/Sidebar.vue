@@ -57,9 +57,10 @@ const handleResize = () => {
     emit('toggle-sidebar');
   }
 };
+
 const goToHomePage = () => {
   // Update algorithm
-  emit('on-change-algorithm', ['Learning Algorithms']);
+  emit('on-change-algorithm', ['Home']);
   // Send to home page
   router.push('/');
 };
