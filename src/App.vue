@@ -1,6 +1,5 @@
 <template>
-  <header></header>
-  <main>
+  <main class="mx-auto max-w-7xl">
     <div class="flex">
       <Sidebar :pages="pages" :isSidebarVisible="isSidebarVisible"
         @toggle-sidebar="isSidebarVisible = !isSidebarVisible" @on-change-algorithm="(alg) => activeAlgorithm = alg">
@@ -55,4 +54,6 @@ const pages = [
     ]
   },
 ];
+
+console.log(pages[0]);
 </script>
