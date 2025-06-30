@@ -3,7 +3,7 @@
     <div
       class="flex items-center hover:bg-neutral-800 py-1.5 duration-100 px-1 rounded-md border-neutral-700 cursor-pointer"
       @click="isMinimized = !isMinimized" :class="{ 'is-minimized': isMinimized }">
-      <div class="flex flex-1">
+      <div class="flex flex-1 font-medium">
         <Icon v-if="group.icon" tag="div" size="20" class="mr-1">
           <component :is="icons[group.icon]"></component>
         </Icon>
