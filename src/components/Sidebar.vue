@@ -20,15 +20,13 @@
       </div>
     </div>
     <div class="p-4 text-sm">
-      <GroupTree v-for="(page, index) in pages" :key="index" :group="page" :icons="pageIcons" :path="[]"
-        @on-change-algorithm="(algorithm => emit('on-change-algorithm', algorithm))" class="!ml-0 mb-2" />
+      <GroupTree @on-change-algorithm="(algorithm => emit('on-change-algorithm', algorithm))" class="!ml-0 mb-2" />
     </div>
   </aside>
 </template>
 
 <script setup>
-import { DeveloperBoard24Regular, LockClosed24Regular, Storage24Regular, Database20Regular } from "@vicons/fluent";
-import { VmdkDisk } from "@vicons/carbon";
+
 import { LayoutSidebarLeftCollapse } from "@vicons/tabler";
 import GroupTree from "./GroupTree.vue";
 import { Icon } from "@vicons/utils";
@@ -36,21 +34,16 @@ import { useRouter } from "vue-router";
 import { onMounted, onUnmounted } from "vue";
 
 const props = defineProps({
-  pages: Array,
-  isSidebarVisible: Boolean,
+  isSidebarVisible: {
+    type: Boolean,
+    required: true,
+  },
 });
 
 const emit = defineEmits(['toggle-sidebar', 'on-change-algorithm']);
 const router = useRouter();
 
-const pageIcons = {
-  DeveloperBoard24Regular,
-  LockClosed24Regular,
-  Storage24Regular,
-  Database20Regular,
-  VmdkDisk
-};
-
+// Hide the sidebar if its open and the user expands the screen past breakpoint
 const mediaQuery = window.matchMedia('(min-width: 1024px)');
 const handleResize = () => {
   if (mediaQuery.matches && props.isSidebarVisible) {

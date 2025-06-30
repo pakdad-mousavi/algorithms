@@ -20,9 +20,8 @@ body {
 }
 
 /* Sidebar item styles */
-.is-minimized + div,
 .is-minimized + ul {
-  @apply hidden mb-4;
+  @apply hidden;
 }
 
 .is-minimized span.chevron {

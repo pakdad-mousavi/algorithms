@@ -9,6 +9,7 @@ const router = createRouter({
       path: "/",
       name: "Home",
       meta: {
+        groupName: "Main",
         name: "Learning Algorithms - A Visual Guide to Understanding Algorithms",
       },
       component: HomeView,
@@ -19,6 +20,7 @@ const router = createRouter({
       meta: {
         groupName: "CPU Scheduling",
         name: "Round Robin",
+        icon: "",
       },
       component: () =>
         import("../views/algorithms/cpu-scheduling/RoundRobin.vue"),
@@ -28,6 +30,7 @@ const router = createRouter({
       meta: {
         groupName: "CPU Scheduling",
         name: "First Come First Serve",
+        icon: "",
       },
       component: () =>
         import("../views/algorithms/cpu-scheduling/FirstComeFirstServe.vue"),
@@ -37,6 +40,7 @@ const router = createRouter({
       meta: {
         groupName: "CPU Scheduling",
         name: "Priority",
+        icon: "",
       },
       component: () =>
         import("../views/algorithms/cpu-scheduling/Priority.vue"),
@@ -46,6 +50,7 @@ const router = createRouter({
       meta: {
         groupName: "CPU Scheduling",
         name: "Shortest Job First",
+        icon: "",
       },
       component: () =>
         import("../views/algorithms/cpu-scheduling/ShortestJobFirst.vue"),
@@ -56,6 +61,7 @@ const router = createRouter({
       meta: {
         groupName: "Deadlock Management",
         name: "Banker's Algorithm",
+        icon: "",
       },
       component: () =>
         import("../views/algorithms/deadlock-management/BankersAlgorithm.vue"),
