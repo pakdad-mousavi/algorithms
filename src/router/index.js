@@ -7,37 +7,67 @@ const router = createRouter({
     // Home route
     {
       path: "/",
-      name: "home",
+      name: "Home",
+      meta: {
+        name: "Learning Algorithms - A Visual Guide to Understanding Algorithms",
+      },
       component: HomeView,
     },
     // CPU scheduling algorithms
     {
       path: "/cpu-scheduling/round-robin",
+      meta: {
+        groupName: "CPU Scheduling",
+        name: "Round Robin",
+      },
       component: () =>
         import("../views/algorithms/cpu-scheduling/RoundRobin.vue"),
     },
     {
       path: "/cpu-scheduling/first-come-first-serve",
+      meta: {
+        groupName: "CPU Scheduling",
+        name: "First Come First Serve",
+      },
       component: () =>
         import("../views/algorithms/cpu-scheduling/FirstComeFirstServe.vue"),
     },
     {
       path: "/cpu-scheduling/priority",
+      meta: {
+        groupName: "CPU Scheduling",
+        name: "Priority",
+      },
       component: () =>
         import("../views/algorithms/cpu-scheduling/Priority.vue"),
     },
     {
       path: "/cpu-scheduling/shortest-job-first",
+      meta: {
+        groupName: "CPU Scheduling",
+        name: "Shortest Job First",
+      },
       component: () =>
         import("../views/algorithms/cpu-scheduling/ShortestJobFirst.vue"),
     },
     // Deadlock management
     {
       path: "/deadlock-management/banker's-algorithm",
+      meta: {
+        groupName: "Deadlock Management",
+        name: "Banker's Algorithm",
+      },
       component: () =>
         import("../views/algorithms/deadlock-management/BankersAlgorithm.vue"),
     },
   ],
+});
+
+// Update each page title
+router.beforeEach((to, from, next) => {
+  const title = `${to.meta.name} | Learning Algorithms`;
+  document.title = title;
+  next();
 });
 
 export default router;
