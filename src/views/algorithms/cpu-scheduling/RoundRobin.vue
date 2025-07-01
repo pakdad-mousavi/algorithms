@@ -1,150 +1,145 @@
 <template>
-  <main class="p-4 space-y-4 text-neutral-300">
-    <section class="p-4 rounded-xl bg-zinc-900">
-      <div class="mx-auto sm:w-11/12">
-        <h1 class="mb-4 text-2xl font-semibold">
-          Round Robin Algorithm
-        </h1>
-        <hr class="mb-4 border-neutral-800">
-        <div class="mb-10 space-y-4">
+  <div>
+    <h1 class="mb-4 text-2xl font-semibold">
+      Round Robin Algorithm
+    </h1>
+    <hr class="mb-4 border-neutral-800">
+    <div class="mb-10 space-y-4">
+      <p>
+        The <span class="text-main">Round Robin Algorithm</span> is a widely used CPU scheduling method,
+        particularly effective in time-sharing systems. Its main objective is to allocate CPU time fairly among all
+        running processes, ensuring that each one receives regular access to the processor.
+      </p>
+      <p>
+        This method ensures that all processes are treated equally, preventing any single process from dominating
+        the CPU. As a result, Round Robin is particularly suitable for systems that require good response times,
+        such as interactive or multi-user environments.
+      </p>
+      <p>
+        In this approach, each process is assigned a fixed unit of time, known as a <span class="text-main">time
+          quantum</span> or <span class="text-main">time slice</span>. The CPU
+        scheduler maintains a queue of ready processes and allows each one to execute for a duration equal to the
+        time quantum. If a process finishes within this time, it releases the CPU. If it requires more time, it is
+        paused after the quantum expires and placed at the end of the queue to wait for another turn.
+      </p>
+    </div>
+
+    <Figure src="/algorithms/cpu-scheduling/round-robin/round-robin.svg" caption="Round Robin CPU Scheduling Algorithm">
+    </Figure>
+
+    <Alert alertStyle="warning">
+      <template v-slot>
+        <div class="space-y-4">
           <p>
-            The <span class="text-main">Round Robin Algorithm</span> is a widely used CPU scheduling method,
-            particularly effective in time-sharing systems. Its main objective is to allocate CPU time fairly among all
-            running processes, ensuring that each one receives regular access to the processor.
+            This implementation of the round robin algorithm is biased towards arriving processes rather than
+            completed processes. This means that if a process arrives and finishes at the same time, the process
+            which has arrived will enter the queue first.
           </p>
           <p>
-            This method ensures that all processes are treated equally, preventing any single process from dominating
-            the CPU. As a result, Round Robin is particularly suitable for systems that require good response times,
-            such as interactive or multi-user environments.
-          </p>
-          <p>
-            In this approach, each process is assigned a fixed unit of time, known as a <span class="text-main">time
-              quantum</span> or <span class="text-main">time slice</span>. The CPU
-            scheduler maintains a queue of ready processes and allows each one to execute for a duration equal to the
-            time quantum. If a process finishes within this time, it releases the CPU. If it requires more time, it is
-            paused after the quantum expires and placed at the end of the queue to wait for another turn.
+            Only after the arriving process(es) are added to the queue, will the finished process leave the CPU and
+            go to the back of the queue.
           </p>
         </div>
+      </template>
+    </Alert>
 
-        <Figure src="/algorithms/cpu-scheduling/round-robin/round-robin.svg"
-          caption="Round Robin CPU Scheduling Algorithm">
-        </Figure>
+    <div class="mb-10 space-y-4">
+      <p>
+        Additional details may also be needed to measure the performance of each process in the operating
+        system, such as <span class="text-main">waiting time</span> and <span class="text-main">turnaround
+          time</span>.
+      </p>
+      <p>
+        Waiting time is the total time that a process spends in the queue, and turnaround time is the total time
+        taken from when a process arrives to when it completes execution. The following formulae are used to
+        calculate each value respectively:
+      </p>
+      <div>
+        <p class="inline-block px-4 py-1.5 border rounded-md bg-zinc-800 border-zinc-700">
+          Turnaround Time = Completion Time - Arrival Time
+        </p>
+      </div>
+      <div>
+        <p class="inline-block px-4 py-1.5 border rounded-md bg-zinc-800 border-zinc-700">
+          Waiting Time = Turnaround Time - Burst Time
+        </p>
+      </div>
+    </div>
 
-        <Alert alertStyle="warning">
-          <template v-slot>
-            <div class="space-y-4">
-              <p>
-                This implementation of the round robin algorithm is biased towards arriving processes rather than
-                completed processes. This means that if a process arrives and finishes at the same time, the process
-                which has arrived will enter the queue first.
-              </p>
-              <p>
-                Only after the arriving process(es) are added to the queue, will the finished process leave the CPU and
-                go to the back of the queue.
-              </p>
-            </div>
-          </template>
-        </Alert>
-
-        <div class="mb-10 space-y-4">
-          <p>
-            Additional details may also be needed to measure the performance of each process in the operating
-            system, such as <span class="text-main">waiting time</span> and <span class="text-main">turnaround
-              time</span>.
-          </p>
-          <p>
-            Waiting time is the total time that a process spends in the queue, and turnaround time is the total time
-            taken from when a process arrives to when it completes execution. The following formulae are used to
-            calculate each value respectively:
-          </p>
-          <div>
-            <p class="inline-block px-4 py-1.5 border rounded-md bg-zinc-800 border-zinc-700">
-              Turnaround Time = Completion Time - Arrival Time
-            </p>
-          </div>
-          <div>
-            <p class="inline-block px-4 py-1.5 border rounded-md bg-zinc-800 border-zinc-700">
-              Waiting Time = Turnaround Time - Burst Time
-            </p>
-          </div>
+    <h1 class="mb-4 text-xl font-semibold">
+      Step By Step Illustration
+    </h1>
+    <hr class="mb-4 border-neutral-800">
+    <form ref="form" class="w-full space-y-4 gap-x-4">
+      <div class="flex flex-wrap items-end gap-4">
+        <div class="flex flex-col flex-1 gap-2">
+          <label class="font-medium">Time Slice:</label>
+          <input type="number" class="w-full field sm:w-60" v-model="timeSlice" min="1" max="20" required>
         </div>
-
-        <h1 class="mb-4 text-xl font-semibold">
-          Step By Step Illustration
-        </h1>
-        <hr class="mb-4 border-neutral-800">
-        <form ref="form" class="w-full space-y-4 gap-x-4">
-          <div class="flex flex-wrap items-end gap-4">
-            <div class="flex flex-col flex-1 gap-2">
-              <label class="font-medium">Time Slice:</label>
-              <input type="number" class="w-full field sm:w-60" v-model="timeSlice" min="1" max="20" required>
-            </div>
-            <div class="flex gap-2">
-              <button class="btn" type="button" @click.prevent="zeroOutArrivalTimes">
-                Set All Arrival Times to Zero
-              </button>
-              <button class="btn" type="button" @click.prevent="addRow" :disabled="processData.length === processLimit"
-                :class="{ 'disabled': processData.length === processLimit }">
-                Add Row
-              </button>
-            </div>
-          </div>
-          <div class="overflow-x-scroll">
-            <table>
-              <thead>
-                <tr>
-                  <th>Process</th>
-                  <th>Arrival Time</th>
-                  <th>Burst Time</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody class="highlight-first-column">
-                <tr v-for="(process, index) in processData" :key="index">
-                  <td class="flex items-center">
-                    <span>
-                      P{{ index + 1 }}
-                    </span>
-                  </td>
-                  <td><input type="number" min="0" max="10" required v-model="process[0]"></td>
-                  <td><input type="number" min="1" max="20" required v-model="process[1]"></td>
-                  <td class="w-20 mx-auto text-center">
-                    <div v-if="processData.length > 1"
-                      class="flex items-center justify-center duration-100 border border-transparent rounded-md cursor-pointer bg-zinc-700 aspect-square w-7 group hover:border-rose-600 active:translate-y-1"
-                      @click="removeRow(index)">
-                      <Icon class="text-rose-500" tag="span" size="20px">
-                        <Trash></Trash>
-                      </Icon>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <button @click.prevent="runAlgorithm" class="btn" type="submit">
-            Run Algorithm
+        <div class="flex gap-2">
+          <button class="btn" type="button" @click.prevent="zeroOutArrivalTimes">
+            Set All Arrival Times to Zero
           </button>
-        </form>
-        <div class="mt-16">
-          <h3 class="mb-2 text-lg font-medium">Results:</h3>
-          <GanttChart v-if="hasAlgorithmBeenRan" :queueLog="groupedQueueLog" :processLog="processLog"
-            :quantum="Number(timeSlice)"></GanttChart>
-          <ProcessDetails v-if="hasAlgorithmBeenRan" :processData="processData" :finished-processes="finishedProcesses">
-          </ProcessDetails>
-          <EmptySpace v-else>
-            <template v-slot>
-              <p class="mb-4">
-                No results to display yet, try running the algorithm...
-              </p>
-              <button @click.prevent="runAlgorithm" class="btn">
-                Run Algorithm
-              </button>
-            </template>
-          </EmptySpace>
+          <button class="btn" type="button" @click.prevent="addRow" :disabled="processData.length === processLimit"
+            :class="{ 'disabled': processData.length === processLimit }">
+            Add Row
+          </button>
         </div>
       </div>
-    </section>
-  </main>
+      <div class="overflow-x-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>Process</th>
+              <th>Arrival Time</th>
+              <th>Burst Time</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody class="highlight-first-column">
+            <tr v-for="(process, index) in processData" :key="index">
+              <td class="flex items-center">
+                <span>
+                  P{{ index + 1 }}
+                </span>
+              </td>
+              <td><input type="number" min="0" max="10" required v-model="process[0]"></td>
+              <td><input type="number" min="1" max="20" required v-model="process[1]"></td>
+              <td class="w-20 mx-auto text-center">
+                <div v-if="processData.length > 1"
+                  class="flex items-center justify-center duration-100 border border-transparent rounded-md cursor-pointer bg-zinc-700 aspect-square w-7 group hover:border-rose-600 active:translate-y-1"
+                  @click="removeRow(index)">
+                  <Icon class="text-rose-500" tag="span" size="20px">
+                    <Trash></Trash>
+                  </Icon>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <button @click.prevent="runAlgorithm" class="btn" type="submit">
+        Run Algorithm
+      </button>
+    </form>
+    <div class="mt-16">
+      <h3 class="mb-2 text-lg font-medium">Results:</h3>
+      <GanttChart v-if="hasAlgorithmBeenRan" :queueLog="groupedQueueLog" :processLog="processLog"
+        :quantum="Number(timeSlice)"></GanttChart>
+      <ProcessDetails v-if="hasAlgorithmBeenRan" :processData="processData" :finished-processes="finishedProcesses">
+      </ProcessDetails>
+      <EmptySpace v-else>
+        <template v-slot>
+          <p class="mb-4">
+            No results to display yet, try running the algorithm...
+          </p>
+          <button @click.prevent="runAlgorithm" class="btn">
+            Run Algorithm
+          </button>
+        </template>
+      </EmptySpace>
+    </div>
+  </div>
 </template>
 
 <script setup>
