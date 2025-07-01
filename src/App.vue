@@ -1,14 +1,14 @@
 <template>
   <main class="mx-auto max-w-7xl">
+    <NavBar @toggle-sidebar="isSidebarVisible = !isSidebarVisible" :algorithm="activeAlgorithm"
+      @on-change-algorithm="activeAlgorithm = ['Home']"></NavBar>
     <div class="flex">
       <Sidebar :isSidebarVisible="isSidebarVisible" @toggle-sidebar="isSidebarVisible = !isSidebarVisible"
         @on-change-algorithm="(alg) => activeAlgorithm = alg">
       </Sidebar>
       <div class="flex-1"></div>
-      <div class="w-full lg:w-[calc(100%-288px)] 2xl:w-[calc(100%-368px)]">
-        <NavBar @toggle-sidebar="isSidebarVisible = !isSidebarVisible" :algorithm="activeAlgorithm"
-          @on-change-algorithm="activeAlgorithm = ['Home']"></NavBar>
-        <div class="relative mt-13">
+      <div class="w-full lg:w-[calc(100%-288px)]">
+        <div class="relative mt-26 lg:mt-13">
           <RouterView v-slot="{ Component }">
             <Transition>
               <component :is="Component"></component>

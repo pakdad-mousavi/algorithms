@@ -123,7 +123,11 @@ const calcLeft = (value) => `left: calc(var(--spacing) * ${widthFactor} * ${valu
 const handleScroll = () => {
   const container = chart.value;
   const topPos = container.getBoundingClientRect().top;
-  const navbarHeight = 52; // 3.25 rem for the sticky header
+
+  // Get the correct navbar height
+  const mediaQuery = window.matchMedia('(min-width: 1024px)');
+  const singleNavbarWidth = 52; // 3.25 rem for each bar in the sticky header
+  const navbarHeight = mediaQuery.matches ? singleNavbarWidth : singleNavbarWidth * 2;
 
   if (topPos - navbarHeight <= 0) {
     horizontalScroll.value = Math.abs(topPos - navbarHeight) - 4;
