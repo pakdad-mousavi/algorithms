@@ -3,7 +3,7 @@
     <div class="flex items-center gap-4 px-4 py-2 border-b border-neutral-800 lg:border-0">
       <!-- Banner -->
       <div class="flex items-center mr-auto cursor-pointer gap-x-2" @click="goToHomePage()">
-        <img src="/logo.svg" alt="" class="w-6">
+        <Logo class="w-6 h-6"></Logo>
         <span class="font-medium">Learning Algorithms</span>
       </div>
       <!-- Buttons -->
@@ -33,6 +33,7 @@ import { LayoutSidebarLeftExpand } from "@vicons/tabler";
 import { Github } from "@vicons/fa";
 import { Icon } from "@vicons/utils";
 import { useRouter } from "vue-router";
+import Logo from "./Logo.vue";
 
 const emit = defineEmits(['toggle-sidebar']);
 const router = useRouter();

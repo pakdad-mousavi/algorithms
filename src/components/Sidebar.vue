@@ -7,7 +7,7 @@
     <div class="flex items-center px-4 py-3.25 border-b-[1px] border-neutral-800 lg:hidden">
       <div class="flex-1">
         <div class="flex items-center text-sm font-medium gap-x-2 !bg-[none]" @click="goToHomePage()">
-          <img src="/logo.svg" alt="" class="w-6">
+          <Logo class="w-6 h-6"></Logo>
           <span>Learning Algorithms</span>
         </div>
       </div>
@@ -32,6 +32,7 @@ import GroupTree from "./GroupTree.vue";
 import { Icon } from "@vicons/utils";
 import { useRouter } from "vue-router";
 import { onMounted, onUnmounted } from "vue";
+import Logo from "./Logo.vue";
 
 const props = defineProps({
   isSidebarVisible: {
