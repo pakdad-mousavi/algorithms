@@ -40,7 +40,7 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(['toggle-sidebar', 'on-change-algorithm']);
+const emit = defineEmits(['toggle-sidebar']);
 const router = useRouter();
 
 // Hide the sidebar if its open and the user expands the screen past breakpoint
@@ -52,8 +52,6 @@ const handleResize = () => {
 };
 
 const goToHomePage = () => {
-  // Update algorithm
-  emit('on-change-algorithm', ['Home']);
   // Send to home page
   router.push('/');
 };

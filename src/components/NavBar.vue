@@ -29,25 +29,15 @@
 </template>
 
 <script setup>
-import { ChevronRight, LayoutSidebarLeftExpand } from "@vicons/tabler";
+import { LayoutSidebarLeftExpand } from "@vicons/tabler";
 import { Github } from "@vicons/fa";
 import { Icon } from "@vicons/utils";
 import { useRouter } from "vue-router";
 
-defineProps({
-  algorithm: {
-    type: Array,
-    default: () => [],
-  }
-});
-
-const emit = defineEmits(['toggle-sidebar', 'on-change-algorithm']);
+const emit = defineEmits(['toggle-sidebar']);
 const router = useRouter();
-console.log(router.currentRoute);
 
 const goToHomePage = () => {
-  // Update algorithm
-  emit('on-change-algorithm', ['Learning Algorithms']);
   // Send to home page
   router.push('/');
 };
