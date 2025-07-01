@@ -44,7 +44,7 @@
 defineProps({
   animated: {
     type: Boolean,
-    required: true,
+    default: false,
   }
 })
 </script>
