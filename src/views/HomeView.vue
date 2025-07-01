@@ -13,13 +13,13 @@
         </p>
       </div>
     </div>
-    <div class="flex flex-col items-center gap-y-4 opacity-0 content">
+    <div class="flex flex-col items-center opacity-0 gap-y-4 content">
       <p class="text-center lg:w-4/5">
         A minimalist platform for learning algorithms visually with step-by-step explanations, clean interfaces, and
         intuitive breakdowns to help you truly understand how algorithms work.
       </p>
       <div>
-        <div href="/cpu-scheduling/round-robin" class="btn">Start Learning</div>
+        <div class="btn" @click="router.push('/cpu-scheduling/round-robin')">Start Learning</div>
       </div>
     </div>
   </div>
@@ -27,6 +27,9 @@
 
 <script setup>
 import Logo from '@/components/Logo.vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 </script>
 
 <style scoped></style>
