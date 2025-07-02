@@ -165,10 +165,23 @@ input[type="number"] {
 
 .v-enter-active,
 .v-leave-active {
-  @apply relative transition-opacity duration-75 ease-in;
+  @apply transition-opacity duration-150 ease-in-out;
 }
 
 .v-enter-from,
 .v-leave-to {
-  @apply absolute pr-4 opacity-0;
+  @apply opacity-0;
+}
+
+.v-enter-to,
+.v-leave-from {
+  @apply opacity-100;
+}
+
+.v-enter-from {
+  @apply delay-150;
+}
+
+.v-enter-to {
+  @apply delay-150;
 }

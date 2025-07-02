@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="mb-14">
     <div class="my-8">
       <div class="relative flex justify-center">
         <div
