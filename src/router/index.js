@@ -69,11 +69,16 @@ const router = createRouter({
   ],
 });
 
-// Update each page title
 router.beforeEach((to, from, next) => {
+  // Update each page title
   const title = `${to.meta.name} | Learning Algorithms`;
   document.title = title;
   next();
+});
+
+router.afterEach(() => {
+  // Scroll to the top of the window
+  window.scrollTo({ top: 0, behavior: "smooth" });
 });
 
 export default router;
