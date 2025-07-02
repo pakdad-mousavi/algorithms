@@ -1,6 +1,6 @@
 <template>
   <figure class="my-10">
-    <img :src="src" :alt="caption" class="mx-auto">
+    <img :src="formattedSrc" :alt="caption" class="mx-auto">
     <figcaption class="mt-2 text-sm italic text-center text-zinc-400">
       {{ caption }}
     </figcaption>
@@ -8,7 +8,7 @@
 </template>
 
 <script setup>
-defineProps({
+const props = defineProps({
   src: {
     type: String,
     required: true,
@@ -18,4 +18,6 @@ defineProps({
     required: true,
   }
 });
+
+const formattedSrc = import.meta.env.BASE_URL + props.src;
 </script>
