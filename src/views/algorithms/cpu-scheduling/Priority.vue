@@ -127,10 +127,8 @@
               </thead>
               <tbody class="highlight-first-column">
                 <tr v-for="(process, index) in processData" :key="index">
-                  <td class="flex items-center">
-                    <span>
-                      P{{ index + 1 }}
-                    </span>
+                  <td>
+                    P{{ index + 1 }}
                   </td>
                   <td><input type="number" min="0" max="10" required v-model="process[0]"></td>
                   <td><input type="number" min="1" max="20" required v-model="process[1]"></td>
