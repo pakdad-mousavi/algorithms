@@ -163,6 +163,7 @@ input[type="number"] {
   @apply text-zinc-500 !bg-zinc-900 hover:border-zinc-700 active:translate-y-0 rounded-md px-6 py-1.5 cursor-default;
 }
 
+/* Transitions */
 .v-enter-active,
 .v-leave-active {
   @apply transition-opacity duration-150 ease-in-out;

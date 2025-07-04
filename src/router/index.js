@@ -19,8 +19,7 @@ const router = createRouter({
       path: "/cpu-scheduling/round-robin",
       meta: {
         groupName: "CPU Scheduling",
-        name: "Round Robin",
-        icon: "",
+        name: "Round Robin Algorithm",
       },
       component: () =>
         import("../views/algorithms/cpu-scheduling/RoundRobin.vue"),
@@ -29,8 +28,7 @@ const router = createRouter({
       path: "/cpu-scheduling/first-come-first-serve",
       meta: {
         groupName: "CPU Scheduling",
-        name: "First Come First Serve",
-        icon: "",
+        name: "First Come First Serve (FCFS)",
       },
       component: () =>
         import("../views/algorithms/cpu-scheduling/FirstComeFirstServe.vue"),
@@ -39,8 +37,7 @@ const router = createRouter({
       path: "/cpu-scheduling/priority",
       meta: {
         groupName: "CPU Scheduling",
-        name: "Priority",
-        icon: "",
+        name: "Priority Scheduling",
       },
       component: () =>
         import("../views/algorithms/cpu-scheduling/Priority.vue"),
@@ -49,8 +46,7 @@ const router = createRouter({
       path: "/cpu-scheduling/shortest-job-first",
       meta: {
         groupName: "CPU Scheduling",
-        name: "Shortest Job First",
-        icon: "",
+        name: "Shortest Job First Scheduling",
       },
       component: () =>
         import("../views/algorithms/cpu-scheduling/ShortestJobFirst.vue"),
@@ -61,7 +57,6 @@ const router = createRouter({
       meta: {
         groupName: "Deadlock Management",
         name: "Banker's Algorithm",
-        icon: "",
       },
       component: () =>
         import("../views/algorithms/deadlock-management/BankersAlgorithm.vue"),
