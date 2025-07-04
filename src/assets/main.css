@@ -93,7 +93,7 @@ table tbody.highlight-first-column tr td {
 }
 
 .gantt-chart-container .lines {
-  @apply absolute border-r-[1.5px] border-dashed border-rose-800 w-px h-full z-20;
+  @apply absolute border-r border-dashed border-rose-800 !h-full z-20;
 }
 
 .gantt-chart {

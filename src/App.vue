@@ -6,7 +6,7 @@
       <Sidebar :isSidebarVisible="isSidebarVisible" @toggle-sidebar="isSidebarVisible = !isSidebarVisible"></Sidebar>
       <div class="flex-1"></div>
       <div class="flex flex-col relative w-full lg:w-[calc(100%-288px)]">
-        <main class="relative p-4 mx-auto space-y-4 mt-26 lg:mt-13 text-neutral-300 sm:w-11/12">
+        <main class="relative p-4 mx-auto space-y-4 mt-26 lg:mt-13 text-neutral-300 w-full sm:w-11/12">
           <RouterView v-slot="{ Component }">
             <Transition>
               <div :key="route.fullPath">
