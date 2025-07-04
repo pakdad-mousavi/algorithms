@@ -186,7 +186,13 @@
         <hr class="mb-4 border-neutral-800">
         <form ref="form" class="w-full mb-10 space-y-4 gap-x-4">
           <!-- Total resource instances -->
-          <p class="font-medium">Total Resource Instances:</p>
+          <div class="flex items-end">
+            <p class="font-medium flex-1">Resource Instances:</p>
+            <button class="btn" type="button" :disabled="maxMatrix.length === resourceLimit"
+              :class="{ 'disabled': resourceInstances.length === resourceLimit }" @click="addResource">
+              Add Resource
+            </button>
+          </div>
           <div class="mb-10 overflow-x-scroll">
             <table>
               <thead>
@@ -214,14 +220,10 @@
               </tbody>
             </table>
           </div>
-          <div class="flex items-end justify-end gap-x-2">
+          <div class="flex items-end sm:justify-end gap-x-2">
             <button class="btn" type="button" :disabled="maxMatrix.length === processLimit"
               :class="{ 'disabled': maxMatrix.length === processLimit }" @click="addProcess">
               Add Process
-            </button>
-            <button class="btn" type="button" :disabled="maxMatrix.length === resourceLimit"
-              :class="{ 'disabled': resourceInstances.length === resourceLimit }" @click="addResource">
-              Add Resource
             </button>
           </div>
           <div class="flex flex-col gap-x-4 xl:flex-row gap-y-10">
