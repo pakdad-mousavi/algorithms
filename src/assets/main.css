@@ -120,10 +120,7 @@ table tbody.highlight-first-column tr td {
   @apply flex text-center relative z-20 mt-1 w-min;
 }
 
-.gantt-chart .interval .queue .queue-item {
-  @apply w-7 aspect-square flex items-center justify-center border bg-zinc-800 border-zinc-700 first:rounded-l-md last:rounded-r-md;
-}
-
+.gantt-chart .interval .queue .queue-item,
 .legend .queue-item {
   @apply w-7 aspect-square flex items-center justify-center border bg-zinc-800 border-zinc-700 first:rounded-l-md last:rounded-r-md;
 }

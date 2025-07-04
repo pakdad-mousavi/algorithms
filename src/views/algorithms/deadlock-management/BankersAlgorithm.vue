@@ -187,7 +187,7 @@
         <form ref="form" class="w-full mb-10 space-y-4 gap-x-4">
           <!-- Total resource instances -->
           <div class="flex items-end">
-            <p class="font-medium flex-1">Resource Instances:</p>
+            <p class="flex-1 font-medium">Resource Instances:</p>
             <button class="btn" type="button" :disabled="maxMatrix.length === resourceLimit"
               :class="{ 'disabled': resourceInstances.length === resourceLimit }" @click="addResource">
               Add Resource
