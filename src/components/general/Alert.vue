@@ -14,7 +14,7 @@
 
 <script setup>
 import { Info24Regular } from '@vicons/fluent';
-import { SmsFailedOutlined } from '@vicons/material';
+import { SmsFailedOutlined, DangerousOutlined } from '@vicons/material';
 import { Icon } from '@vicons/utils';
 
 const props = defineProps({
@@ -26,7 +26,8 @@ const props = defineProps({
 
 const icons = {
   SmsFailedOutlined,
-  Info24Regular
+  Info24Regular,
+  DangerousOutlined
 };
 
 const styles = {
@@ -41,6 +42,12 @@ const styles = {
     borderColor: "border-main",
     textColor: "text-main",
     icon: "Info24Regular"
+  },
+  error: {
+    title: "Error",
+    borderColor: "border-rose-600",
+    textColor: "text-rose-600",
+    icon: "DangerousOutlined"
   },
 };
 
