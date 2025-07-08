@@ -1,16 +1,26 @@
 const allocationTechniques = {
   firstFit: (size, memory) => {
     for (let i = 0; i < memory.length; i++) {
-      // Find the first free block which can fit the given size
       const block = memory[i];
-      if (block.status === "free" && block.size >= size) {
-        return [i, block];
-      }
+      if (block.status === "free" && block.size >= size) return [i, block];
     }
-    // Memory is full
     return [memory.length, false];
   },
-  bestFit: () => {},
+  bestFit: (size, memory) => {
+    let bestIdx = -1;
+    let bestBlock = null;
+    // Get the block with the lowest size which is large enough for the process
+    for (let i = 0; i < memory.length; i++) {
+      const block = memory[i];
+      if (block.status === "free" && block.size >= size) {
+        if (!bestBlock || block.size < bestBlock.size) {
+          bestBlock = block;
+          bestIdx = i;
+        }
+      }
+    }
+    return bestBlock ? [bestIdx, bestBlock] : [memory.length, false];
+  },
   worstFit: () => {},
 };
 

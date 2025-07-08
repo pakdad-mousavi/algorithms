@@ -71,6 +71,15 @@ const router = createRouter({
       component: () =>
         import("../views/algorithms/memory-management/FirstFit.vue"),
     },
+    {
+      path: "/memory-management/best-fit",
+      meta: {
+        groupName: "Memory Management",
+        name: "Best Fit Algorithm",
+      },
+      component: () =>
+        import("../views/algorithms/memory-management/BestFit.vue"),
+    },
   ],
 });
 
