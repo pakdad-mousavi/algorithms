@@ -12,7 +12,7 @@
           <Icon>
             <Github></Github>
           </Icon>
-          <span>Github</span>
+          <span>GitHub</span>
         </a>
       </div>
     </div>
