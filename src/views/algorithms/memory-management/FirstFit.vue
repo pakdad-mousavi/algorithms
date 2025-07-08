@@ -151,10 +151,11 @@ const form = ref(null);
 const totalProcesses = ref(4);
 const totalMemory = ref(100);
 const actions = reactive([
-  { isAllocation: true, pid: 1, size: 40 },
-  { isAllocation: true, pid: 2, size: 20 },
-  { isAllocation: true, pid: 3, size: 25 },
+  { isAllocation: true, pid: 1, size: 30 },
+  { isAllocation: true, pid: 2, size: 35 },
+  { isAllocation: true, pid: 3, size: 20 },
   { isAllocation: false, pid: 2 },
+  { isAllocation: true, pid: 4, size: 15 },
 ]);
 const algResult = reactive({
   isSuccessful: false,
