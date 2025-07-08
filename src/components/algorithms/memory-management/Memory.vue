@@ -1,5 +1,13 @@
 <template>
   <div class="overflow-x-scroll" v-if="hasAlgorithmBeenRan">
+    <div class="min-w-xl">
+      <div class="w-[calc(100%-48px)] ml-12 text-center relative">
+        <span class="mb-2 block">Memory</span>
+        <div class="mb-6 border-b-2 border-zinc-600"></div>
+        <div class="absolute h-4 border border-zinc-600 -bottom-4"></div>
+        <div class="absolute h-4 border border-zinc-600 right-0 -bottom-4"></div>
+      </div>
+    </div>
     <div class="flex flex-col gap-y-0.5 overflow-hidden border rounded-md min-w-xl border-zinc-700">
       <!-- Each memory snapshot -->
       <div v-for="(memory, index) in algResult.memoryLog" :key="index"
