@@ -51,7 +51,7 @@
           Step by Step Illustration
         </h2>
         <hr class="mb-4 border-neutral-800">
-        <form class="space-y-4">
+        <form class="space-y-4" ref="form">
           <div class="flex flex-wrap items-end gap-4">
             <div class="flex flex-col gap-2">
               <label class="font-medium">Number of Processes:</label>
@@ -59,7 +59,7 @@
             </div>
             <div class="flex flex-col flex-1 gap-2">
               <label class="font-medium">Total Memory Size (KB):</label>
-              <input type="number" class="w-full field sm:w-60" min="10" max="200" required v-model="totalMemory">
+              <input type="number" class="w-full field sm:w-60" min="10" max="150" required v-model="totalMemory">
             </div>
             <div class="flex gap-2">
               <button class="btn" type="button" @click="addRow()" :disabled="actions.length === 12"
@@ -147,12 +147,13 @@ defineProps({
   }
 });
 
+const form = ref(null);
 const totalProcesses = ref(4);
 const totalMemory = ref(100);
 const actions = reactive([
-  { isAllocation: true, pid: 1, size: 20 },
+  { isAllocation: true, pid: 1, size: 40 },
   { isAllocation: true, pid: 2, size: 20 },
-  { isAllocation: true, pid: 3, size: 20 },
+  { isAllocation: true, pid: 3, size: 25 },
   { isAllocation: false, pid: 2 },
 ]);
 const algResult = reactive({
@@ -161,7 +162,7 @@ const algResult = reactive({
 });
 const hasAlgorithmBeenRan = ref(false);
 
-watch(actions, () => {
+watch([actions, totalMemory], () => {
   hasAlgorithmBeenRan.value = false;
 });
 
@@ -213,6 +214,9 @@ const addRow = () => {
 };
 
 const runAlgorithm = () => {
+  const isFormValid = form.value.checkValidity();
+  if (!isFormValid) return form.value.reportValidity();
+
   const { isSuccessful, memoryLog } = runMemoryManagementAlgorithm(actions, totalMemory.value, "firstFit");
   algResult.isSuccessful = isSuccessful;
   algResult.memoryLog = memoryLog;
