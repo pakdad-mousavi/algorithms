@@ -1,5 +1,5 @@
 <template>
-  <figure class="my-10">
+  <figure class="my-10 mx-auto">
     <img :src="formattedSrc" :alt="caption" class="mx-auto">
     <figcaption class="mt-2 text-sm italic text-center text-zinc-400">
       {{ caption }}

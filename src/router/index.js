@@ -61,6 +61,16 @@ const router = createRouter({
       component: () =>
         import("../views/algorithms/deadlock-management/BankersAlgorithm.vue"),
     },
+    // Memory management
+    {
+      path: "/memory-management/first-fit",
+      meta: {
+        groupName: "Memory Management",
+        name: "First Fit Algorithm",
+      },
+      component: () =>
+        import("../views/algorithms/memory-management/FirstFit.vue"),
+    },
   ],
 });
 

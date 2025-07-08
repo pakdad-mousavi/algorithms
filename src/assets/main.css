@@ -75,8 +75,13 @@ table td {
   @apply px-6 py-3 h-full has-[input]:px-2 has-[input]:py-1;
 }
 
-table input {
+table input,
+table select {
   @apply h-full w-full px-4 py-2 outline-0 duration-100 focus:bg-zinc-700 focus:border-main hover:border-main rounded-md border border-zinc-700 invalid:!border-rose-500;
+}
+
+table select {
+  @apply min-w-20;
 }
 
 table tr {
