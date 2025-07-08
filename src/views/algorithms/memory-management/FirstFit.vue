@@ -75,10 +75,11 @@
                   <th>Action Type</th>
                   <th>Process ID</th>
                   <th>Size (KB)</th>
+                  <th></th>
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="action in actions">
+                <tr v-for="(action, index) in actions" :key="index">
                   <td>
                     <select v-model="action.isAllocation">
                       <option :value="true">Allocation</option>
@@ -93,6 +94,15 @@
                     </select>
                   </td>
                   <td><input min="10" type="number" v-model="action.size" v-if="action.isAllocation"></td>
+                  <td class="w-20 mx-auto text-center">
+                    <div v-if="actions.length > 1"
+                      class="flex items-center justify-center duration-100 border border-transparent rounded-md cursor-pointer bg-zinc-700 aspect-square w-7 group hover:border-rose-600 active:translate-y-1"
+                      @click="actions.splice(index, 1)">
+                      <Icon class="text-rose-500" tag="span" size="20px">
+                        <Trash></Trash>
+                      </Icon>
+                    </div>
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -126,6 +136,8 @@ import Memory from '@/components/algorithms/memory-management/Memory.vue';
 import EmptySpace from '@/components/general/EmptySpace.vue';
 import Figure from '@/components/general/Figure.vue';
 import { runMemoryManagementAlgorithm } from '@/composables/memory-management';
+import { Trash } from '@vicons/tabler';
+import { Icon } from '@vicons/utils';
 import { reactive, ref, watch } from 'vue';
 
 defineProps({
