@@ -3,6 +3,9 @@ import HomeView from "../views/HomeView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
+  scrollBehavior: () => {
+    return { top: 0, behavior: "smooth" };
+  },
   routes: [
     // Home route
     {
@@ -89,7 +92,6 @@ const router = createRouter({
       component: () =>
         import("../views/algorithms/memory-management/WorstFit.vue"),
     },
-    
   ],
 });
 
@@ -98,11 +100,6 @@ router.beforeEach((to, from, next) => {
   const title = `${to.meta.name} | Learning Algorithms`;
   document.title = title;
   next();
-});
-
-router.afterEach(() => {
-  // Scroll to the top of the window
-  window.scrollTo({ top: 0, behavior: "smooth" });
 });
 
 export default router;
