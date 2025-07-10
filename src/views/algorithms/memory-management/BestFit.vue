@@ -9,7 +9,7 @@
         </p>
         <p>
           As memory is allocated and deallocated to and from processes, the memory becomes <span
-            class="text-main">fragmented</span>. To understans how memory and works and how fragmentation occurs, see
+            class="text-main">fragmented</span>. To understand how memory works and how fragmentation occurs, see
           the <span class="cursor-pointer text-main" @click="router.push('/memory-management/first-fit')">
             First Fit Algorithm.
           </span>
