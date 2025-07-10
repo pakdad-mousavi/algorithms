@@ -21,7 +21,21 @@ const allocationTechniques = {
     }
     return bestBlock ? [bestIdx, bestBlock] : [memory.length, false];
   },
-  worstFit: () => {},
+  worstFit: (size, memory) => {
+    let worstIdx = -1;
+    let worstBlock = null;
+    // Get the block with the biggest size which is large enough for the process
+    for (let i = 0; i < memory.length; i++) {
+      const block = memory[i];
+      if (block.status === "free" && block.size >= size) {
+        if (!worstBlock || block.size > worstBlock.size) {
+          worstBlock = block;
+          worstIdx = i;
+        }
+      }
+    }
+    return worstBlock ? [worstIdx, worstBlock] : [memory.length, false];
+  },
 };
 
 const allocate = (pid, size, memory, allocationTechnique) => {

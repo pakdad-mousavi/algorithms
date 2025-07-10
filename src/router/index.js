@@ -80,6 +80,16 @@ const router = createRouter({
       component: () =>
         import("../views/algorithms/memory-management/BestFit.vue"),
     },
+    {
+      path: "/memory-management/worst-fit",
+      meta: {
+        groupName: "Memory Management",
+        name: "Worst Fit Algorithm",
+      },
+      component: () =>
+        import("../views/algorithms/memory-management/WorstFit.vue"),
+    },
+    
   ],
 });
 
