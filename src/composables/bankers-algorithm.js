@@ -1,8 +1,4 @@
-export const runBankersAlgorithm = ({
-  allocationMatrix,
-  maxMatrix,
-  resourceInstances,
-}) => {
+export const runBankersAlgorithm = ({ allocationMatrix, maxMatrix, resourceInstances }) => {
   // Function to update the process log
   const addToProcessLog = ({
     i,
@@ -40,9 +36,7 @@ export const runBankersAlgorithm = ({
   });
 
   // Calculate available resources
-  const available = resourceInstances.map(
-    (total, idx) => total - totalAllocations[idx]
-  );
+  const available = resourceInstances.map((total, idx) => total - totalAllocations[idx]);
 
   // Calculate need
   for (let i = 0; i < allocationMatrix.length; i++) {
@@ -72,8 +66,7 @@ export const runBankersAlgorithm = ({
       if (isFinished) continue;
 
       // Check if the process can run
-      const canRun =
-        !isFinished && curNeed.every((need, j) => need <= available[j]);
+      const canRun = !isFinished && curNeed.every((need, j) => need <= available[j]);
       const availableCopy = available.slice();
       // Simulate running the process
       if (canRun) {

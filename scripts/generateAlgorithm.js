@@ -13,9 +13,7 @@ const __dirname = path.dirname(__filename);
 const algorithmsDir = path.resolve(__dirname, "../src/views/algorithms");
 const routerFile = path.resolve(__dirname, "../src/router/routes.js");
 
-const existingCategories = new Set(
-  algorithmRoutes.map((route) => route.meta.groupName)
-);
+const existingCategories = new Set(algorithmRoutes.map((route) => route.meta.groupName));
 
 const toPascalCase = (str) => {
   return str
@@ -35,16 +33,11 @@ const getAlgorithmDetails = async () => {
       type: "list",
       loop: false,
       message: "What category does this algorithm fall under?",
-      choices: [
-        "New Category",
-        new inquirer.Separator(),
-        ...existingCategories,
-      ],
+      choices: ["New Category", new inquirer.Separator(), ...existingCategories],
     },
     {
       name: "newCategory",
-      message:
-        "What is the name of the new category? (e.g. Sorting Algorithms)",
+      message: "What is the name of the new category? (e.g. Sorting Algorithms)",
       when: (answers) => answers.category === "New Category", // Only for new categories
       validate: (input) => !!input || "Category cannot be empty!",
     },
@@ -70,8 +63,7 @@ const generateVueComponent = (componentFilePath, algorithmName) => {
   fs.writeFileSync(componentFilePath, vueTemplate);
   // Success message
   console.log(
-    chalk.green("Successfully created ") +
-      chalk.cyan(`${path.basename(componentFilePath)}.`)
+    chalk.green("Successfully created ") + chalk.cyan(`${path.basename(componentFilePath)}.`)
   );
 };
 
@@ -108,19 +100,12 @@ const appendRouteToRouterFile = (
       const newRouterContent = arrayStart + newArrayContent + arrayEnd;
       fs.writeFileSync(routerFile, newRouterContent, "utf-8");
       // Success message
-      console.log(
-        chalk.green("Successfully added route for ") +
-          chalk.cyan(`${algorithmName}.`)
-      );
+      console.log(chalk.green("Successfully added route for ") + chalk.cyan(`${algorithmName}.`));
     } else {
       throw new Error("Could not find algorithmRoutes array in router file.");
     }
   } catch (err) {
-    console.error(
-      chalk.red(
-        "Error: Could not insert new route into router file. Exiting..."
-      )
-    );
+    console.error(chalk.red("Error: Could not insert new route into router file. Exiting..."));
     exit(1);
   }
 };
@@ -129,14 +114,9 @@ const formatRouterWithPrettier = () => {
   // Format the router file using prettier if available
   try {
     execSync(`npx prettier --write "${routerFile}"`, { stdio: "ignore" });
-    console.log(
-      chalk.green("Successfully formatted router file with ") +
-        chalk.cyan("Prettier.")
-    );
+    console.log(chalk.green("Successfully formatted router file with ") + chalk.cyan("Prettier."));
   } catch (err) {
-    const errMessage = chalk.yellow(
-      "Could not format router file with Prettier. Is it installed?"
-    );
+    const errMessage = chalk.yellow("Could not format router file with Prettier. Is it installed?");
     console.warn(errMessage);
   }
 };
@@ -148,29 +128,19 @@ const main = async () => {
   const selectedCategory = newCategory ? newCategory : category;
   const algorithmDirname = selectedCategory.toLowerCase().replace(/\s+/g, "-");
 
-  const componentFilePath = path.join(
-    algorithmsDir,
-    algorithmDirname,
-    `${componentName}.vue`
-  );
+  const componentFilePath = path.join(algorithmsDir, algorithmDirname, `${componentName}.vue`);
 
   // 1. Generate .vue component file
   generateVueComponent(componentFilePath, algorithmName);
 
   // 2. Append new route to router
-  appendRouteToRouterFile(
-    algorithmName,
-    componentName,
-    algorithmDirname,
-    selectedCategory
-  );
+  appendRouteToRouterFile(algorithmName, componentName, algorithmDirname, selectedCategory);
 
   // 3. Try to format router file with prettier
   formatRouterWithPrettier();
 
   console.log(
-    `\n"${algorithmName}" template file and route created:\n` +
-      chalk.cyan(componentFilePath)
+    `\n"${algorithmName}" template file and route created:\n` + chalk.cyan(componentFilePath)
   );
 };
 

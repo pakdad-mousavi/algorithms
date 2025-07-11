@@ -41,12 +41,7 @@ export const useScheduler = () => {
   };
 
   // Main non-preemptive scheduling algorithm
-  const runAlgorithm = ({
-    runtimeProcesses,
-    form,
-    hasAlgorithmBeenRan,
-    sortFn,
-  }) => {
+  const runAlgorithm = ({ runtimeProcesses, form, hasAlgorithmBeenRan, sortFn }) => {
     // Ensure data is valid
     const isFormValid = form.value.checkValidity();
     if (!isFormValid) return form.value.reportValidity();

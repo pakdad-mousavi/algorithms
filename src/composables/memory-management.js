@@ -40,9 +40,7 @@ const allocationTechniques = {
 
 const allocate = (pid, size, memory, allocationTechnique) => {
   const allocatedProcesses = new Set(
-    memory
-      .filter((block) => block.status === "allocated")
-      .map((block) => block.pid)
+    memory.filter((block) => block.status === "allocated").map((block) => block.pid)
   );
   const getFreeBlock = allocationTechniques?.[allocationTechnique];
   const [i, block] = getFreeBlock(size, memory);
@@ -100,11 +98,7 @@ const mergeAdjacentFreeBlocks = (memory) => {
   }
 };
 
-export const runMemoryManagementAlgorithm = (
-  actions,
-  totalMemory,
-  allocationTechnique
-) => {
+export const runMemoryManagementAlgorithm = (actions, totalMemory, allocationTechnique) => {
   // Initialize memory
   const memory = [];
   const memoryLog = [];
@@ -113,12 +107,7 @@ export const runMemoryManagementAlgorithm = (
 
   for (const action of actions) {
     if (action.isAllocation) {
-      isSuccessful = allocate(
-        action.pid,
-        action.size,
-        memory,
-        allocationTechnique
-      );
+      isSuccessful = allocate(action.pid, action.size, memory, allocationTechnique);
     } else {
       isSuccessful = deallocate(action.pid, memory);
     }
