@@ -1,4 +1,4 @@
-# Algorithms
+# Learning Algorithms
 
 An interactive, fully client-side web app for visualizing core Operating System algorithms, from CPU scheduling to memory management, virtual memory, deadlock handling, and a lot of other algorithms.
 
@@ -56,3 +56,29 @@ Before submitting, consider:
 - Including screenshots or context if your change affects the UI.
 
 Thanks for helping improve the project!
+
+## 📌 Development Guidelines
+
+### Code Formatting
+
+Please ensure you have the appropriate `.vscode` extensions installed as specified in `.vscode/settings.json`. Use the designated formatter for each file type:
+
+- **Vue files (`.vue`)** → Format with [Vue Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar)
+- **JavaScript & CSS files** → Format with [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
+
+### Adding a New Algorithm
+
+To scaffold a new algorithm, run:
+
+```bash
+npm run generate:algorithm
+```
+
+This script will:
+
+- Create a new Vue component in /src/views/algorithms
+- Automatically register the route
+
+You can then begin adding your logic and UI. Once your work is complete, submit a pull request on your feature branch.
+
+    🔁 Tip: If your changes affect the UI, include a screenshot or short description in your PR to help reviewers understand the context.
