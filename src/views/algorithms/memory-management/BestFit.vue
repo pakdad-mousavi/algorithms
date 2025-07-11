@@ -1,7 +1,7 @@
 <template>
-  <Transition>
-    <div :key="tab">
-      <div v-if="tab === 'How It Works'" class="mb-10 space-y-4">
+  <TabSwitcher>
+    <template #[tabs.howItWorks.id]>
+      <div class="mb-10 space-y-4">
         <p>
           The <span class="text-main">Best Fit Algorithm</span> is another memory allocation strategy used in dynamic
           memory management. It's job is also to manage free space in the main memory, however, this algorithm aims to
@@ -38,8 +38,10 @@
         <Figure src="/algorithms/memory-management/best-fit/best-fit-algorithm.svg" class="max-w-2xl"
           caption="How the Best Fit Algorithm Chooses a Memory Block"></Figure>
       </div>
+    </template>
 
-      <div v-if="tab === 'Algorithm Visualizer'" class="mb-10 space-y-4">
+    <template #[tabs.visualizer.id]>
+      <div class="mb-10 space-y-4">
         <h2 class="text-xl font-semibold">
           Step by Step Illustration
         </h2>
@@ -120,11 +122,13 @@
           </template>
         </EmptySpace>
       </div>
-    </div>
-  </Transition>
+    </template>
+  </TabSwitcher>
 </template>
 
 <script setup>
+import TabSwitcher from '@/components/TabSwitcher.vue';
+import { tabs } from '@/state/tabState';
 import Memory from '@/components/algorithms/memory-management/Memory.vue';
 import EmptySpace from '@/components/general/EmptySpace.vue';
 import Figure from '@/components/general/Figure.vue';
@@ -133,13 +137,6 @@ import { Trash } from '@vicons/tabler';
 import { Icon } from '@vicons/utils';
 import { reactive, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
-
-defineProps({
-  tab: {
-    type: String,
-    required: true,
-  }
-});
 
 const router = useRouter();
 

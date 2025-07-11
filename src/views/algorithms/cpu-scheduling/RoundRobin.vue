@@ -1,13 +1,11 @@
 <template>
-  <Transition>
-    <div :key="tab">
-      <!-- How it works -->
-      <div v-if="tab === 'How It Works'" class="mb-10 space-y-4">
+  <TabSwitcher>
+    <template #[tabs.howItWorks.id]>
+      <div class="mb-10 space-y-4">
         <p>
           The <span class="text-main">Round Robin Algorithm</span> is a widely used CPU scheduling method,
           particularly effective in time-sharing systems. Its main objective is to allocate CPU time fairly among
-          all
-          running processes, ensuring that each one receives regular access to the processor.
+          all running processes, ensuring that each one receives regular access to the processor.
         </p>
         <p>
           This method ensures that all processes are treated equally, preventing any single process from dominating
@@ -36,8 +34,7 @@
               </p>
               <p>
                 Only after the arriving process(es) are added to the queue, will the finished process leave the CPU
-                and
-                go to the back of the queue.
+                and go to the back of the queue.
               </p>
             </div>
           </template>
@@ -64,9 +61,10 @@
           </p>
         </div>
       </div>
+    </template>
 
-      <!-- Algorithm visualizer -->
-      <div v-if="tab === 'Algorithm Visualizer'">
+    <template #[tabs.visualizer.id]>
+      <div>
         <h1 class="mb-4 text-xl font-semibold">
           Step By Step Illustration
         </h1>
@@ -139,11 +137,13 @@
           </EmptySpace>
         </div>
       </div>
-    </div>
-  </Transition>
+    </template>
+  </TabSwitcher>
 </template>
 
 <script setup>
+import TabSwitcher from '@/components/TabSwitcher.vue';
+import { tabs } from '@/state/tabState';
 import { Trash } from '@vicons/tabler';
 import { Icon } from '@vicons/utils';
 import { ref, reactive, computed, watch } from 'vue';
@@ -152,13 +152,6 @@ import ProcessDetails from '@/components/algorithms/cpu-scheduling/ProcessDetail
 import EmptySpace from '@/components/general/EmptySpace.vue';
 import Alert from '@/components/general/Alert.vue';
 import Figure from '@/components/general/Figure.vue';
-
-defineProps({
-  tab: {
-    type: String,
-    required: true
-  }
-});
 
 // Reactive variables and constants
 const form = ref(null);

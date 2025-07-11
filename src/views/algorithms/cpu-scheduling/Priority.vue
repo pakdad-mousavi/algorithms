@@ -1,7 +1,7 @@
 <template>
-  <Transition>
-    <div :key="tab">
-      <div v-if="tab === 'How It Works'" class="mb-10 space-y-4">
+  <TabSwitcher>
+    <template #[tabs.howItWorks.id]>
+      <div class="mb-10 space-y-4">
         <p>
           <span class="text-main">Priority Scheduling</span> is a CPU scheduling technique in which every process is
           assigned a priority value, and the CPU always executes the highest-priority process available at any given
@@ -100,8 +100,10 @@
           caption="Priority Scheduling Algorithm">
         </Figure>
       </div>
+    </template>
 
-      <div v-if="tab === 'Algorithm Visualizer'" class="space-y-4">
+    <template #[tabs.visualizer.id]>
+      <div class="mb-10 space-y-4">
         <form ref="form" class="w-full space-y-4 gap-x-4">
           <div class="flex items-end gap-4">
             <div class="flex flex-wrap justify-end w-full gap-2">
@@ -163,11 +165,13 @@
           </button>
         </EmptySpace>
       </div>
-    </div>
-  </Transition>
+    </template>
+  </TabSwitcher>
 </template>
 
 <script setup>
+import TabSwitcher from '@/components/TabSwitcher.vue';
+import { tabs } from '@/state/tabState';
 import Figure from '@/components/general/Figure.vue';
 import { Trash } from '@vicons/tabler';
 import { Icon } from '@vicons/utils';
@@ -177,13 +181,6 @@ import ProcessDetails from '@/components/algorithms/cpu-scheduling/ProcessDetail
 import EmptySpace from '@/components/general/EmptySpace.vue';
 import Alert from '@/components/general/Alert.vue';
 import { useScheduler } from '../../../composables/useScheduler';
-
-defineProps({
-  tab: {
-    type: String,
-    required: true
-  }
-});
 
 // Reactive variables and constants
 const form = ref(null);

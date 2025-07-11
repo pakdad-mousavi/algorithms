@@ -1,7 +1,7 @@
 <template>
-  <Transition>
-    <div :key="tab">
-      <div v-if="tab === 'How It Works'" class="mb-10 space-y-4">
+  <TabSwitcher>
+    <template #[tabs.howItWorks.id]>
+      <div class="mb-10 space-y-4">
         <p>
           <span class="text-main">Shortest Job First (SJF) Scheduling</span> is an algorithm used by systems to
           schedule the order by which processes are ran by the CPU. As the name suggests, the processes which require
@@ -113,8 +113,10 @@
           caption="Shortest Job First Scheduling Algorithm">
         </Figure>
       </div>
+    </template>
 
-      <div v-if="tab === 'Algorithm Visualizer'" class="mb-10 space-y-4">
+    <template #[tabs.visualizer.id]>
+      <div class="mb-10 space-y-4">
         <h1 class="mb-4 text-xl font-semibold">
           Step By Step Illustration
         </h1>
@@ -178,11 +180,12 @@
           </button>
         </EmptySpace>
       </div>
-    </div>
-  </Transition>
+    </template>
+  </TabSwitcher>
 </template>
 
 <script setup>
+
 import Figure from '@/components/general/Figure.vue';
 import { Trash } from '@vicons/tabler';
 import { Icon } from '@vicons/utils';
@@ -192,13 +195,8 @@ import ProcessDetails from '@/components/algorithms/cpu-scheduling/ProcessDetail
 import EmptySpace from '@/components/general/EmptySpace.vue';
 import Alert from '@/components/general/Alert.vue';
 import { useScheduler } from '../../../composables/useScheduler';
-
-defineProps({
-  tab: {
-    type: String,
-    required: true
-  }
-});
+import { tabs } from '@/state/tabState';
+import TabSwitcher from '@/components/TabSwitcher.vue';
 
 // Reactive variables and constants
 const form = ref(null);
