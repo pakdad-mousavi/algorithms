@@ -13,8 +13,7 @@ export const algorithmRoutes = [
       groupName: "CPU Scheduling",
       name: "First Come First Serve (FCFS)",
     },
-    component: () =>
-      import("@/views/algorithms/cpu-scheduling/FirstComeFirstServe.vue"),
+    component: () => import("@/views/algorithms/cpu-scheduling/FirstComeFirstServe.vue"),
   },
   {
     path: "/cpu-scheduling/priority",
@@ -30,8 +29,7 @@ export const algorithmRoutes = [
       groupName: "CPU Scheduling",
       name: "Shortest Job First Scheduling",
     },
-    component: () =>
-      import("@/views/algorithms/cpu-scheduling/ShortestJobFirst.vue"),
+    component: () => import("@/views/algorithms/cpu-scheduling/ShortestJobFirst.vue"),
   },
   {
     path: "/deadlock-management/banker's-algorithm",
@@ -39,8 +37,7 @@ export const algorithmRoutes = [
       groupName: "Deadlock Management",
       name: "Banker's Algorithm",
     },
-    component: () =>
-      import("@/views/algorithms/deadlock-management/BankersAlgorithm.vue"),
+    component: () => import("@/views/algorithms/deadlock-management/BankersAlgorithm.vue"),
   },
   {
     path: "/memory-management/first-fit",
@@ -48,8 +45,7 @@ export const algorithmRoutes = [
       groupName: "Memory Management",
       name: "First Fit Algorithm",
     },
-    component: () =>
-      import("@/views/algorithms/memory-management/FirstFit.vue"),
+    component: () => import("@/views/algorithms/memory-management/FirstFit.vue"),
   },
   {
     path: "/memory-management/best-fit",
@@ -65,7 +61,14 @@ export const algorithmRoutes = [
       groupName: "Memory Management",
       name: "Worst Fit Algorithm",
     },
-    component: () =>
-      import("@/views/algorithms/memory-management/WorstFit.vue"),
+    component: () => import("@/views/algorithms/memory-management/WorstFit.vue"),
+  },
+  {
+    path: "/virtual-memory-management/first-in-first-out",
+    component: () => import("@/views/algorithms/virtual-memory-management/FirstInFirstOut.vue"),
+    meta: {
+      groupName: "Virtual Memory Management",
+      name: "First In First Out (FIFO)",
+    },
   },
 ];
