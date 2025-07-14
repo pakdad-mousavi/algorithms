@@ -34,25 +34,27 @@ export const runPageReplacementAlgorithm = (refStr, frameCount, replacementStrat
   const { update, getVictimPage } = strategy(ctx);
 
   const log = [];
-  let pageFaults = 0;
+  let totalPageFaults = 0;
   const frames = new Array(frameCount).fill(null);
-  log.push(frames.slice());
 
   for (const pageId of refStr) {
+    let isPageFault = false;
+    let victimPageFrameIdx;
     const emptyFrameIdx = frames.findIndex((f) => f === null);
     if (!frames.includes(pageId)) {
       if (emptyFrameIdx >= 0) {
         frames[emptyFrameIdx] = pageId;
       } else {
-        const pageToReplace = getVictimPage();
-        const frameIdx = frames.findIndex((f) => f === pageToReplace);
-        frames.splice(frameIdx, 1, pageId);
+        const victimPage = getVictimPage();
+        victimPageFrameIdx = frames.findIndex((f) => f === victimPage);
+        frames.splice(victimPageFrameIdx, 1, pageId);
       }
       update(pageId);
-      pageFaults++;
+      totalPageFaults++;
+      isPageFault = true;
     }
-    log.push(frames.slice());
+    log.push({ frames: frames.slice(), isPageFault, victimPageFrameIdx });
   }
 
-  return { log, pageFaults };
+  return { log, totalPageFaults };
 };

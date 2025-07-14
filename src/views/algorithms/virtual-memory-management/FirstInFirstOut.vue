@@ -90,15 +90,15 @@
           Step By Step Illustration
         </h1>
         <hr class="mb-4 border-neutral-800">
-        <div class="flex items-end gap-x-4">
-          <div class="flex flex-col flex-1 gap-y-2">
-            <label class="font-medium">Number of Frames:</label>
-            <input type="text" class="w-full field sm:w-60" v-model="frameCount">
+        <form class="space-y-4" ref="form">
+          <div class="flex items-end gap-x-4">
+            <div class="flex flex-col flex-1 gap-y-2">
+              <label class="font-medium">Number of Frames:</label>
+              <input type="number" class="w-full field sm:w-60" min="1" max="5" v-model="frameCount">
+            </div>
+            <button type="button" class="btn" @click="addRow()">Add Row</button>
           </div>
-          <button type="button" class="btn">Add Row</button>
-        </div>
-        <div class="overflow-x-auto">
-          <form class="space-y-4" ref="form">
+          <div class="space-y-4 overflow-x-auto">
             <table>
               <thead>
                 <tr>
@@ -109,11 +109,12 @@
               <tbody>
                 <tr v-for="(_, index) in referenceStr">
                   <td>
-                    <input type="number" v-model="referenceStr[index]">
+                    <input type="number" min="1" max="10" v-model="referenceStr[index]">
                   </td>
                   <td class="w-20 mx-auto text-center">
                     <div
-                      class="flex items-center justify-center duration-100 border border-transparent rounded-md cursor-pointer bg-zinc-700 aspect-square w-7 group hover:border-rose-600 active:translate-y-1">
+                      class="flex items-center justify-center duration-100 border border-transparent rounded-md cursor-pointer bg-zinc-700 aspect-square w-7 group hover:border-rose-600 active:translate-y-1"
+                      @click="removeRow(index)">
                       <Icon class="text-rose-500" tag="span" size="20px">
                         <Trash></Trash>
                       </Icon>
@@ -123,39 +124,69 @@
               </tbody>
             </table>
             <button type="submit" class="btn" @click.prevent="runAlgorithm()">Run Algorithm</button>
-          </form>
-        </div>
+          </div>
+        </form>
 
-        {{ algoResults.log }}
-        {{ algoResults.pageFaults }}
+        <h2 class="mt-10 text-xl font-semibold">
+          Results
+        </h2>
+        <hr class="mb-4 border-neutral-800">
+        <RefStringTracer :frame-count="frameCount" :log="algResults.log" :reference-str="referenceStr"
+          :total-page-faults="algResults.totalPageFaults" v-if="hasAlgorithmBeenRan">
+        </RefStringTracer>
+        <EmptySpace v-else>
+          <p class="mb-4">
+            No results to display yet, try running the algorithm...
+          </p>
+          <button @click.prevent="() => runAlgorithm(parameters)" class="btn">
+            Run Algorithm
+          </button>
+        </EmptySpace>
       </div>
     </template>
   </TabSwitcher>
 </template>
 
 <script setup>
+import RefStringTracer from '@/components/algorithms/virtual-memory-management/RefStringTracer.vue';
+import EmptySpace from '@/components/general/EmptySpace.vue';
 import Figure from '@/components/general/Figure.vue';
 import TabSwitcher from '@/components/TabSwitcher.vue';
 import { runPageReplacementAlgorithm } from '@/composables/virtual-memory-management';
 import { tabs } from '@/state/tabState';
 import { Trash } from '@vicons/tabler';
 import { Icon } from '@vicons/utils';
-import { reactive, ref } from 'vue';
+import { reactive, ref, watch } from 'vue';
 
-const algoResults = reactive({
+const algResults = reactive({
   log: null,
-  pageFaults: null,
+  totalPageFaults: null,
 });
-const referenceStr = reactive([1, 2, 3, 4, 2, 1, 5, 6, 2, 1, 2, 3, 7]);
+const referenceStr = reactive([1, 2, 3, 4, 2, 1, 5, 6, 2, 1, 2, 3]);
 const frameCount = ref(3);
 const form = ref(null);
 
-const runAlgorithm = () => {
+const hasAlgorithmBeenRan = ref(false);
+watch([referenceStr, frameCount], () => {
+  hasAlgorithmBeenRan.value = false;
+});
+
+const addRow = () => {
+  const randPageId = Math.round((Math.random() * 9) + 1);
+  referenceStr.push(randPageId);
+};
+
+const removeRow = (index) => {
+  referenceStr.splice(index, 1);
+}
+
+const runAlgorithm = async () => {
   const isFormValid = form.value.checkValidity();
   if (!isFormValid) return form.value.reportValidity();
+  hasAlgorithmBeenRan.value = true;
 
-  const { log, pageFaults } = runPageReplacementAlgorithm(referenceStr.slice(), frameCount.value, 'fifo');
-  algoResults.log = log;
-  algoResults.pageFaults = pageFaults;
+  const { log, totalPageFaults } = runPageReplacementAlgorithm(referenceStr.slice(), frameCount.value, 'fifo');
+  algResults.log = log;
+  algResults.totalPageFaults = totalPageFaults;
 };
 </script>
