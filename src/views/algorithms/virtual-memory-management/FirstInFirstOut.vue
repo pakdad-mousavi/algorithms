@@ -86,12 +86,48 @@
 
     <template #[tabs.visualizer.id]>
       <div class="mb-10 space-y-4">
-        <!-- Visualizer goes here -->
         <h1 class="mb-4 text-xl font-semibold">
           Step By Step Illustration
         </h1>
         <hr class="mb-4 border-neutral-800">
-        <p>so thats how the algorithm works!</p>
+        <div class="flex items-end gap-x-4">
+          <div class="flex flex-col flex-1 gap-y-2">
+            <label class="font-medium">Number of Frames:</label>
+            <input type="text" class="w-full field sm:w-60" v-model="frameCount">
+          </div>
+          <button type="button" class="btn">Add Row</button>
+        </div>
+        <div class="overflow-x-auto">
+          <form class="space-y-4" ref="form">
+            <table>
+              <thead>
+                <tr>
+                  <th>Page ID</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(_, index) in referenceStr">
+                  <td>
+                    <input type="number" v-model="referenceStr[index]">
+                  </td>
+                  <td class="w-20 mx-auto text-center">
+                    <div
+                      class="flex items-center justify-center duration-100 border border-transparent rounded-md cursor-pointer bg-zinc-700 aspect-square w-7 group hover:border-rose-600 active:translate-y-1">
+                      <Icon class="text-rose-500" tag="span" size="20px">
+                        <Trash></Trash>
+                      </Icon>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <button type="submit" class="btn" @click.prevent="runAlgorithm()">Run Algorithm</button>
+          </form>
+        </div>
+
+        {{ algoResults.log }}
+        {{ algoResults.pageFaults }}
       </div>
     </template>
   </TabSwitcher>
@@ -100,5 +136,26 @@
 <script setup>
 import Figure from '@/components/general/Figure.vue';
 import TabSwitcher from '@/components/TabSwitcher.vue';
+import { runPageReplacementAlgorithm } from '@/composables/virtual-memory-management';
 import { tabs } from '@/state/tabState';
+import { Trash } from '@vicons/tabler';
+import { Icon } from '@vicons/utils';
+import { reactive, ref } from 'vue';
+
+const algoResults = reactive({
+  log: null,
+  pageFaults: null,
+});
+const referenceStr = reactive([1, 2, 3, 4, 2, 1, 5, 6, 2, 1, 2, 3, 7]);
+const frameCount = ref(3);
+const form = ref(null);
+
+const runAlgorithm = () => {
+  const isFormValid = form.value.checkValidity();
+  if (!isFormValid) return form.value.reportValidity();
+
+  const { log, pageFaults } = runPageReplacementAlgorithm(referenceStr.slice(), frameCount.value, 'fifo');
+  algoResults.log = log;
+  algoResults.pageFaults = pageFaults;
+};
 </script>
