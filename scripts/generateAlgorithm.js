@@ -25,19 +25,19 @@ const getAlgorithmDetails = async () => {
   const answers = await inquirer.prompt([
     {
       name: "algorithmName",
-      message: "What is the name of the algorithm? (e.g. Quick Sort)",
+      message: "Algorithm Name (e.g. Quick Sort):",
       validate: (input) => !!input || "Name cannot be empty!",
     },
     {
       name: "category",
       type: "list",
       loop: false,
-      message: "What category does this algorithm fall under?",
+      message: "Algorithm Category:",
       choices: ["New Category", new inquirer.Separator(), ...existingCategories],
     },
     {
       name: "newCategory",
-      message: "What is the name of the new category? (e.g. Sorting Algorithms)",
+      message: "New Category Name (e.g. Sorting Algorithms):",
       when: (answers) => answers.category === "New Category", // Only for new categories
       validate: (input) => !!input || "Category cannot be empty!",
     },
