@@ -110,8 +110,7 @@
               <button class="btn" type="button" @click.prevent="zeroOutArrivalTimes">
                 Set All Arrival Times to Zero
               </button>
-              <button class="btn" type="button" @click.prevent="addRow" :disabled="processData.length === processLimit"
-                :class="{ 'disabled': processData.length === processLimit }">
+              <button class="btn" type="button" @click.prevent="addRow" :disabled="processData.length === processLimit">
                 Add Row
               </button>
             </div>

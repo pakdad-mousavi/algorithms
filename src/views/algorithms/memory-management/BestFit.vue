@@ -57,8 +57,7 @@
               <input type="number" class="w-full field sm:w-60" min="10" max="150" required v-model="totalMemory">
             </div>
             <div class="flex gap-2">
-              <button class="btn" type="button" @click="addRow()" :disabled="actions.length === 12"
-                :class="{ 'disabled': actions.length === 12 }">
+              <button class="btn" type="button" @click="addRow()" :disabled="actions.length === 12">
                 Add Row
               </button>
             </div>

@@ -186,8 +186,7 @@
         <!-- Total resource instances -->
         <div class="flex items-end">
           <p class="flex-1 font-medium">Resource Instances:</p>
-          <button class="btn" type="button" :disabled="maxMatrix.length === resourceLimit"
-            :class="{ 'disabled': resourceInstances.length === resourceLimit }" @click="addResource">
+          <button class="btn" type="button" :disabled="maxMatrix.length === resourceLimit" @click="addResource">
             Add Resource
           </button>
         </div>
@@ -219,8 +218,7 @@
           </table>
         </div>
         <div class="flex items-end sm:justify-end gap-x-2">
-          <button class="btn" type="button" :disabled="maxMatrix.length === processLimit"
-            :class="{ 'disabled': maxMatrix.length === processLimit }" @click="addProcess">
+          <button class="btn" type="button" :disabled="maxMatrix.length === processLimit" @click="addProcess">
             Add Process
           </button>
         </div>

@@ -96,7 +96,7 @@
               <label class="font-medium">Number of Frames:</label>
               <input type="number" class="w-full field sm:w-60" min="1" max="5" v-model="frameCount">
             </div>
-            <button type="button" class="btn" @click="addRow()">Add Row</button>
+            <button type="button" class="btn" @click="addRow()" :disabled="referenceStr.length === 12">Add Row</button>
           </div>
           <div class="space-y-4 overflow-x-auto">
             <table>
