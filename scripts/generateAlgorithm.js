@@ -29,6 +29,11 @@ const getAlgorithmDetails = async () => {
       validate: (input) => !!input || "Name cannot be empty!",
     },
     {
+      name: "slug",
+      message: "Algorithm Slug (e.g. quick-sort):",
+      validate: (input) => !!input || "Name cannot be empty!",
+    },
+    {
       name: "category",
       type: "list",
       loop: false,
@@ -44,9 +49,10 @@ const getAlgorithmDetails = async () => {
   ]);
   console.log("\n"); // Extra space
 
-  const { algorithmName, category, newCategory } = answers;
+  const { algorithmName, slug, category, newCategory } = answers;
   return {
     algorithmName: algorithmName.trim(),
+    slug: slug.trim(),
     category: category.trim(),
     newCategory: newCategory?.trim(),
   };
@@ -69,11 +75,12 @@ const generateVueComponent = (componentFilePath, algorithmName) => {
 
 const appendRouteToRouterFile = (
   algorithmName,
+  slug,
   componentName,
   algorithmDirname,
   selectedCategory
 ) => {
-  const camelCaseName = algorithmName.replace(/\s+/g, "-").toLowerCase();
+  const camelCaseName = slug.replace(/\s+/g, "-").toLowerCase();
   const routeEntry = `{
   path: "/${algorithmDirname}/${camelCaseName}",
   component: () => import("@/views/algorithms/${algorithmDirname}/${componentName}.vue"),
@@ -122,9 +129,9 @@ const formatRouterWithPrettier = () => {
 };
 
 const main = async () => {
-  const { algorithmName, category, newCategory } = await getAlgorithmDetails();
+  const { algorithmName, slug, category, newCategory } = await getAlgorithmDetails();
 
-  const componentName = toPascalCase(algorithmName);
+  const componentName = toPascalCase(slug);
   const selectedCategory = newCategory ? newCategory : category;
   const algorithmDirname = selectedCategory.toLowerCase().replace(/\s+/g, "-");
 
@@ -134,7 +141,7 @@ const main = async () => {
   generateVueComponent(componentFilePath, algorithmName);
 
   // 2. Append new route to router
-  appendRouteToRouterFile(algorithmName, componentName, algorithmDirname, selectedCategory);
+  appendRouteToRouterFile(algorithmName, slug, componentName, algorithmDirname, selectedCategory);
 
   // 3. Try to format router file with prettier
   formatRouterWithPrettier();
