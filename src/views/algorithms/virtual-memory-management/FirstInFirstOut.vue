@@ -162,7 +162,7 @@ const algResults = reactive({
   log: null,
   totalPageFaults: null,
 });
-const referenceStr = reactive([1, 2, 3, 4, 2, 1, 5, 6, 2, 1, 2, 3]);
+const referenceStr = reactive([1, 2, 3, 4, 2, 1, 5, 2, 4, 5, 3, 5]);
 const frameCount = ref(3);
 const form = ref(null);
 
