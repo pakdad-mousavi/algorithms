@@ -51,7 +51,7 @@ const getAlgorithmDetails = async () => {
       message: "Would you like the algorithm view to be pre-templated?",
       default: true,
       type: "confirm",
-      validate: (input) => !!input || "",
+      validate: (input) => !!input || "Please choose a valid option!",
     },
   ]);
   console.log("\n"); // Extra space
