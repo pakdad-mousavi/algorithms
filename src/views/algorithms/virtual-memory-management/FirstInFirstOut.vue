@@ -132,7 +132,7 @@
           <p class="mb-4">
             No results to display yet, try running the algorithm...
           </p>
-          <button @click.prevent="() => runAlgorithm(parameters)" class="btn">
+          <button @click.prevent="() => runAlgorithm()" class="btn">
             Run Algorithm
           </button>
         </EmptySpace>
