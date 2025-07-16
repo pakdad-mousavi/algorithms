@@ -58,19 +58,47 @@ const getAlgorithmDetails = async () => {
   };
 };
 
-const generateVueComponent = (componentFilePath, algorithmName) => {
-  // Create directory if not exist
-  fs.mkdirSync(path.dirname(componentFilePath), { recursive: true });
-  // Get the template file
-  const templatePath = path.join(__dirname, "templates", "algorithm.vue");
-  let vueTemplate = fs.readFileSync(templatePath, "utf-8");
-  vueTemplate = vueTemplate.replace(/__ALGORITHM_NAME__/g, algorithmName);
-  // Write to file
-  fs.writeFileSync(componentFilePath, vueTemplate);
-  // Success message
-  console.log(
-    chalk.green("Successfully created ") + chalk.cyan(`${path.basename(componentFilePath)}.`)
-  );
+const generateVueComponent = (componentFilePath, algorithmName, algorithmDirname) => {
+  try {
+    // Create directory if not exist
+    fs.mkdirSync(path.dirname(componentFilePath), { recursive: true });
+    // Get the template file and replace placeholders
+    const templatePath = path.join(__dirname, "templates", "algorithm.vue");
+    let vueTemplate = fs.readFileSync(templatePath, "utf-8");
+    vueTemplate = vueTemplate.replace(/__ALGORITHM_NAME__/g, algorithmName);
+    vueTemplate = vueTemplate.replace(/__ALGORITHM_DIRNAME__/g, algorithmDirname);
+    // Write to file
+    fs.writeFileSync(componentFilePath, vueTemplate);
+    // Success message
+    console.log(
+      chalk.green("Successfully created ") + chalk.cyan(`${path.basename(componentFilePath)}.`)
+    );
+  } catch (err) {
+    console.error(chalk.red("Error: Could not generate vue component. Exiting..."));
+    exit(1);
+  }
+};
+
+const generateAlgorithmComposable = (algorithmDirname) => {
+  const templatePath = path.join(__dirname, "templates", "composable.js");
+  const composablePath = path.resolve(__dirname, `../src/composables/${algorithmDirname}.js`);
+
+  try {
+    // Read template and write to the composable
+    const composableTemplate = fs.readFileSync(templatePath, "utf-8");
+    fs.writeFileSync(composablePath, composableTemplate, { flag: "wx" }); // wx: Like 'w' but fails if the path exists
+    console.log(
+      chalk.green("Successfully created algorithm composable ") +
+        chalk.cyan(`${algorithmDirname}.js.`)
+    );
+  } catch (err) {
+    if (err.code === "EEXIST") {
+      console.log(chalk.yellow("Algorithm composable already exists, skipping..."));
+    } else {
+      console.error(err);
+      console.error(chalk.yellow("Failed to create algorithm composable. Skipping...") + "\n");
+    }
+  }
 };
 
 const appendRouteToRouterFile = (
@@ -137,17 +165,19 @@ const main = async () => {
 
   const componentFilePath = path.join(algorithmsDir, algorithmDirname, `${componentName}.vue`);
 
-  // 1. Generate .vue component file
-  generateVueComponent(componentFilePath, algorithmName);
+  console.log(chalk.gray("Create algorithm view and composable..."));
+  generateAlgorithmComposable(algorithmDirname);
+  generateVueComponent(componentFilePath, algorithmName, algorithmDirname);
 
-  // 2. Append new route to router
+  console.log(chalk.gray("\nUpdating page routes..."));
   appendRouteToRouterFile(algorithmName, slug, componentName, algorithmDirname, selectedCategory);
 
-  // 3. Try to format router file with prettier
+  console.log(chalk.gray("\nFormatting routes.js..."));
   formatRouterWithPrettier();
 
   console.log(
-    `\n"${algorithmName}" template file and route created:\n` + chalk.cyan(componentFilePath)
+    chalk.bold(`\n"${algorithmName}" algorithm created successfully! Start working: \n`) +
+      chalk.cyan(componentFilePath)
   );
 };
 
