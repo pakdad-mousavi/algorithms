@@ -46,24 +46,33 @@ const getAlgorithmDetails = async () => {
       when: (answers) => answers.category === "New Category", // Only for new categories
       validate: (input) => !!input || "Category cannot be empty!",
     },
+    {
+      name: "isTemplated",
+      message: "Would you like the algorithm view to be pre-templated?",
+      default: true,
+      type: "confirm",
+      validate: (input) => !!input || "",
+    },
   ]);
   console.log("\n"); // Extra space
 
-  const { algorithmName, slug, category, newCategory } = answers;
+  const { algorithmName, slug, category, newCategory, isTemplated } = answers;
   return {
     algorithmName: algorithmName.trim(),
     slug: slug.trim(),
     category: category.trim(),
     newCategory: newCategory?.trim(),
+    isTemplated,
   };
 };
 
-const generateVueComponent = (componentFilePath, algorithmName, algorithmDirname) => {
+const generateVueComponent = (componentFilePath, algorithmName, algorithmDirname, isTemplated) => {
   try {
     // Create directory if not exist
     fs.mkdirSync(path.dirname(componentFilePath), { recursive: true });
     // Get the template file and replace placeholders
-    const templatePath = path.join(__dirname, "templates", "algorithm.vue");
+    const templateName = isTemplated ? "templatedAlgorithm.vue" : "plainAlgorithm.vue";
+    const templatePath = path.join(__dirname, "templates", templateName);
     let vueTemplate = fs.readFileSync(templatePath, "utf-8");
     vueTemplate = vueTemplate.replace(/__ALGORITHM_NAME__/g, algorithmName);
     vueTemplate = vueTemplate.replace(/__ALGORITHM_DIRNAME__/g, algorithmDirname);
@@ -157,7 +166,7 @@ const formatRouterWithPrettier = () => {
 };
 
 const main = async () => {
-  const { algorithmName, slug, category, newCategory } = await getAlgorithmDetails();
+  const { algorithmName, slug, category, newCategory, isTemplated } = await getAlgorithmDetails();
 
   const componentName = toPascalCase(slug);
   const selectedCategory = newCategory ? newCategory : category;
@@ -166,8 +175,10 @@ const main = async () => {
   const componentFilePath = path.join(algorithmsDir, algorithmDirname, `${componentName}.vue`);
 
   console.log(chalk.gray("Create algorithm view and composable..."));
-  generateAlgorithmComposable(algorithmDirname);
-  generateVueComponent(componentFilePath, algorithmName, algorithmDirname);
+  if (isTemplated) {
+    generateAlgorithmComposable(algorithmDirname);
+  }
+  generateVueComponent(componentFilePath, algorithmName, algorithmDirname, isTemplated);
 
   console.log(chalk.gray("\nUpdating page routes..."));
   appendRouteToRouterFile(algorithmName, slug, componentName, algorithmDirname, selectedCategory);
