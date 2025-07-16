@@ -89,13 +89,7 @@
                   </td>
                   <td><input min="10" type="number" v-model="action.size" v-if="action.isAllocation"></td>
                   <td class="w-20 mx-auto text-center">
-                    <div v-if="actions.length > 1"
-                      class="flex items-center justify-center duration-100 border border-transparent rounded-md cursor-pointer bg-zinc-700 aspect-square w-7 group hover:border-rose-600 active:translate-y-1"
-                      @click="actions.splice(index, 1)">
-                      <Icon class="text-rose-500" tag="span" size="20px">
-                        <Trash></Trash>
-                      </Icon>
-                    </div>
+                    <TrashButton @click="removeRow(index)" v-if="actions.length > 1"></TrashButton>
                   </td>
                 </tr>
               </tbody>
@@ -132,10 +126,9 @@ import Memory from '@/components/algorithms/memory-management/Memory.vue';
 import EmptySpace from '@/components/general/EmptySpace.vue';
 import Figure from '@/components/general/Figure.vue';
 import { runMemoryManagementAlgorithm } from '@/composables/memory-management';
-import { Trash } from '@vicons/tabler';
-import { Icon } from '@vicons/utils';
 import { reactive, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
+import TrashButton from '@/components/general/TrashButton.vue';
 
 const router = useRouter();
 
@@ -158,6 +151,10 @@ const hasAlgorithmBeenRan = ref(false);
 watch([actions, totalMemory], () => {
   hasAlgorithmBeenRan.value = false;
 });
+
+const removeRow = (index) => {
+  actions.splice(index, 1);
+};
 
 const addRow = () => {
   const totalPIDsAllowed = totalProcesses.value;

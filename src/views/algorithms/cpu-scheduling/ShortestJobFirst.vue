@@ -150,13 +150,7 @@
                   <td><input type="number" min="0" max="10" required v-model="process[0]"></td>
                   <td><input type="number" min="1" max="20" required v-model="process[1]"></td>
                   <td class="w-20 mx-auto text-center">
-                    <div v-if="processData.length > 1"
-                      class="flex items-center justify-center duration-100 border border-transparent rounded-md cursor-pointer bg-zinc-700 aspect-square w-7 group hover:border-rose-600 active:translate-y-1"
-                      @click="removeRow(index)">
-                      <Icon class="text-rose-500" tag="span" size="20px">
-                        <Trash></Trash>
-                      </Icon>
-                    </div>
+                    <TrashButton @click="removeRow(index)" v-if="processData.length > 1"></TrashButton>
                   </td>
                 </tr>
               </tbody>
@@ -186,8 +180,6 @@
 <script setup>
 
 import Figure from '@/components/general/Figure.vue';
-import { Trash } from '@vicons/tabler';
-import { Icon } from '@vicons/utils';
 import { ref, reactive, computed } from 'vue';
 import GanttChart from '@/components/algorithms/cpu-scheduling/GanttChart.vue';
 import ProcessDetails from '@/components/algorithms/cpu-scheduling/ProcessDetails.vue';
@@ -196,6 +188,7 @@ import Alert from '@/components/general/Alert.vue';
 import { useScheduler } from '../../../composables/useScheduler';
 import { tabs } from '@/state/tabState';
 import TabSwitcher from '@/components/TabSwitcher.vue';
+import TrashButton from '@/components/general/TrashButton.vue';
 
 // Reactive variables and constants
 const form = ref(null);

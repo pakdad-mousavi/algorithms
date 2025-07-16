@@ -54,13 +54,7 @@
                   <input type="number" v-model="sampleData[outerIndex][innerIndex]" min="1" max="5">
                 </td>
                 <td class="w-20 mx-auto text-center">
-                  <div
-                    class="flex items-center justify-center duration-100 border border-transparent rounded-md cursor-pointer bg-zinc-700 aspect-square w-7 group hover:border-rose-600 active:translate-y-1"
-                    @click="removeRow(outerIndex)" v-if="sampleData.length > 1">
-                    <Icon class="text-rose-500" tag="span" size="20px">
-                      <Trash></Trash>
-                    </Icon>
-                  </div>
+                  <TrashButton @click="removeRow(outerIndex)" v-if="sampleData.length > 1"></TrashButton>
                 </td>
               </tr>
             </tbody>
@@ -74,10 +68,9 @@
 
 <script setup>
 import Figure from '@/components/general/Figure.vue';
+import TrashButton from '@/components/general/TrashButton.vue';
 import TabSwitcher from '@/components/TabSwitcher.vue';
 import { tabs } from '@/state/tabState';
-import { Trash } from '@vicons/tabler';
-import { Icon } from '@vicons/utils';
 import { reactive, ref } from 'vue';
 
 const form = ref(null);

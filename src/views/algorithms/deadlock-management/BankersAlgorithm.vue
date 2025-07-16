@@ -197,13 +197,8 @@
                 <th v-for="resourceNumber in resourceInstances.length">
                   <div class="flex items-center gap-x-2">
                     <span>R{{ resourceNumber }}</span>
-                    <div v-if="resourceInstances.length > 1"
-                      class="flex items-center justify-center duration-100 border border-transparent rounded-md cursor-pointer bg-zinc-700 aspect-square w-7 group hover:border-rose-600 active:translate-y-1"
-                      @click="removeResource(resourceNumber - 1)">
-                      <Icon class="text-rose-500" tag="span" size="20px">
-                        <Trash></Trash>
-                      </Icon>
-                    </div>
+                    <TrashButton @click="removeResource(resourceNumber - 1)" v-if="resourceInstances.length > 1">
+                    </TrashButton>
                   </div>
                 </th>
               </tr>
@@ -246,13 +241,8 @@
                       v-model="allocationMatrix[outerIndex][innerIndex]">
                   </td>
                   <td class="w-20" v-if="allocationMatrix.length > 1">
-                    <div
-                      class="flex items-center justify-center duration-100 border border-transparent rounded-md cursor-pointer bg-zinc-700 aspect-square w-7 group hover:border-rose-600 active:translate-y-1"
-                      @click="removeProcess(outerIndex)">
-                      <Icon class="text-rose-500" tag="span" size="20px">
-                        <Trash></Trash>
-                      </Icon>
-                    </div>
+                    <TrashButton @click="removeProcess(outerIndex)">
+                    </TrashButton>
                   </td>
                 </tr>
               </tbody>
@@ -281,13 +271,8 @@
                       v-model="maxMatrix[outerIndex][innerIndex]">
                   </td>
                   <td class="w-20" v-if="maxMatrix.length > 1">
-                    <div
-                      class="flex items-center justify-center duration-100 border border-transparent rounded-md cursor-pointer bg-zinc-700 aspect-square w-7 group hover:border-rose-600 active:translate-y-1"
-                      @click="removeProcess(outerIndex)">
-                      <Icon class="text-rose-500" tag="span" size="20px">
-                        <Trash></Trash>
-                      </Icon>
-                    </div>
+                    <TrashButton @click="removeProcess(outerIndex)">
+                    </TrashButton>
                   </td>
                 </tr>
               </tbody>
@@ -332,9 +317,8 @@ import Alert from '@/components/general/Alert.vue';
 import EmptySpace from '@/components/general/EmptySpace.vue';
 import Figure from '@/components/general/Figure.vue';
 import { runBankersAlgorithm } from '@/composables/bankers-algorithm';
-import { Trash } from '@vicons/tabler';
-import { Icon } from '@vicons/utils';
 import { computed, reactive, ref, toRaw, watch } from 'vue';
+import TrashButton from '@/components/general/TrashButton.vue';
 
 // Given values
 const resourceInstances = reactive([10, 5, 7]);
