@@ -53,16 +53,24 @@ const getAlgorithmDetails = async () => {
       type: "confirm",
       validate: (input) => !!input || "Please choose a valid option!",
     },
+    {
+      name: "isConfirmed",
+      message: "Confirm Algorithm Generation?",
+      default: true,
+      type: "confirm",
+      validate: (input) => !!input || "Please choose a valid option!",
+    },
   ]);
   console.log("\n"); // Extra space
 
-  const { algorithmName, slug, category, newCategory, isTemplated } = answers;
+  const { algorithmName, slug, category, newCategory, isTemplated, isConfirmed } = answers;
   return {
     algorithmName: algorithmName.trim(),
     slug: slug.trim(),
     category: category.trim(),
     newCategory: newCategory?.trim(),
     isTemplated,
+    isConfirmed,
   };
 };
 
@@ -166,7 +174,12 @@ const formatRouterWithPrettier = () => {
 };
 
 const main = async () => {
-  const { algorithmName, slug, category, newCategory, isTemplated } = await getAlgorithmDetails();
+  const { algorithmName, slug, category, newCategory, isTemplated, isConfirmed } =
+    await getAlgorithmDetails();
+
+  if (!isConfirmed) {
+    return console.log(chalk.gray("Algorithm generation cancelled."));
+  }
 
   const componentName = toPascalCase(slug);
   const selectedCategory = newCategory ? newCategory : category;
