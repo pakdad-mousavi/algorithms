@@ -79,4 +79,12 @@ export const algorithmRoutes = [
       name: "Least Recently Used (LRU)",
     },
   },
+  {
+    path: "/virtual-memory-management/optimal",
+    component: () => import("@/views/algorithms/virtual-memory-management/Optimal.vue"),
+    meta: {
+      groupName: "Virtual Memory Management",
+      name: "Optimal (MIN)",
+    },
+  },
 ];
