@@ -182,7 +182,7 @@ const main = async () => {
   }
 
   const componentName = toPascalCase(slug);
-  const selectedCategory = newCategory ? newCategory : category;
+  const selectedCategory = newCategory || category;
   const algorithmDirname = selectedCategory.toLowerCase().replace(/\s+/g, "-");
 
   const componentFilePath = path.join(algorithmsDir, algorithmDirname, `${componentName}.vue`);
