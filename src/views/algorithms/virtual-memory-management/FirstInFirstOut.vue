@@ -21,7 +21,7 @@
           allowing the OS to run more processes than if only the RAM was available, by temporarily storing unused data
           on the hard disk.
         </p>
-        <Figure src="/algorithms/virtual-memory-management/virtual-memory.svg" class="max-w-xl"
+        <Figure src="/algorithms/virtual-memory-management/fifo/virtual-memory.svg" class="max-w-xl"
           caption="Space Being Allocated to RAM From Secondary Memory"></Figure>
         <p>
           Virtual memory is split into <span class="text-main">pages</span>, each page typically worth around 4 KB of
@@ -29,7 +29,7 @@
           page. Behind the curtains, the OS and MMU use a <span class="text-main">page table</span> for each process, to
           map each of their pages to a frame.
         </p>
-        <Figure src="/algorithms/virtual-memory-management/page-to-frame-mapping.svg" class="max-w-xl"
+        <Figure src="/algorithms/virtual-memory-management/fifo/page-to-frame-mapping.svg" class="max-w-xl"
           caption="How Pages Are Mapped to Frames"></Figure>
         <p>
           Only the pages necessary for the process to run at the time are stored in the RAM, the rest are stored in the
@@ -46,7 +46,7 @@
           page table. If the page the process tried to access is currently mapped to a frame, then the translation
           occurs and access is granted immediately:
         </p>
-        <Figure src="/algorithms/virtual-memory-management/successful-page-access.svg" class="max-w-xl"
+        <Figure src="/algorithms/virtual-memory-management/fifo/successful-page-access.svg" class="max-w-xl"
           caption="An Example of How a Process Can Access Data in a Page"></Figure>
         <h2 class="mt-10 text-xl font-semibold">
           Page Faults
@@ -61,7 +61,7 @@
           which is caught by the OS. The OS then proceeds to load the page into the RAM and update the page table, after
           which the process is repeated, but now with the page in memory.
         </p>
-        <Figure src="/algorithms/virtual-memory-management/page-fault.svg" class="max-w-xl"
+        <Figure src="/algorithms/virtual-memory-management/fifo/page-fault.svg" class="max-w-xl"
           caption="An Example of a Page Fault and How It's Resolved"></Figure>
         <h2 class="mt-10 text-xl font-semibold">
           How the FIFO Algorithm Works
@@ -79,7 +79,7 @@
           The FIFO algorithm keeps track of which pages entered a frame first using a queue, and then chooses the
           first item in the queue as the victim page. Here is an example with 4 pages and 3 frames:
         </p>
-        <Figure src="/algorithms/virtual-memory-management/fifo-algorithm.svg" class="max-w-lg"
+        <Figure src="/algorithms/virtual-memory-management/fifo/fifo-algorithm.svg" class="max-w-lg"
           caption="How The FIFO Algorithm Works"></Figure>
       </div>
     </template>
