@@ -71,4 +71,12 @@ export const algorithmRoutes = [
       name: "First In First Out (FIFO)",
     },
   },
+  {
+    path: "/virtual-memory-management/least-recently-used",
+    component: () => import("@/views/algorithms/virtual-memory-management/LeastRecentlyUsed.vue"),
+    meta: {
+      groupName: "Virtual Memory Management",
+      name: "Least Recently Used (LRU)",
+    },
+  },
 ];
