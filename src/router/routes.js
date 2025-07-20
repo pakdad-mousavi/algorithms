@@ -87,4 +87,12 @@ export const algorithmRoutes = [
       name: "Optimal (MIN)",
     },
   },
+  {
+    path: "/disk-scheduling/first-come-first-serve",
+    component: () => import("@/views/algorithms/disk-scheduling/FirstComeFirstServe.vue"),
+    meta: {
+      groupName: "Disk Scheduling",
+      name: "First Come First Serve (FCFS)",
+    },
+  },
 ];
