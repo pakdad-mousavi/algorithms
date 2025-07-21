@@ -71,6 +71,10 @@
       </g>
     </g>
   </svg>
+
+  <div class="p-2 mx-auto font-medium text-center border rounded-md bg-zinc-800 border-zinc-700 w-72">
+    Total Seek Time: {{ totalSeekTime }}
+  </div>
 </template>
 
 <script setup>
