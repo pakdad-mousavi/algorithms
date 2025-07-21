@@ -91,27 +91,26 @@
           <!-- Top bar -->
           <div class="flex items-end gap-4">
             <div class="flex flex-col flex-1 gap-2">
-              <label class="font-medium">Singular Value:</label>
-              <input type="number" class="w-full field sm:max-w-max" v-model="singularValue">
+              <label class="font-medium">Current Head Position:</label>
+              <input type="number" class="field" :min="MIN_REQUEST" :max="MAX_REQUEST" v-model="headPosition">
             </div>
-            <button type="button" class="btn" :disabled="sampleData.length === 5" @click="addRow">Add Row</button>
+            <button type="button" class="btn" :disabled="diskRequests.length === 15" @click="addRow">Add Row</button>
           </div>
           <!-- Input table -->
           <table>
             <thead>
               <tr>
-                <th>Header 1</th>
-                <th>Header 2</th>
+                <th>Disk Requests</th>
                 <th></th> <!-- Extra header for delete button -->
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(vector, outerIndex) in sampleData">
-                <td v-for="(_, innerIndex) in vector">
-                  <input type="number" v-model="sampleData[outerIndex][innerIndex]" min="1" max="5">
+              <tr v-for="(_, index) in diskRequests">
+                <td>
+                  <input type="number" v-model="diskRequests[index]" :min="MIN_REQUEST" :max="MAX_REQUEST">
                 </td>
                 <td class="w-20 mx-auto text-center">
-                  <TrashButton @click="removeRow(outerIndex)" v-if="sampleData.length > 1"></TrashButton>
+                  <TrashButton @click="removeRow(index)" v-if="diskRequests.length > 1"></TrashButton>
                 </td>
               </tr>
             </tbody>
@@ -125,8 +124,8 @@
         </h2>
         <hr class="mb-4 border-neutral-800">
         <div v-if="hasAlgorithmBeenRan">
-          {{ algResults.x }}
-          {{ algResults.y }}
+          <SeekTimeGraph :ordered-requests="algResults.orderedRequests" :total-seek-time="algResults.totalSeekTime">
+          </SeekTimeGraph>
         </div>
         <EmptySpace v-else>
           <p class="mb-4">
@@ -147,36 +146,37 @@ import Figure from '@/components/general/Figure.vue';
 import TrashButton from '@/components/general/TrashButton.vue';
 import TabSwitcher from '@/components/TabSwitcher.vue';
 import { reactive, ref, watch } from 'vue';
-import { runGenericAlgorithm } from '@/composables/disk-scheduling';
+import { runDiskSchedulingAlgorithm } from '@/composables/disk-scheduling';
 import EmptySpace from '@/components/general/EmptySpace.vue';
+import SeekTimeGraph from '@/components/algorithms/disk-scheduling/SeekTimeGraph.vue';
 
 const form = ref(null);
 
 // Initialize sample data
-const sampleData = reactive([
-  [1, 2],
-  [3, 4]
-]);
-const singularValue = ref(20);
+const diskRequests = reactive([98, 183, 37, 122, 14, 124, 65, 67]);
+const headPosition = ref(53);
+const MAX_REQUEST = 199;
+const MIN_REQUEST = 0;
 
 // Store results and keep track of algorithm state
 const algResults = reactive({
-  x: null,
-  y: null,
+  orderedRequests: null,
+  totalSeekTime: null,
 });
 const hasAlgorithmBeenRan = ref(false);
 
 // Hide results
-watch([sampleData, singularValue], () => {
+watch([diskRequests, headPosition], () => {
   hasAlgorithmBeenRan.value = false;
 });
 
 const addRow = () => {
-  sampleData.push([4, 5]);
+  const randomRequest = Math.round(Math.random() * MAX_REQUEST);
+  diskRequests.push(randomRequest);
 };
 
 const removeRow = (index) => {
-  sampleData.splice(index, 1);
+  diskRequests.splice(index, 1);
 };
 
 const runAlgorithm = () => {
@@ -184,9 +184,9 @@ const runAlgorithm = () => {
   if (!isFormValid) return form.value.reportValidity();
 
   // Run the algorithm
-  const { x, y } = runGenericAlgorithm();
-  algResults.x = x;
-  algResults.y = y;
+  const { orderedRequests, totalSeekTime } = runDiskSchedulingAlgorithm(headPosition.value, diskRequests.slice(), 'fcfs');
+  algResults.orderedRequests = orderedRequests;
+  algResults.totalSeekTime = totalSeekTime;
 
   // Display results
   hasAlgorithmBeenRan.value = true;
