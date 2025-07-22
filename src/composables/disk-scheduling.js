@@ -81,7 +81,6 @@ const schedulingStrategies = {
   },
 };
 
-// Rename this to whatever specific algorithm (e.g: runSortingAlgorithm)
 export const runDiskSchedulingAlgorithm = (
   headPosition,
   diskRequests,
