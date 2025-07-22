@@ -95,4 +95,12 @@ export const algorithmRoutes = [
       name: "First Come First Serve (FCFS)",
     },
   },
+  {
+    path: "/disk-scheduling/shortest-seek-time-first",
+    component: () => import("@/views/algorithms/disk-scheduling/ShortestSeekTimeFirst.vue"),
+    meta: {
+      groupName: "Disk Scheduling",
+      name: "Shortest Seek Time First (SSTF)",
+    },
+  },
 ];
