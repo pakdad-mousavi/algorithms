@@ -8,7 +8,7 @@
           operates by responding to the closest request to the current head.
         </p>
         <p>
-          This is a disk scheduling algorithm for which basic knowledge about a hard disk is recommended. To learn more
+          This is a disk scheduling algorithm, which requires some basic knowledge about a hard disk. To learn more
           about disk architecture, see the <span class="cursor-pointer text-main"
             @click="$router.push('/disk-scheduling/first-come-first-serve')">First Come First Serve (FCFS)</span>
           algorithm.
