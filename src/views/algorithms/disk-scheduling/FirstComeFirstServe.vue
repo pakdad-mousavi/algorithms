@@ -70,7 +70,7 @@
           by the algorithm. To calculate the total seek time, the plotted points are connected and the distance between
           each point is measured and summed up:
         </p>
-        <Figure src="/algorithms/disk-scheduling/first-come-first-serve/seek-time-graph.svg" class=""
+        <Figure src="/algorithms/disk-scheduling/first-come-first-serve/seek-time-graph.svg"
           caption="A Complete Seek Time Graph"></Figure>
         <p>
           The steeper the line between two points, the lesser the seek time. When calculating the distance between the
