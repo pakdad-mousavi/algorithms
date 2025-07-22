@@ -58,6 +58,27 @@ const schedulingStrategies = {
 
     return sequence;
   },
+  look: ({ headPosition, diskRequests, headDirection }) => {
+    const pending = [headPosition, ...diskRequests];
+
+    const orderedRequests = pending.sort((a, b) => a - b);
+    const headIndex = orderedRequests.indexOf(headPosition);
+
+    let firstSegment;
+    if (headDirection === "left") {
+      // Take requests from 0 to head, then reverse
+      firstSegment = orderedRequests.splice(0, headIndex + 1).reverse();
+    } else {
+      // Take requests from head to end, then reverse remaining requests
+      firstSegment = orderedRequests.splice(headIndex, orderedRequests.length);
+      orderedRequests.reverse();
+    }
+
+    const sequence = firstSegment.concat(orderedRequests);
+    console.log(sequence);
+
+    return sequence;
+  },
 };
 
 // Rename this to whatever specific algorithm (e.g: runSortingAlgorithm)
