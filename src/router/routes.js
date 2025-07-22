@@ -103,4 +103,12 @@ export const algorithmRoutes = [
       name: "Shortest Seek Time First (SSTF)",
     },
   },
+  {
+    path: "/disk-scheduling/scan",
+    component: () => import("@/views/algorithms/disk-scheduling/Scan.vue"),
+    meta: {
+      groupName: "Disk Scheduling",
+      name: "SCAN",
+    },
+  },
 ];
