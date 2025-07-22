@@ -34,14 +34,16 @@
     <!-- Divider lines -->
     <g stroke="gray" stroke-opacity="0.5">
       <line :x1="getDividerLineXCoord(index)" y1="101" :x2="getDividerLineXCoord(index)" y2="549"
-        class="stroke-[1px] stroke-neutral-700" v-for="index in DIVIDERS" />
+        stroke-dasharray="10,5" class="stroke-[1px] stroke-neutral-700" v-for="index in DIVIDERS" />
     </g>
 
     <!-- Connector Lines -->
     <g>
-      <line :x1="x" :y1="y" class="duration-300 opacity-0 stroke-1 stroke-white"
-        :class="{ '!opacity-100': animatePoints }" :style="getAnimationDelayValueFromIndex(index, true)"
+      <line :x1="x" :y1="y" class="duration-300 opacity-0 stroke-1 stroke-white" stroke-dasharray="10,5"
+        stroke-dashoffset="0" :class="{ '!opacity-100': animatePoints }"
+        :style="getAnimationDelayValueFromIndex(index, true)"
         v-for="({ x, y }, index) in requestPoints.slice(0, requestPoints.length - 1)">
+        <animate attributeName="stroke-dashoffset" from="0" to="-15" dur="1s" repeatCount="indefinite" />
         <animate attributeName="x2" :values="`${x};${requestPoints[index + 1].x}`" dur="300ms"
           :begin="`${getAnimationDelayValueFromIndex(index)}ms`" fill="freeze"></animate>
         <animate attributeName="y2" :values="`${y};${requestPoints[index + 1].y}`" dur="300ms"
