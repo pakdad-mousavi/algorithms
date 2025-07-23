@@ -111,4 +111,12 @@ export const algorithmRoutes = [
       name: "SCAN",
     },
   },
+  {
+    path: "/disk-scheduling/look",
+    component: () => import("@/views/algorithms/disk-scheduling/Look.vue"),
+    meta: {
+      groupName: "Disk Scheduling",
+      name: "LOOK",
+    },
+  },
 ];
