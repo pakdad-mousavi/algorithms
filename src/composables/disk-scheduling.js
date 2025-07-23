@@ -54,7 +54,6 @@ const schedulingStrategies = {
     }
 
     const sequence = firstSegment.concat(orderedRequests);
-    console.log(sequence);
 
     return sequence;
   },
@@ -75,7 +74,37 @@ const schedulingStrategies = {
     }
 
     const sequence = firstSegment.concat(orderedRequests);
-    console.log(sequence);
+
+    return sequence;
+  },
+  cScan: ({ headPosition, diskRequests, headDirection }) => {
+    const MIN_TRACK = 0;
+    const MAX_TRACK = 199;
+    const pending = [headPosition, ...diskRequests];
+
+    // Include min and max tracks if needed
+    if (pending.indexOf(MIN_TRACK) === -1) {
+      pending.push(MIN_TRACK);
+    }
+    if (pending.indexOf(MAX_TRACK) === -1) {
+      pending.push(MAX_TRACK);
+    }
+
+    const orderedRequests = pending.sort((a, b) => a - b);
+    const headIndex = orderedRequests.indexOf(headPosition);
+
+    let firstSegment;
+    if (headDirection === "left") {
+      // Take requests from head to 0
+      firstSegment = orderedRequests.splice(0, headIndex + 1).reverse();
+      // Reverse remaining requests to imitate C-SCAN
+      orderedRequests.reverse();
+    } else {
+      // Take requests from head to end
+      firstSegment = orderedRequests.splice(headIndex, orderedRequests.length);
+    }
+
+    const sequence = firstSegment.concat(orderedRequests);
 
     return sequence;
   },
