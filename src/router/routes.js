@@ -119,4 +119,12 @@ export const algorithmRoutes = [
       name: "LOOK",
     },
   },
+  {
+    path: "/disk-scheduling/c-scan",
+    component: () => import("@/views/algorithms/disk-scheduling/CScan.vue"),
+    meta: {
+      groupName: "Disk Scheduling",
+      name: "C-SCAN (Circular SCAN)",
+    },
+  },
 ];
