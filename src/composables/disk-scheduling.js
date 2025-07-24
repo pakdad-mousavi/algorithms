@@ -108,6 +108,26 @@ const schedulingStrategies = {
 
     return sequence;
   },
+  cLook: ({ headPosition, diskRequests, headDirection }) => {
+    const pending = [headPosition, ...diskRequests];
+    const orderedRequests = pending.sort((a, b) => a - b);
+    const headIndex = orderedRequests.indexOf(headPosition);
+
+    let firstSegment;
+    if (headDirection === "left") {
+      // Take requests from head to 0
+      firstSegment = orderedRequests.splice(0, headIndex + 1).reverse();
+      // Reverse remaining requests to imitate C-SCAN
+      orderedRequests.reverse();
+    } else {
+      // Take requests from head to end
+      firstSegment = orderedRequests.splice(headIndex, orderedRequests.length);
+    }
+
+    const sequence = firstSegment.concat(orderedRequests);
+
+    return sequence;
+  },
 };
 
 export const runDiskSchedulingAlgorithm = (
