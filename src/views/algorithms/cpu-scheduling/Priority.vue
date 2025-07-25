@@ -7,98 +7,99 @@
           assigned a priority value, and the CPU always executes the highest-priority process available at any given
           time.
         </p>
-        <Alert :alert-style="'warning'">
+        <p>
+          It works exactly like the <span class="cursor-pointer text-main"
+            @click="$router.push('/cpu-scheduling/first-come-first-serve')">first come first serve (FCFS)</span>
+          algorithm, with the exception that it uses a <span class="text-main">priority queue</span> rather than a
+          standard queue.
+        </p>
+        <p>
+          Prior knowledge about the FCFS algorithm is needed for this algorithm. To learn more, see the <span
+            class="cursor-pointer text-main" @click="$router.push('/cpu-scheduling/first-come-first-serve')">first come
+            first serve (FCFS)</span> algorithm.
+        </p>
+        <h2 class="mt-10 text-xl font-semibold">
+          How a Priority Queue Works
+        </h2>
+        <hr class="mb-4 border-neutral-800">
+        <p>
+          A priority queue works similarly to a queue, however, it relies on a given priority field (which each item
+          has) to determine which item, or process, comes first in the queue.
+        </p>
+        <p>
+          Consider the following processes, each with a unique <span class="text-main">priority</span>. For the sake of
+          brevity, all processes are assumed to have no <span class="text-main">arrival time</span>, so that they all
+          arrive in the order defined:
+        </p>
+        <table>
+          <thead>
+            <tr>
+              <th>Process ID:</th>
+              <th>Burst Time:</th>
+              <th>Priority:</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>P1</td>
+              <td>4</td>
+              <td>3</td>
+            </tr>
+            <tr>
+              <td>P2</td>
+              <td>2</td>
+              <td>1</td>
+            </tr>
+            <tr>
+              <td>P3</td>
+              <td>3</td>
+              <td>2</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          The following diagram depicts an empty priority queue:
+        </p>
+        <Figure src="/algorithms/cpu-scheduling/priority/empty-priority-queue.svg" class="max-w-xs"
+          caption="An Empty Priority Queue"></Figure>
+        <p>
+          As processes arrive and need to enter the queue, they are placed in the queue based on their priority. Similar
+          to how VIPs can skip the queue at a fancy restaurant, processes with a higher priority are placed ahead of the
+          ones with a lower priority.
+        </p>
+        <Alert alertStyle="note">
           <p>
-            This is a non-preemptive version of this algorithm, meaning that processes are not interrupted until they
-            are completed, similar to how the first come first serve (FCFS) algorithm works.
+            Processes with a lower priority value are considered to have a higher priority than processes with higher
+            priority values. For example, P2 (with a priority of 1) has a higher priority than (P1). The lower the
+            priority value, the higher the priority.
           </p>
         </Alert>
+        <Figure src="/algorithms/cpu-scheduling/priority/items-entering-priority-queue.svg" class="max-w-xs"
+          caption="P1 to P3 Entering the Priority Queue"></Figure>
         <p>
-          Unlike algorithms like <span class="text-main">FCFS</span> or <span class="text-main">Round Robin</span>
-          that rely on arrival time or time slicing for fair process distrbution, Priority Scheduling adds a layer of
-          control, where processes in the queue are sorted based on which one is more important, allowing the system
-          to control which processes run first.
+          When it comes to removing processes from the priority queue, the process with the highest priority is removed
+          first:
         </p>
-        <p>
-          In most implementations, the priorities are given to processes in ascending order, meaning that a process
-          with a priority of 1 is more important than a process with a priority of 3.
-        </p>
-        <!-- <Figure src="/algorithms/cpu-scheduling/fcfs/customer-analogy.svg" caption="FCFS Customer Queue Analogy">
-          </Figure> -->
-        <h1 class="mb-4 text-xl font-semibold">
-          Understanding the Process
-        </h1>
+        <Figure src="/algorithms/cpu-scheduling/priority/items-leaving-priority-queue.svg" class="max-w-xl"
+          caption="P2 Leaving the Priority Queue"></Figure>
+        <h2 class="mt-10 text-xl font-semibold">
+          How the Algorithm Works
+        </h2>
         <hr class="mb-4 border-neutral-800">
-        <ol class="grid grid-cols-1 space-y-4 gap-x-4">
-          <li class="p-4 border rounded-md border-zinc-700">
-            <span class="font-medium text-main">
-              Step 1: Gather process info
-            </span>
-            <p>
-              Each process needs to have an arrival time (when the process enters the ready queue), a burst time (how
-              long the process needs), and an assigned priority (how important the process is).
-            </p>
-          </li>
-          <li class="p-4 border rounded-md border-zinc-700">
-            <span class="font-medium text-main">
-              Step 2: Track the current time
-            </span>
-            <p>
-              Initialize the system clock (usually starting at 0). This value will increase in small steps, or 1ms for
-              our case, to simulate real-time execution of the processes.
-            </p>
-          </li>
-          <li class="p-4 border rounded-md border-zinc-700">
-            <span class="font-medium text-main">
-              Step 3: Check for new arrivals
-            </span>
-            <p>
-              At each time step, check if any new processes have arrived (i.e., their arrival time matches the current
-              time). Add those to the ready queue.
-            </p>
-          </li>
-          <li class="p-4 border rounded-md border-zinc-700">
-            <span class="font-medium text-main">
-              Step 4: Pick the highest priority process
-            </span>
-            <p>
-              If the CPU is idle and there are processes in the ready queue, select the one with the highest priority
-              (lowest number). Note that if multiple processes have the same priority, then the one that arrived first
-              will be chosen by the CPU.
-            </p>
-          </li>
-          <li class="p-4 border rounded-md border-zinc-700">
-            <span class="font-medium text-main">
-              Step 5: Run the process for 1ms (or 1 unit)
-            </span>
-            <p>
-              Run the process for 1ms, then repeat step 3 to add any processes that may have arrived to the ready
-              queue. This is to ensure that the queue is up to date.
-            </p>
-          </li>
-          <li class="p-4 border rounded-md border-zinc-700">
-            <span class="font-medium text-main">
-              Step 6: Run the process until completed
-            </span>
-            <p>
-              Repeat step 5 until the entire process is completed. This is the non-preemptive version of the
-              algorithm, so there will be no interrupts; the process is fully executed.
-            </p>
-          </li>
-          <li class="p-4 border rounded-md border-zinc-700">
-            <span class="font-medium text-main">
-              Step 7: Repeat step 3 to step 7 until all processes are finished
-            </span>
-            <p>
-              Repeat all the steps stated for each process until the CPU is idle, and the ready queue is empty. For
-              additional metrics, such as the waiting time and turnaround time, make sure to record the finish time of
-              each process.
-            </p>
-          </li>
-        </ol>
-        <Figure src="/algorithms/cpu-scheduling/priority/priority-scheduling.svg"
-          caption="Priority Scheduling Algorithm">
-        </Figure>
+        <p>
+          The algorithm itself works exactly like the first come first serve algorithm, with the exception that it uses
+          a priority queue to keep track of which processes the CPU needs to run first.
+        </p>
+        <p>
+          Processes are also given a priority so that the priority queue can determine where in the list of processes to
+          insert the newly arrived process. Also note that if multiple processes have the same priority, then they will
+          enter the queue based on the order in which they arrive.
+        </p>
+        <p>
+          To learn about how exactly the first come first serve (FCFS) algorithm operates, see the <span
+            class="cursor-pointer text-main" @click="$router.push('/cpu-scheduling/first-come-first-serve')">first come
+            first serve (FCFS)</span> algorithm.
+        </p>
       </div>
     </template>
 
