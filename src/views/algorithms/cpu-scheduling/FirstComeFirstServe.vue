@@ -7,94 +7,103 @@
           algorithms, providing a straightforward way for the CPU to handle incoming processes.
         </p>
         <p>
-          As the name suggests, processes that arrive and enter the ready queue first, will be processed first.
-          However, unlike the <span class="text-main">round robin algorithm</span>, the CPU will be allocated
-          entirely
-          to that process until it is fully executed and completed. Only then will the CPU move on to the next
-          process
-          in the ready queue. FCFS is generally suitable for systems where the processes are short and arrive at
-          regular intervals.
+          As the name suggests, processes that arrive and enter the ready <span class="text-main">queue</span> first,
+          will be processed first. To learn more about how a queue works, see the <span class="cursor-pointer text-main"
+            @click="$router.push('/cpu-scheduling/round-robin')">round robin</span> algorithm.
         </p>
         <p>
-          However, although this is a much simpler algorithm to implement and also to understand, it may lead to
-          longer wait times for shorter processes if a longer one arrives first. This is commonly known as the
-          <span class="text-main">Convoy Effect</span>, and it may lead to poor processing times in terms of average
-          <span class="text-main">waiting times</span>.
+          However, unlike the round robin algorithm, the CPU will be allocated entirely to that process until it is
+          fully executed and completed. Only then will the CPU move on to the next process in the ready queue.
         </p>
-        <p>
-          Here's a simple analogy: the queue in front of the cashier. Customers with a basket containing a few items
-          will be forced to wait a long time, until the customer with a trolley worth of groceries in front of them
-          finishes scanning all their items at the cashier.
-        </p>
-        <p>
-          Regardless of the shortcomings of the FCFS algorithm, it is still one of the most well known methods and
-          can
-          provide a base for comparision against other algorithms.
-        </p>
-        <Figure src="/algorithms/cpu-scheduling/fcfs/customer-analogy.svg" caption="FCFS Customer Queue Analogy">
-        </Figure>
-        <h1 class="mb-4 text-xl font-semibold">
-          Understanding the Process
-        </h1>
+        <h2 class="mt-10 text-xl font-semibold">
+          How the Algorithm Works
+        </h2>
         <hr class="mb-4 border-neutral-800">
-        <ol class="grid grid-cols-1 space-y-4 gap-x-4">
-          <li class="p-4 border rounded-md border-zinc-700">
-            <span class="font-medium text-main">
-              Step 1: Gather process info
-            </span>
-            <p>
-              Each process is given an arrival time (when it enters the queue) and a burst time (how long it needs
-              the
-              CPU). The algorithm will be charged with running these processes one by one.
-            </p>
-          </li>
-          <li class="p-4 border rounded-md border-zinc-700">
-            <span class="font-medium text-main">
-              Step 2: Sort by arrival time
-            </span>
-            <p>
-              The processes are sorted in the order they arrive. FCFS is all about who comes first, no jumping the
-              line and no interruptions. By sorting the processes, it is clear in which order to run the processes.
-            </p>
-          </li>
-          <li class="p-4 border rounded-md border-zinc-700">
-            <span class="font-medium text-main">
-              Step 3: Execute each process one by one
-            </span>
-            <p>
-              The CPU starts at time 0. The first process in the sorted list gets the CPU right away, and the rest
-              of
-              the processes must wait until the process in the CPU is entirely executed. Once the process is
-              completed, the next process leaves the queue and enters the process.
-            </p>
-          </li>
-          <li class="p-4 border rounded-md border-zinc-700">
-            <span class="font-medium text-main">
-              Step 4: Calculate start and finish times
-            </span>
-            <p>
-              For each process, record when it started and when it finished based on the burst times and the current
-              time. These are important for later calculating the waiting time and turnaround times of the
-              processes.
-            </p>
-          </li>
-          <li class="p-4 border rounded-md border-zinc-700">
-            <span class="font-medium text-main">
-              Step 5: Compute turnaround and waiting times
-            </span>
-            <p>
-              Turnaround time = Finish time - Arrival time.
-            </p>
-            <p>
-              Waiting time = Turnaround time - Burst time.
-            </p>
-            <p>
-              These help evaluate how efficient the scheduling was.
-            </p>
-          </li>
-        </ol>
-        <Figure src="/algorithms/cpu-scheduling/fcfs/fcfs-scheduling-algorithm.svg" caption="FCFS Scheduling Algorithm">
-        </Figure>
+        <p>
+          Like the round robin algorithm, FCFS relies on a queue to keep track of which processes to process first. The
+          only difference is that FCFS does not have a <span class="text-main">time slice/quantum</span>, so it lets the
+          process execute as long as it needs to.
+        </p>
+        <p>
+          Consider the following processes:
+        </p>
+        <table>
+          <thead>
+            <tr>
+              <th>Process ID:</th>
+              <th>Arrival Time:</th>
+              <th>Burst Time:</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>P1</td>
+              <td>0</td>
+              <td>4</td>
+            </tr>
+            <tr>
+              <td>P2</td>
+              <td>1</td>
+              <td>2</td>
+            </tr>
+            <tr>
+              <td>P3</td>
+              <td>2</td>
+              <td>3</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          The <span class="text-main">arrival time</span> column tells us at what time a process enters the queue. The
+          <span class="text-main">burst time</span> tells us the total time that process needs to be in the CPU before
+          it is completed.
+        </p>
+        <p>
+          To run the FCFS algorithm, a queue and CPU are needed:
+        </p>
+        <Figure src="/algorithms/cpu-scheduling/fcfs/queue-and-cpu.svg" class="max-w-xl"
+          caption="An Example Empty Queue With 3 Slots, and an Empty CPU"></Figure>
+        <p>
+          Our clock starts at 0ms. At 0ms, process 1 (P1) arrives and enters the queue. Since the CPU is idle, the
+          algorithm will pick P1 for processing:
+        </p>
+        <Figure src="/algorithms/cpu-scheduling/fcfs/0ms-example-state.svg" class="max-w-xl"
+          caption="P1 Arrives and Enters Queue, Leaves the Queue, and Enters CPU for Processing"></Figure>
+        <p>
+          FCFS is <span class="text-main">non-preemptive</span>, so the CPU will not be interrupted until it has
+          completed executing the process for the total duration of its burst time.
+        </p>
+        <p>
+          At 1ms, P2 arrives and enters the queue:
+        </p>
+        <Figure src="/algorithms/cpu-scheduling/fcfs/1ms-example-state.svg" class="max-w-xl"
+          caption="P2 Arrives and Enters Queue"></Figure>
+        <p>
+          At 2ms, P3 arrives and enters the queue (P1 is still being processed in the CPU):
+        </p>
+        <Figure src="/algorithms/cpu-scheduling/fcfs/2ms-example-state.svg" class="max-w-xl"
+          caption="P3 Arrives and Enters Queue"></Figure>
+        <p>
+          At 3ms, no process arrives and the CPU is still processing P1 (P1 has a burst time of 4ms, so there is still
+          1ms remaining), therefore no changes occur in the queue or CPU.
+        </p>
+        <p>
+          At 4ms, P1 finishes processing and has been fully executed, therefore it no longer needs to go to the back of
+          the queue. Once the CPU is idle, the next process is picked from the queue by the algorithm for processing:
+        </p>
+        <Figure src="/algorithms/cpu-scheduling/fcfs/4ms-example-state.svg" class="max-w-xl"
+          caption="P1 Finishes Processing, and P2 Begins to Run"></Figure>
+        <p>
+          The algorithm continues to operate like this until there are no more processes remaining in the queue.
+          Calculating additional metrics such as the <span class="text-main">turnaround time</span> and <span
+            class="text-main">waiting time</span> use the same calculation stated in the round robin algorithm:
+        </p>
+        <p class="italic">
+          Turnaround Time = Completion Time - Arrival Time
+        </p>
+        <p class="italic">
+          Waiting Time = Turnaround Time - Burst Time
+        </p>
       </div>
     </template>
 
