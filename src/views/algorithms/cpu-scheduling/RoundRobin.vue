@@ -7,39 +7,170 @@
           particularly effective in time-sharing systems. Its main objective is to allocate CPU time fairly among
           all running processes, ensuring that each one receives regular access to the processor.
         </p>
+        <h2 class="mt-10 text-xl font-semibold">
+          How a Queue Works
+        </h2>
+        <hr class="mb-4 border-neutral-800">
         <p>
-          This method ensures that all processes are treated equally, preventing any single process from dominating
-          the CPU. As a result, Round Robin is particularly suitable for systems that require good response times,
-          such as interactive or multi-user environments.
+          Before learning about how the round robin algorithm operates, basic knowledge about a <span
+            class="text-main">queue</span> is needed.
         </p>
         <p>
-          In this approach, each process is assigned a fixed unit of time, known as a <span class="text-main">time
-            quantum</span> or <span class="text-main">time slice</span>. The CPU
-          scheduler maintains a queue of ready processes and allows each one to execute for a duration equal to the
-          time quantum. If a process finishes within this time, it releases the CPU. If it requires more time, it is
-          paused after the quantum expires and placed at the end of the queue to wait for another turn.
+          A queue is a data structure used to maintain a <span class="text-main">first come first serve</span> order
+          among its items, similar to how an actual queue works, for example, at a cashier in a grocer. Customers who
+          enter the queue first will scan their items first.
         </p>
-
-        <Figure src="/algorithms/cpu-scheduling/round-robin/round-robin.svg"
-          caption="Round Robin CPU Scheduling Algorithm">
+        <p>
+          To illustrate this, consider the following queue with with 4 empty slots:
+        </p>
+        <Figure src="/algorithms/cpu-scheduling/round-robin/empty-queue.svg" class="max-w-xs" caption="An Empty Queue">
         </Figure>
-
-        <Alert alertStyle="warning">
-          <template v-slot>
-            <div class="space-y-4">
-              <p>
-                This implementation of the round robin algorithm is biased towards arriving processes rather than
-                completed processes. This means that if a process arrives and finishes at the same time, the process
-                which has arrived will enter the queue first.
-              </p>
-              <p>
-                Only after the arriving process(es) are added to the queue, will the finished process leave the CPU
-                and go to the back of the queue.
-              </p>
-            </div>
-          </template>
+        <p>
+          When an item enters the queue, it goes in from the entry point and tries to get as close as it can to the exit
+          point:
+        </p>
+        <Figure src="/algorithms/cpu-scheduling/round-robin/adding-items-to-queue.svg" class="max-w-xs"
+          caption="Process 1 (P1) and 2 (P2) Entering the Queue"></Figure>
+        <p>
+          When an item is needed from the queue, it leaves from the exit point:
+        </p>
+        <Figure src="/algorithms/cpu-scheduling/round-robin/item-leaving-queue.svg" class="max-w-xl"
+          caption="Process 1 (P1) Leaving the Queue"></Figure>
+        <h2 class="mt-10 text-xl font-semibold">
+          How the Algorithm Works
+        </h2>
+        <hr class="mb-4 border-neutral-800">
+        <p>
+          The round robin algorithm uses a queue internally to keep track of which processes arrived first, and thus
+          need to be processed first. As processes arrive (based on their <span class="text-main">arrival time</span>),
+          they enter the queue and wait to be processed.
+        </p>
+        <p>
+          When a process enters the CPU for processing, it can only be processed for a certain amount of time (known as
+          <span class="text-main">time slice</span> or <span class="text-main">time quantum</span>) before it has to
+          leave and go to the back of the queue. This ensures that a large processes do not dominate the CPU.
+        </p>
+        <p>
+          Lets look at a real example with a time slice of 2:
+        </p>
+        <table>
+          <thead>
+            <tr>
+              <th>Process ID:</th>
+              <th>Arrival Time:</th>
+              <th>Burst Time:</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>P1</td>
+              <td>0</td>
+              <td>4</td>
+            </tr>
+            <tr>
+              <td>P2</td>
+              <td>1</td>
+              <td>2</td>
+            </tr>
+            <tr>
+              <td>P3</td>
+              <td>2</td>
+              <td>3</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          The <span class="text-main">arrival time</span> column tells us at what time a process enters the queue. The
+          <span class="text-main">burst time</span> tells us the total time that process needs to be in the CPU before
+          it is completed.
+        </p>
+        <p>
+          Consider the following queue and CPU:
+        </p>
+        <Figure src="/algorithms/cpu-scheduling/round-robin/queue-and-cpu.svg" class="max-w-xl"
+          caption="An Example Empty Queue With 3 Slots, and an Empty CPU"></Figure>
+        <p>
+          Our clock starts at 0ms. At 0ms, process 1 (P1) arrives and enters the queue. Since the CPU is currently empty
+          and idle, P1 then leaves the queue and enters the CPU to be processed for a maximum of 2ms (the time slice):
+        </p>
+        <Figure src="/algorithms/cpu-scheduling/round-robin/0ms-example-state.svg" class="max-w-lg"
+          caption="P1 Enters the Queue, Leaves the Queue, and Enters the CPU"></Figure>
+        <p>
+          At 1ms, the time remaining in the time slice is 1ms, so the process in the CPU can still be processed for 1ms
+          longer and thus, nothing changes besides the remaining burst time of the process (since it has been processed
+          for 1ms):
+        </p>
+        <table>
+          <thead>
+            <tr>
+              <th>Process ID:</th>
+              <th>Burst Time:</th>
+              <th>Remaining Burst Time:</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>P1</td>
+              <td>4</td>
+              <td>4ms - 1ms = 3ms</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          However, at 1ms, P2 arrives and must enter the queue, therefore the queue is updated and P2 goes in:
+        </p>
+        <Figure src="/algorithms/cpu-scheduling/round-robin/1ms-example-state.svg" class="max-w-lg"
+          caption="P2 Enters the Queue"></Figure>
+        <p>
+          At 2ms, multiple things happen. Firstly, P3 arrives at 3ms, and must enter the queue. Then, since the time
+          remaining in the time slice is now 0ms, it needs to be restarted back to 2ms and P1 must leave the CPU to free
+          it for the next process.
+        </p>
+        <p>
+          Finally, P2 needs to leave the queue and enter the CPU for processing, since the CPU is now idle.
+        </p>
+        <Figure src="/algorithms/cpu-scheduling/round-robin/2ms-example-state.svg" class="max-w-lg"
+          caption="P3 Enters the Queue, P1 Goes to the Back of the Queue, and P2 Enters the CPU"></Figure>
+        <p>
+          Since P1 was processed for 1ms longer, its remaining burst time is updated again:
+        </p>
+        <table>
+          <thead>
+            <tr>
+              <th>Process ID:</th>
+              <th>Burst Time:</th>
+              <th>Remaining Burst Time:</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>P1</td>
+              <td>4</td>
+              <td>3ms - 1ms = 2ms</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          This goes on until all processes have a remaining burst time of 0, and there are no more processes in the
+          queue. Once this occurs, the algorithm will simply wait until more processes arrive and enter the queue.
+        </p>
+        <Alert alertStyle="note">
+          <div class="space-y-4">
+            <p>
+              This implementation of the round robin algorithm is biased towards arriving processes rather than
+              completed processes. This means that if a process arrives and another process finishes during the same
+              millisecond, the process which has arrived will enter the queue first.
+            </p>
+            <p>
+              Only after the arriving process(es) are added to the queue, will the finished process leave the CPU
+              and go to the back of the queue.
+            </p>
+          </div>
         </Alert>
-
+        <h2 class="mt-10 text-xl font-semibold">
+          How To Calculate Additional Metrics
+        </h2>
+        <hr class="mb-4 border-neutral-800">
         <p>
           Additional details may also be needed to measure the performance of each process in the operating
           system, such as <span class="text-main">waiting time</span> and <span class="text-main">turnaround
@@ -50,16 +181,12 @@
           taken from when a process arrives to when it completes execution. The following formulae are used to
           calculate each value respectively:
         </p>
-        <div>
-          <p class="inline-block px-4 py-1.5 border rounded-md bg-zinc-800 border-zinc-700">
-            Turnaround Time = Completion Time - Arrival Time
-          </p>
-        </div>
-        <div>
-          <p class="inline-block px-4 py-1.5 border rounded-md bg-zinc-800 border-zinc-700">
-            Waiting Time = Turnaround Time - Burst Time
-          </p>
-        </div>
+        <p class="italic">
+          Turnaround Time = Completion Time - Arrival Time
+        </p>
+        <p class="italic">
+          Waiting Time = Turnaround Time - Burst Time
+        </p>
       </div>
     </template>
 
