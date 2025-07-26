@@ -7,111 +7,79 @@
           schedule the order by which processes are ran by the CPU. As the name suggests, the processes which require
           the shortest amount of time to complete (lowest burst time) are the ones which will be ran first.
         </p>
-        <Alert alert-style="warning">
-          <p>
-            This is a non-preemptive version of this algorithm, meaning that processes are not interrupted until they
-            are completed, similar to how the first come first serve (FCFS) algorithm works. The latter is known as
-            <span class="text-main">Shortest Remaining Time First (SRTF)</span> where a running process can be
-            interrupted if a shorter one arrives.
-          </p>
+        <p>
+          Prior knowledge of the <span class="cursor-pointer text-main"
+            @click="$router.push('/cpu-scheduling/priority')">priority scheduling algorithm</span> is recommended, as
+          SJF scheduling works exactly like priority scheduling, with the exception that the priority given to processes
+          is based on their <span class="text-main">burst time.</span>
+        </p>
+        <h2 class="mt-10 text-xl font-semibold">
+          How the Algorithm Works
+        </h2>
+        <hr class="mb-4 border-neutral-800">
+        <p>
+          SJF scheduling uses a priority queue internally to keep track of which processes to run first. The only
+          difference is that processes do not get an individual priority, but rather their priority is dependent on
+          their burst time.
+        </p>
+        <p>
+          Consider the following processes. For simplicity, it is assumed that all of them arrive at the same time:
+        </p>
+        <table>
+          <thead>
+            <tr>
+              <th>Process ID:</th>
+              <th>Burst Time:</th>
+              <th>Priority (based on burst time):</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>P1</td>
+              <td>8</td>
+              <td>2</td>
+            </tr>
+            <tr>
+              <td>P2</td>
+              <td>9</td>
+              <td>3</td>
+            </tr>
+            <tr>
+              <td>P3</td>
+              <td>3</td>
+              <td>1</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          As shown, process 2 (P2) has the highest burst time, therefore it gets the lowest priority (3). On the other
+          hand, process 1 (P1) has the lowest burst time, therefore it gets the highest priority (1).
+        </p>
+        <p>
+          The following diagram shows how these processes would be placed inside of the priority queue:
+        </p>
+        <Figure src="/algorithms/cpu-scheduling/sjf/items-entering-priority-queue.svg" class="max-w-2xs"></Figure>
+        <Alert alertStyle="note">
+          <div class="space-y-4">
+            <p>
+              This algorithm is considered to be one of the best in terms of waiting time, however it requires knowledge
+              of each process's burst time in advanced; this isn't always possible in real-world systems.
+            </p>
+            <p>
+              The algorithm may also cause <span class="text-main">starvation</span>: longer processes may never get
+              picked if shorter ones keep arriving.
+            </p>
+          </div>
         </Alert>
         <p>
-          This algorithm is considered to be one of the best in terms of waiting time, however it requires knowledge
-          of each process's burst time in advanced; this isn't always possible in real-world systems. This algorithm
-          may also cause <span class="text-main">starvation:</span> longer processes may never get picked if shorter
-          ones keep arriving.
+          The rest of the algorithm is identical to the <span class="text-main">first-come first-serve (FCFS)</span>
+          algorithm, processes are taken out of the queue one by one and processed by the CPU until they are finished.
+          If there are no more processes in the queue, the system is idle until another process needs to be executed.
         </p>
         <p>
-          Regardless of the drawbacks, this algorithm reduces the average waiting time better than the <span
-            class="text-main">First Come First Serve (FCFS)</span> algorithm in many cases, making it a simple and
-          useful way of scheduling processes in a system.
+          For an in-depth guide, see the <span class="cursor-pointer text-main"
+            @click="$router.push('/cpu-scheduling/first-come-first-serve')">first-come first-serve (FCFS) algorithm</span>.
         </p>
-        <h1 class="mb-4 text-xl font-semibold">
-          Understanding the Process
-        </h1>
-        <hr class="mb-4 border-neutral-800">
-        <ol class="grid grid-cols-1 space-y-4 gap-x-4">
-          <li class="p-4 border rounded-md border-zinc-700">
-            <span class="font-medium text-main">
-              Step 1: Gather process info
-            </span>
-            <p>
-              Each process needs to have an arrival time (when the process enters the ready queue), a burst time (how
-              long the process needs). No additional information, such as a priority, is needed.
-            </p>
-          </li>
-          <li class="p-4 border rounded-md border-zinc-700">
-            <span class="font-medium text-main">
-              Step 2: Track the current time
-            </span>
-            <p>
-              Initialize the system clock (usually starting at 0). This value will increase in small steps, or 1ms for
-              our case, to simulate real-time execution of the processes.
-            </p>
-          </li>
-          <li class="p-4 border rounded-md border-zinc-700">
-            <span class="font-medium text-main">
-              Step 3: Check for new arrivals
-            </span>
-            <p>
-              At each time step, check if any new processes have arrived (i.e., their arrival time matches the current
-              time). Add those to the ready queue.
-            </p>
-          </li>
-          <li class="p-4 border rounded-md border-zinc-700">
-            <span class="font-medium text-main">
-              Step 4: Choose the shortest job from the queue
-            </span>
-            <p>
-              If the CPU is idle and there are processes in the ready queue, select the one with the lowest burst time
-              and begin processing it. If there are multiple processes with the same burst time, then the one which
-              arrives first will be picked.
-            </p>
-          </li>
-          <li class="p-4 border rounded-md border-zinc-700">
-            <span class="font-medium text-main">
-              Step 5: Run the process for 1ms (or 1 unit)
-            </span>
-            <p>
-              Run the process for 1ms, then repeat step 3 to add any processes that may have arrived to the ready
-              queue. This is to ensure that the queue is up to date.
-            </p>
-          </li>
-          <li class="p-4 border rounded-md border-zinc-700">
-            <span class="font-medium text-main">
-              Step 6: Run the process until completed
-            </span>
-            <p>
-              Repeat step 5 until the entire process is completed. Once completed, the CPU is idle once again, ready
-              for its next process.
-            </p>
-          </li>
-          <li class="p-4 border rounded-md border-zinc-700">
-            <span class="font-medium text-main">
-              Step 7: Record completion time and update logs
-            </span>
-            <div>
-              After a process finishes, record its completion time. From this, you can calculate:
-              <ul class="list-disc list-inside">
-                <li>Turnaround Time = Completion Time - Arrival Time</li>
-                <li>Waiting Time = Turnaround Time - Burst Time</li>
-              </ul>
-            </div>
-          </li>
-          <li class="p-4 border rounded-md border-zinc-700">
-            <span class="font-medium text-main">
-              Step 8: Repeat step 3 to step 8 until all processes are finished
-            </span>
-            <p>
-              Repeat all the steps stated for each process until the CPU is idle, and the ready queue is empty. For
-              additional metrics, such as the waiting time and turnaround time, make sure to record the finish time of
-              each process.
-            </p>
-          </li>
-        </ol>
-        <Figure src="/algorithms/cpu-scheduling/sjf/shortest-job-first.svg"
-          caption="Shortest Job First Scheduling Algorithm">
-        </Figure>
       </div>
     </template>
 
