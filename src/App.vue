@@ -6,11 +6,14 @@
       <Sidebar :isSidebarVisible="isSidebarVisible" @toggle-sidebar="isSidebarVisible = !isSidebarVisible"></Sidebar>
       <div class="flex-1"></div>
       <div class="flex flex-col relative w-full lg:w-[calc(100%-288px)]">
+        <Transition name="loading-fade">
+          <div class="absolute inset-0 z-50 w-full h-full backdrop-blur-sm bg-zinc-900/50" v-if="isLoading"></div>
+        </Transition>
         <main class="relative w-full p-4 mx-auto space-y-4 mt-26 lg:mt-13 text-neutral-300 sm:w-11/12">
           <RouterView v-slot="{ Component }">
             <Transition>
-              <div :key="route.path">
-                <TabHeader v-if="route.meta.groupName !== 'Main'"></TabHeader>
+              <div :key="$route.path">
+                <TabHeader v-if="$route.meta.groupName !== 'Main'"></TabHeader>
                 <component :is="Component"></component>
               </div>
             </Transition>
@@ -23,19 +26,17 @@
 </template>
 
 <script setup>
-import { RouterView, useRoute } from "vue-router";
+import { RouterView } from "vue-router";
 import { ref, Transition, watch } from "vue";
 import Sidebar from "./components/Sidebar.vue";
 import NavBar from "./components/NavBar.vue";
 import TabHeader from "./components/TabHeader.vue";
 import Footer from "./components/Footer.vue";
-
-const route = useRoute();
+import { isLoading } from "./state/loadingState";
 
 const isSidebarVisible = ref(false);
 
 watch(isSidebarVisible, (visible) => {
   document.body.classList.toggle('overflow-hidden', visible);
 });
-
 </script>

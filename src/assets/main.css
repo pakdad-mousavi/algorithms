@@ -198,3 +198,18 @@ input[type="number"] {
 .v-enter-to {
   @apply delay-150;
 }
+
+.loading-fade-enter-active,
+.loading-fade-leave-active {
+  @apply transition-all duration-300 ease-in-out;
+}
+
+.loading-fade-enter-from,
+.loading-fade-leave-to {
+  @apply opacity-0;
+}
+
+.loading-fade-enter-to,
+.loading-fade-leave-from {
+  @apply opacity-100;
+}
