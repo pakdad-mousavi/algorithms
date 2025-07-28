@@ -23,158 +23,294 @@
       <hr class="mb-4 border-neutral-800">
       <div class="mb-10 space-y-4">
         <p>
-          In operating systems, a deadlock occurs when multiple processes are waiting for resources that are held by
-          each other. The processes are both holding the resources the other needs, and waiting for the other process
-          to release their resources (which never happens since both sides are waiting).
+          In operating systems, a <span class="text-main">deadlock</span> occurs when multiple processes are waiting for
+          resources that are held by each other. The processes are both holding the resources the other needs, and
+          waiting for the other process to release their resources (which never happens since both sides are waiting).
         </p>
         <p>
-          To put this into perspective, imagine a four-way intersection, with four cars (process A, B, C, and D) each
-          coming from different directions. All four cars want to turn left, so they move slightly into the
-          intersection and then wait for the car that's in front of them to move first.
+          Consider the following illustration:
         </p>
-        <ul class="list-disc list-inside">
-          <li><span class="text-rose-400">A</span> waits for <span class="text-amber-400">B</span></li>
-          <li><span class="text-amber-400">B</span> waits for <span class="text-main">C</span></li>
-          <li><span class="text-main">C</span> waits for <span class="text-cyan-400">D</span></li>
-          <li><span class="text-cyan-400">D</span> waits for <span class="text-rose-400">A</span></li>
-        </ul>
+        <Figure src="/algorithms/deadlock-management/bankers-algorithm/deadlock.svg" caption="An Example of a Deadlock"
+          class="max-w-xl"></Figure>
         <p>
-          All four cars are waiting in the center for their counterpart to move, so the traffic stops moving
-          completely; the cars are in a deadlock. Bankers algorithm is a way to avoid such deadlocks from happening in
-          the first place.
+          Process A is using resource A, while process B is using resource B. Process A needs resource B to complete its
+          own task, so it waits for process B to finish using resource B. However, process B needs resource A to do its
+          job, so it also starts waiting for process A to finish its tasks.
         </p>
-      </div>
-      <Figure src="/algorithms/deadlock-management/bankers-algorithm/deadlocks.svg" caption="How a Deadlock Works">
-      </Figure>
-      <h2 class="mb-4 text-xl font-semibold">
-        How it works
-      </h2>
-      <hr class="mb-4 border-neutral-800">
-      <div class="mb-10 space-y-4">
         <p>
-          The Banker's Algorithm is run everytime a process requests for more resources than it already has. It checks
-          to see if all processes can be finished if the resources needed by that process are allocated to it. This is
-          done by simulating the system to see if there is at least one order (known as the <span class="text-main">safe
-            sequence</span>) in which all processes can finish.
+          Both processes are now waiting for one another. This situation is known as a <span
+            class="text-main">deadlock</span>.
         </p>
-        <Alert alert-style="warning">
+        <h2 class="mt-10 text-xl font-semibold">
+          What is the Banker's Algorithm?
+        </h2>
+        <hr class="mb-4 border-neutral-800">
+        <p>
+          The banker's algorithm is a prevention technique used to avoid deadlocks, rather than letting them occur and
+          then trying to resolve them.
+        </p>
+        <p>
+          Lets look at a real-world analogy to use the algorithm in. Imagine that you have a bag with a limited number
+          of toys inside, and 3 picky children that want to play with the toys.
+        </p>
+        <Figure src="/algorithms/deadlock-management/bankers-algorithm/toy-analogy.svg" class="max-w-xl"
+          caption="A Toy Analogy for the Banker's Algorithm"></Figure>
+        <p>
+          Each child wants to play with the toys they like, and if more than one child wants the same toy, they don't
+          share. Instead they wait until the toy is free to play with. Once all of the toys they want are available,
+          they begin playing.
+        </p>
+        <p>
+          We know what each child wants before they start playing, and we know what each child has:
+        </p>
+        <Figure src="/algorithms/deadlock-management/bankers-algorithm/initial-toy-snapshot.svg" class="max-w-xl"
+          caption="The Toys Each Child Has and Wants"></Figure>
+        <p>
+          The algorithm tries to give the toys each child wants one by one. If it passed over all 3 children for a full
+          turn without give any toys, it means a deadlock has occurred.
+        </p>
+        <p>
+          Child A has a circle toy, but needs a star toy which we don't have in our bag, so we skip this child for now.
+          Child B wants a triangle and square toy, which we have! So we give the toys, wait for him to stop playing,
+          then take the toys back:
+        </p>
+        <Figure src="/algorithms/deadlock-management/bankers-algorithm/toy-allocation-1.svg" class="max-w-xl"
+          caption="Fulfill Child B's Toy Wants"></Figure>
+        <p>
+          Now we only have two children left, plus an additional star toy which child B was holding on to.
+        </p>
+        <p>
+          Moving on, child C wants a square, triangle, and circle toy to play with, however the only circle toy is
+          occupied by child A, so we skip the child and begin our second toy run.
+        </p>
+        <p>
+          Child A wants a star toy, so we give the star toy, wait, then take all of their toys back. The only child left
+          is child C, which gets a square, triangle and circle toy to play with:
+        </p>
+        <Figure src="/algorithms/deadlock-management/bankers-algorithm/toy-allocation-2.svg" class="max-w-md"
+          caption="Fulfill Child A's Toy Wants"></Figure>
+        <p>
+          We then fulfill child C's toy wants, and finally, there are no more children left. Since we could find a valid
+          order in which each child got to play with the toys they wanted (known formally as a <span
+            class="text-main">safe sequence</span>), we can conclude that it is possible to avoid deadlocks.
+        </p>
+        <p>
+          Now lets say child B wanted a circle toy, instead of a square toy:
+        </p>
+        <Figure src="/algorithms/deadlock-management/bankers-algorithm/toy-deadlock.svg" class="max-w-xl"
+          caption="An Toy Deadlock Amongst the Children"></Figure>
+        <p>
+          Quickly we can see, that we cannot fulfill the needs of any child. Child A has a circle and is waiting for
+          child B's star, and child B has a star and is waiting for child A's circle; a deadlock has occurred.
+        </p>
+        <Alert alertStyle="note">
           <div class="space-y-4">
             <p>
-              In real-world systems, the Banker's Algorithm is used to see if the resources requested by a process can
-              be allocated to it without risking a potential deadlock in the system, as described earlier.
+              The actual banker's algorithm runs exactly like this toy analogy, with the exception that it doesn't know
+              how many of each resource (toy) each process (child) wants. Instead, it only knows the maximum number of
+              resources a process could possibly request for.
             </p>
             <p>
-              However, for the sake of simplicity, this implementation of the algorithm will focus solely on
-              determining whether the system is currently in a safe state or not, rather than handling actual resource
-              allocation or process execution.
+              To solve this, it uses a <span class="text-main">need</span> value instead of the number of resources the
+              process wants. The need value is the worst-case scenario value, where the process requests for all of the
+              resources it can.
             </p>
           </div>
         </Alert>
-        <h3 class="mb-4 font-semibold">
-          Resource Instances
-        </h3>
-        <hr class="mb-4 border-neutral-800">
-        <p class="mb-10">
-          This is the total number of resources of each type given inside of the system. It is used, along with
-          allocated, to calculate the available values for each process. These values are needed in advanced (if
-          available values are not given).
-        </p>
-        <h3 class="mb-4 font-semibold">
-          Allocated
-        </h3>
-        <hr class="mb-4 border-neutral-800">
-        <p class="mb-10">
-          This is the number of resources of each type that have already been allocated to each process. It is used,
-          along with resource instances, to calculate the available values for each process. These values are needed
-          in advanced.
-        </p>
-        <h3 class="mb-4 font-semibold">
-          Available
-        </h3>
+        <h2 class="mt-10 text-xl font-semibold">
+          How the Algorithm Works
+        </h2>
         <hr class="mb-4 border-neutral-800">
         <p>
-          This is the number of each resource types that are available for each process. It can be calculated as:
+          The algorithm is used in two ways: to check whether the system is currently in a <span class="text-main">safe
+            state</span> (where its possible to allocate resources to all process in some order to avoid deadlock), and
+          also to make sure there are enough resources to allocate when a new process requests access to a resource.
         </p>
-        <p class="mb-10 italic text-center">Available = Resource Instance - Total Allocated Amongst Processes</p>
-        <h3 class="mb-4 font-semibold">
-          Max
-        </h3>
-        <hr class="mb-4 border-neutral-800">
-        <p class="mb-10">
-          This is the maximum resources of each type that each process may ask for. These values are needed in
-          advanced.
-        </p>
-        <h3 class="mb-4 font-semibold">
-          Need
-        </h3>
-        <hr class="mb-4 border-neutral-800">
+        <Figure src="/algorithms/deadlock-management/bankers-algorithm/using-the-algorithm.svg"
+          caption="How the Banker's Algorithm Can Be Used" class="max-w-xl"></Figure>
         <p>
-          This is what each process still may need to complete its job. For each resource type of each process, it can
-          be calculated as:
+          To understand how the algorithm works, we will be using it to identify whether a system is in a safe state for
+          the sake of simplicity.
         </p>
-        <p class="mb-10 italic text-center">Need = Max - Allocation</p>
+        <p>
+          To begin, we need an example snapshot of a system. The system will have 3 resource types (R1, R2, R3). The
+          following table states the total number of resource instances available for allocation:
+        </p>
+        <table>
+          <thead>
+            <tr>
+              <th>R1</th>
+              <th>R2</th>
+              <th>R3</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>8</td>
+              <td>3</td>
+              <td>4</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          The system will also have 3 running processes (P1, P2, P3):
+        </p>
+        <div class="flex flex-col gap-4 md:flex-row">
+          <div class="w-full space-y-2 md:w-1/2">
+            <h3 class="font-medium">Allocation:</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th>Process</th>
+                  <th>R1</th>
+                  <th>R2</th>
+                  <th>R3</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>P1</td>
+                  <td>0</td>
+                  <td>1</td>
+                  <td>0</td>
+                </tr>
+                <tr>
+                  <td>P2</td>
+                  <td>2</td>
+                  <td>0</td>
+                  <td>0</td>
+                </tr>
+                <tr>
+                  <td>P3</td>
+                  <td>3</td>
+                  <td>0</td>
+                  <td>2</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="w-full space-y-2 md:w-1/2">
+            <h3 class="font-medium">Max:</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th>Process</th>
+                  <th>R1</th>
+                  <th>R2</th>
+                  <th>R3</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>P1</td>
+                  <td>7</td>
+                  <td>5</td>
+                  <td>3</td>
+                </tr>
+                <tr>
+                  <td>P2</td>
+                  <td>3</td>
+                  <td>2</td>
+                  <td>2</td>
+                </tr>
+                <tr>
+                  <td>P3</td>
+                  <td>9</td>
+                  <td>0</td>
+                  <td>2</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <p>
+          The <span class="text-main">allocation</span> table states how many instances of each resource type are
+          already allocated (given to) each process. The <span class="text-main">max</span> table states the maximum
+          amount of each resource type that a process may request for.
+        </p>
+        <p>
+          The algorithm's work starts here.
+        </p>
+        <p>
+          First, it calculates the number of <span class="text-main">available</span> resources for each resource type.
+          This is the number of resources currently available for allocation. The following calculation is used:
+        </p>
+        <p class="italic">Total Instances - Σ Allocated Resources = Available</p>
+        <table>
+          <thead>
+            <tr>
+              <th>R1</th>
+              <th>R2</th>
+              <th>R3</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>3</td>
+              <td>2</td>
+              <td>2</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          It then calculates the <span class="text-main">need</span> for each of the process's resources. This is the
+          largest amount of resources of each resource type that a process can request for. The calculation is:
+        </p>
+        <p class="italic">Max - Allocation = Need</p>
+        <table>
+          <thead>
+            <tr>
+              <th>Process</th>
+              <th>R1</th>
+              <th>R2</th>
+              <th>R3</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>P1</td>
+              <td>7</td>
+              <td>4</td>
+              <td>3</td>
+            </tr>
+            <tr>
+              <td>P2</td>
+              <td>1</td>
+              <td>2</td>
+              <td>2</td>
+            </tr>
+            <tr>
+              <td>P3</td>
+              <td>6</td>
+              <td>0</td>
+              <td>0</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          Now, the algorithm can simulate allocating resources to each process until a <span class="text-main">safe
+            sequence</span> (order in which processes run in order to avoid deadlocks) is found, just like the toy
+          analogy.
+        </p>
+        <p>
+          What if a safe sequence can't be found? Then the system is not in a safe state, and a deadlock has occurred.
+        </p>
+        <Alert alertStyle="note">
+          <div class="space-y-4">
+            <p>
+              Note that after allocating resources to a process, the system waits until it finishes executing, and then
+              takes back all of the resources the process was using, making them available for use by other processes.
+            </p>
+            <p>
+              This is why the allocated resources of each process are added back to the available after a successful
+              allocation attempt.
+            </p>
+          </div>
+        </Alert>
+        <p>
+          To see a complete example of the banker's algorithm, see the algorithm visualizer on this page.
+        </p>
       </div>
-      <h2 class="mb-4 text-xl font-semibold">
-        Understanding the process
-      </h2>
-      <hr class="mb-4 border-neutral-800">
-      <ol class="grid grid-cols-1 space-y-4 gap-x-4">
-        <li class="p-4 border rounded-md border-zinc-700">
-          <span class="font-medium text-main">
-            Step 1: Gather initial system information
-          </span>
-          <p>
-            The system needs to have each resources total instances, an allocation matrix, and a max matrix. Both the
-            available vector and the need matrix can be calculated from the values above if not provided.
-          </p>
-        </li>
-        <li class="p-4 border rounded-md border-zinc-700">
-          <span class="font-medium text-main">
-            Step 2: Calculate the available vector and the need matrix
-          </span>
-          <p class="mb-4">
-            To calculate the available matrix, sum up all of the allocated resources of each resource type, then
-            subtract each of the values from their corresponding resource types' total instance. Then, for each
-            process <span class="italic">i</span> and resource <span class="italic">j</span>, use the allocation and
-            max matries to calculate the need matrix with:
-          </p>
-          <p class="font-mono italic text-center">
-            Need[i][j] = Max[i][j] - Allocation[i][j]
-          </p>
-        </li>
-        <li class="p-4 border rounded-md border-zinc-700">
-          <span class="font-medium text-main">
-            Step 3: Find a valid process
-          </span>
-          <p>
-            Take the first process from the list of processes which is not yet finished, and check to see if all
-            resources in the need for this process are less than or equal to the available vector.
-          </p>
-        </li>
-        <li class="p-4 border rounded-md border-zinc-700">
-          <span class="font-medium text-main">
-            Step 4: Simulate the process finishing
-          </span>
-          <p>
-            If such a process is found, add each of the resources that were allocated to it back to the available
-            vector respectively. Mark this process as finished, add it to the safe sequence, and repeat step 4.
-          </p>
-        </li>
-        <li class="p-4 border rounded-md border-zinc-700">
-          <span class="font-medium text-main">
-            Step 5: Determine safe or unsafe state
-          </span>
-          <p>
-            If all of the processes are marked as finished, then the system is in a safe state when the algorithm
-            began. The safe sequence shows the order in which the processes can run until they're completed. However,
-            if no process can be found in step 4, and, not all of the processes are marked as finished, the system is
-            in an unsafe state and deadlock may occur.
-          </p>
-        </li>
-      </ol>
-      <Figure src="/algorithms/deadlock-management/bankers-algorithm/bankers-algorithm.svg"
-        caption="Banker's Algorithm Overview">
-      </Figure>
     </template>
 
     <template #[tabs.visualizer.id]>
