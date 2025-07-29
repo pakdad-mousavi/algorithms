@@ -12,9 +12,10 @@
         <main class="relative w-full p-4 mx-auto space-y-4 mt-26 lg:mt-13 text-neutral-300 sm:w-11/12">
           <RouterView v-slot="{ Component }">
             <Transition>
-              <div :key="$route.path">
+              <div :key="$route.path" class="relative w-full">
                 <TabHeader v-if="$route.meta.groupName !== 'Main'"></TabHeader>
                 <component :is="Component"></component>
+                <TabFooter v-if="$route.meta.groupName !== 'Main'"></TabFooter>
               </div>
             </Transition>
           </RouterView>
@@ -33,6 +34,7 @@ import NavBar from "./components/NavBar.vue";
 import TabHeader from "./components/TabHeader.vue";
 import Footer from "./components/Footer.vue";
 import { isLoading } from "./state/loadingState";
+import TabFooter from "./components/TabFooter.vue";
 
 const isSidebarVisible = ref(false);
 
