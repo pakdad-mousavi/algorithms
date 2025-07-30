@@ -1,5 +1,5 @@
 <template>
-  <div class="fixed w-full mx-auto duration-300 -translate-x-1/2 opacity-0 left-1/2 -bottom-10"
+  <div class="fixed w-full mx-auto duration-300 -translate-x-1/2 opacity-0 left-1/2 -bottom-10 z-[99]"
     :class="{ '!opacity-100 !bottom-10': isTabFooterRevealed }">
     <div class="flex items-center justify-end px-4 mx-auto sm:w-11/12">
       <div class="flex items-center justify-end w-full mx-auto overflow-x-hidden rounded-r-full max-w-7xl">
