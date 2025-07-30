@@ -19,9 +19,9 @@
 
       <ul class="ml-3 border-l-[1px] border-neutral-700 space-y-1 mb-6">
         <li v-for="(route, routeIndex) in routes" :key="routeIndex"
-          class="duration-100 cursor-pointer hover:bg-neutral-800 rounded-r-md first:mt-1">
-          <RouterLink :to="route.path" class="block w-full h-full p-2 py-2 rounded-r-md"
-            @click="emit('on-change-algorithm', [groupName, route.meta.name])">
+          class="duration-100 cursor-pointer hover:bg-neutral-800 rounded-r-md first:mt-1"
+          :data-is-active-link="route.path === $route.fullPath" ref="links">
+          <RouterLink :to="route.path" class="block w-full h-full p-2 py-2 rounded-r-md">
             {{ route.meta.name }}
           </RouterLink>
         </li>
@@ -31,8 +31,8 @@
 </template>
 
 <script setup>
-import { reactive } from 'vue';
-import { RouterLink, useRouter } from 'vue-router'
+import { nextTick, reactive, ref, watch } from 'vue';
+import { RouterLink, useRoute, useRouter } from 'vue-router'
 import { Icon } from '@vicons/utils';
 import {
   ChevronRight24Filled,
@@ -51,7 +51,10 @@ const groupIcons = [
   VmdkDisk
 ];
 
+const links = ref(null);
+
 // Use to render algorithms based on their groups
+const route = useRoute();
 const router = useRouter();
 const routes = router.getRoutes();
 const groupedRoutes = Object.groupBy(routes, ({ meta }) => meta.groupName);
@@ -60,4 +63,16 @@ const groupedRoutes = Object.groupBy(routes, ({ meta }) => meta.groupName);
 const isMinimized = reactive(new Array(Object.keys(groupedRoutes).length - 1).fill(false));
 
 const emit = defineEmits(['on-change-algorithm']);
+
+// Emit an event whenever the route is changed with the active link element
+const handleRouteChange = async () => {
+  await nextTick(() => {
+    const activeLink = links.value.find((link) => link.dataset.isActiveLink === 'true');
+    emit('on-change-algorithm', activeLink);
+  });
+};
+
+watch(() => route.fullPath, async () => {
+  await handleRouteChange();
+});
 </script>
