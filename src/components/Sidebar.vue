@@ -2,7 +2,7 @@
   <div v-if="isSidebarVisible" class="fixed inset-0 z-50 h-vh bg-black/30" @click.self="emit('toggle-sidebar')">
   </div>
   <aside
-    class="lg:flex flex-col -translate-x-[calc(100%+17px)] lg:translate-x-0 duration-300 fixed w-72 bg-zinc-900 border-r-[1px] border-neutral-800 h-svh lg:h-[calc(100svh-52px)] overflow-y-scroll scrollbar z-60 lg:mt-13"
+    class="lg:flex flex-col -translate-x-[calc(100%+17px)] lg:translate-x-0 duration-300 fixed w-72 bg-zinc-900 border-r-[1px] border-neutral-800 h-dvh lg:h-[calc(100svh-52px)] overflow-y-scroll scrollbar z-60 lg:mt-13"
     :class="{ 'translate-x-0': isSidebarVisible }">
     <div class="flex items-center px-4 py-3.25 border-b-[1px] border-neutral-800 lg:hidden">
       <div class="flex-1">
