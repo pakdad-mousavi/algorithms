@@ -16,14 +16,13 @@
             ensures that there is always enough money in the bank to avoid bankruptcy.
           </p>
         </Alert>
-      </div>
-      <h2 class="mb-4 text-xl font-semibold">
-        The Deadlock Problem
-      </h2>
-      <hr class="mb-4 border-neutral-800">
-      <div class="mb-10 space-y-4">
+        <h2 class="mt-10 text-xl font-semibold">
+          The Deadlock Problem
+        </h2>
+        <hr class="mb-4 border-neutral-800">
         <p>
-          In operating systems, a <span class="text-main">deadlock</span> occurs when multiple processes are waiting for
+          In operating systems, a <span class="text-main">deadlock</span> occurs when multiple processes are waiting
+          for
           resources that are held by each other. The processes are both holding the resources the other needs, and
           waiting for the other process to release their resources (which never happens since both sides are waiting).
         </p>
@@ -33,8 +32,10 @@
         <Figure src="/algorithms/deadlock-management/bankers-algorithm/deadlock.svg" caption="An Example of a Deadlock"
           class="max-w-xl"></Figure>
         <p>
-          Process A is using resource A, while process B is using resource B. Process A needs resource B to complete its
-          own task, so it waits for process B to finish using resource B. However, process B needs resource A to do its
+          Process A is using resource A, while process B is using resource B. Process A needs resource B to complete
+          its
+          own task, so it waits for process B to finish using resource B. However, process B needs resource A to do
+          its
           job, so it also starts waiting for process A to finish its tasks.
         </p>
         <p>
@@ -66,11 +67,13 @@
         <Figure src="/algorithms/deadlock-management/bankers-algorithm/initial-toy-snapshot.svg" class="max-w-xl"
           caption="The Toys Each Child Has and Wants"></Figure>
         <p>
-          The algorithm tries to give the toys each child wants one by one. If it passed over all 3 children for a full
+          The algorithm tries to give the toys each child wants one by one. If it passed over all 3 children for a
+          full
           turn without give any toys, it means a deadlock has occurred.
         </p>
         <p>
-          Child A has a circle toy, but needs a star toy which we don't have in our bag, so we skip this child for now.
+          Child A has a circle toy, but needs a star toy which we don't have in our bag, so we skip this child for
+          now.
           Child B wants a triangle and square toy, which we have! So we give the toys, wait for him to stop playing,
           then take the toys back:
         </p>
@@ -84,13 +87,15 @@
           occupied by child A, so we skip the child and begin our second toy run.
         </p>
         <p>
-          Child A wants a star toy, so we give the star toy, wait, then take all of their toys back. The only child left
+          Child A wants a star toy, so we give the star toy, wait, then take all of their toys back. The only child
+          left
           is child C, which gets a square, triangle and circle toy to play with:
         </p>
         <Figure src="/algorithms/deadlock-management/bankers-algorithm/toy-allocation-2.svg" class="max-w-md"
           caption="Fulfill Child A's Toy Wants"></Figure>
         <p>
-          We then fulfill child C's toy wants, and finally, there are no more children left. Since we could find a valid
+          We then fulfill child C's toy wants, and finally, there are no more children left. Since we could find a
+          valid
           order in which each child got to play with the toys they wanted (known formally as a <span
             class="text-main">safe sequence</span>), we can conclude that it is possible to avoid deadlocks.
         </p>
@@ -106,13 +111,16 @@
         <Alert alertStyle="note">
           <div class="space-y-4">
             <p>
-              The actual banker's algorithm runs exactly like this toy analogy, with the exception that it doesn't know
+              The actual banker's algorithm runs exactly like this toy analogy, with the exception that it doesn't
+              know
               how many of each resource (toy) each process (child) wants. Instead, it only knows the maximum number of
               resources a process could possibly request for.
             </p>
             <p>
-              To solve this, it uses a <span class="text-main">need</span> value instead of the number of resources the
-              process wants. The need value is the worst-case scenario value, where the process requests for all of the
+              To solve this, it uses a <span class="text-main">need</span> value instead of the number of resources
+              the
+              process wants. The need value is the worst-case scenario value, where the process requests for all of
+              the
               resources it can.
             </p>
           </div>
@@ -123,13 +131,15 @@
         <hr class="mb-4 border-neutral-800">
         <p>
           The algorithm is used in two ways: to check whether the system is currently in a <span class="text-main">safe
-            state</span> (where its possible to allocate resources to all process in some order to avoid deadlock), and
+            state</span> (where its possible to allocate resources to all process in some order to avoid deadlock),
+          and
           also to make sure there are enough resources to allocate when a new process requests access to a resource.
         </p>
         <Figure src="/algorithms/deadlock-management/bankers-algorithm/using-the-algorithm.svg"
           caption="How the Banker's Algorithm Can Be Used" class="max-w-xl"></Figure>
         <p>
-          To understand how the algorithm works, we will be using it to identify whether a system is in a safe state for
+          To understand how the algorithm works, we will be using it to identify whether a system is in a safe state
+          for
           the sake of simplicity.
         </p>
         <p>
@@ -232,7 +242,8 @@
           The algorithm's work starts here.
         </p>
         <p>
-          First, it calculates the number of <span class="text-main">available</span> resources for each resource type.
+          First, it calculates the number of <span class="text-main">available</span> resources for each resource
+          type.
           This is the number of resources currently available for allocation. The following calculation is used:
         </p>
         <p class="italic">Total Instances - Σ Allocated Resources = Available</p>
@@ -298,7 +309,8 @@
         <Alert alertStyle="note">
           <div class="space-y-4">
             <p>
-              Note that after allocating resources to a process, the system waits until it finishes executing, and then
+              Note that after allocating resources to a process, the system waits until it finishes executing, and
+              then
               takes back all of the resources the process was using, making them available for use by other processes.
             </p>
             <p>
