@@ -1,0 +1,38 @@
+name: Index Algolia Results
+
+on:
+  push:
+    branches: ["main"]
+
+    # Only runs this workflow when there's a change in:
+    paths:
+      - "src/views/algorithms/**" # Algorithm files
+      - "scripts/algolia/**" # Indexing scripts
+      - ".github/workflows/**" # Workflows
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  index-algolia:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Index to Algolia
+        # Set up environment variables
+        env:
+          ALGOLIA_APP_ID: ${{ secrets.ALGOLIA_APP_ID }}
+          ALGOLIA_WRITE_API_KEY: ${{ secrets.ALGOLIA_WRITE_API_KEY }}
+          SAVE_ALGOLIA_JSON: "false"
+        run: node scripts/algolia/indexResults.js
