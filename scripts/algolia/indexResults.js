@@ -17,8 +17,8 @@ const saveRecordsToFile = async (records) => {
 const main = async () => {
   const { ALGOLIA_APP_ID, ALGOLIA_WRITE_API_KEY, SAVE_ALGOLIA_JSON } = process.env;
   const records = await generateAlgoliaRecords();
-  // Optional: save to file for inspection
-  if (SAVE_ALGOLIA_JSON) {
+  // Only during development/debugging: save to file for inspection
+  if (SAVE_ALGOLIA_JSON === "true") {
     await saveRecordsToFile(records);
   }
 
