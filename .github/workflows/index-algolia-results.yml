@@ -2,7 +2,7 @@ name: Index Algolia Results
 
 on:
   push:
-    branches: ["main"]
+    branches: [main]
 
     # Only runs this workflow when there's a change in:
     paths:
@@ -24,7 +24,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '21.5.0'
+          node-version: 21.5.0
 
       - name: Install dependencies
         run: npm ci
@@ -34,5 +34,5 @@ jobs:
         env:
           ALGOLIA_APP_ID: ${{ secrets.ALGOLIA_APP_ID }}
           ALGOLIA_WRITE_API_KEY: ${{ secrets.ALGOLIA_WRITE_API_KEY }}
-          SAVE_ALGOLIA_JSON: "false"
+          NODE_ENV: production
         run: node scripts/algolia/indexResults.js

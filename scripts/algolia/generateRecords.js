@@ -137,7 +137,8 @@ export default async () => {
       const regex = /import\("(.*?)"\)/;
       const componentPath = componentStr.match(regex)[1];
       const componentName = path.basename(componentPath);
-      return entry.name === componentName;
+      const componentDirname = path.basename(path.dirname(componentPath));
+      return entry.name === componentName && entry.parentPath.endsWith(componentDirname);
     });
 
     const objectID = route?.path;

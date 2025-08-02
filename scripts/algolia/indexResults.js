@@ -15,16 +15,17 @@ const saveRecordsToFile = async (records) => {
 };
 
 const main = async () => {
-  const { ALGOLIA_APP_ID, ALGOLIA_WRITE_API_KEY, SAVE_ALGOLIA_JSON } = process.env;
+  const { ALGOLIA_APP_ID, ALGOLIA_WRITE_API_KEY, NODE_ENV } = process.env;
   const records = await generateAlgoliaRecords();
-  // Only during development/debugging: save to file for inspection
-  if (SAVE_ALGOLIA_JSON === "true") {
+  console.log(NODE_ENV);
+  if (NODE_ENV === "production") {
+    // Index algolia records
+    const client = algoliasearch(ALGOLIA_APP_ID, ALGOLIA_WRITE_API_KEY);
+    await client.saveObjects({ indexName: "algorithms_index", objects: records });
+  } else {
+    // Only during development/debugging: save to file for inspection
     await saveRecordsToFile(records);
   }
-
-  // Index to algolia
-  const client = algoliasearch(ALGOLIA_APP_ID, ALGOLIA_WRITE_API_KEY);
-  await client.saveObjects({ indexName: "algorithms_index", objects: records });
 };
 
 (async () => main())();
