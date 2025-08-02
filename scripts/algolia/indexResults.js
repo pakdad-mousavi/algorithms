@@ -21,7 +21,7 @@ const main = async () => {
   if (NODE_ENV === "production") {
     // Index algolia records
     const client = algoliasearch(ALGOLIA_APP_ID, ALGOLIA_WRITE_API_KEY);
-    await client.saveObjects({ indexName: "algorithms_index", objects: records });
+    await client.replaceAllObjects({ indexName: "algorithms_index", objects: records });
   } else {
     // Only during development/debugging: save to file for inspection
     await saveRecordsToFile(records);
