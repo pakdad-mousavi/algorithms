@@ -26,7 +26,7 @@
         </p>
         <Figure src="/algorithms/virtual-memory-management/lru/empty-lru-cache.svg" caption="An empty LRU cache."
           class="max-w-sm"></Figure>
-        <Alert>
+        <Alert alertStyle="warning">
           <p>
             To demonstrate how this algorithm works, an LRU cache is used in this tutorial. However in real computer
             systems, the OS often estimates which page was least recently used rather than implementing an actual LRU

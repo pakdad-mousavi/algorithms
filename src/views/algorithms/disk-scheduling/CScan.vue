@@ -26,17 +26,20 @@
         <p>
           To illustrate this, we need a set of disk requests, and a current head position:
         </p>
-        <Figure src="/algorithms/disk-scheduling/c-scan/disk-requests.svg" class="max-w-lg"></Figure>
+        <Figure src="/algorithms/disk-scheduling/c-scan/disk-requests.svg" caption="A Set of Disk Requests"
+          class="max-w-lg"></Figure>
         <p>
           Then, lets order the requests from smallest to largest, including the first and the last track of the disk (0
           and 199):
         </p>
-        <Figure src="/algorithms/disk-scheduling/c-scan/ordered-disk-requests.svg" class="max-w-xl"></Figure>
+        <Figure src="/algorithms/disk-scheduling/c-scan/ordered-disk-requests.svg"
+          caption="Disk Requests Sorted in Ascending Order" class="max-w-xl"></Figure>
         <p>
           Now, C-SCAN assumes that the requests are all put inside of a circle (hence the name), so to understand how it
           works, we need to connect the first and last track together and form a circular queue of disk requests:
         </p>
-        <Figure src="/algorithms/disk-scheduling/c-scan/circular-disk-requests.svg" class="max-w-md"></Figure>
+        <Figure src="/algorithms/disk-scheduling/c-scan/circular-disk-requests.svg"
+          caption="The Left-Most and Right-Most Tracks Connected Together" class="max-w-md"></Figure>
         <p>
           The <span class="text-main">head direction</span> determines whether the C-SCAN algorithm goes towards the
           left or the right.
@@ -46,7 +49,8 @@
           left, responding to any pending requests. If you look carefully, you'll notice how there's a huge gap from the
           first track and the last track (0 - 199):
         </p>
-        <Figure src="/algorithms/disk-scheduling/c-scan/c-scan-left.svg" class="max-w-xl"></Figure>
+        <Figure src="/algorithms/disk-scheduling/c-scan/c-scan-left.svg"
+          caption="C-SCAN Algorithm with a Left Head Direction" class="max-w-xl"></Figure>
         <Alert alert-style="note">
           <p>
             The jump from 0 to 199 is important because in reality, the tracks of the disk are not arranged in a
@@ -58,12 +62,14 @@
           Similarly, if the head direction is right, then the C-SCAN algorithm will travel right and service any
           requests along the way:
         </p>
-        <Figure src="/algorithms/disk-scheduling/c-scan/c-scan-right.svg" class="max-w-xl"></Figure>
+        <Figure src="/algorithms/disk-scheduling/c-scan/c-scan-right.svg"
+          caption="C-SCAN Algorithm with a Right Head Direction" class="max-w-xl"></Figure>
         <p>
           Now, using the final order of the requests, a <span class="text-main">seek-time graph</span> can be plotted.
           The following graph illustrates the seek-time graph for the points shown earlier, with a left head direction:
         </p>
-        <Figure src="/algorithms/disk-scheduling/c-scan/c-scan-seek-time-graph.svg"></Figure>
+        <Figure src="/algorithms/disk-scheduling/c-scan/c-scan-seek-time-graph.svg"
+          caption="The Seek Time Graph for the C-LOOK Algorithm"></Figure>
       </div>
     </template>
 

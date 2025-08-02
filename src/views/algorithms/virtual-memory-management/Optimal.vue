@@ -22,7 +22,7 @@
           The optimal algorithm is by far the most efficient page replacement algorithm. It has the least amount of page
           faults amongst all other page replacement algorithms.
         </p>
-        <Alert>
+        <Alert alertStyle="warning">
           <p>
             Although the optimal algorithm is the most efficient algorithm, it isn't realistic to implement, as it needs
             to know which pages are going to be requested in the future. However, it is still used as a benchmarking

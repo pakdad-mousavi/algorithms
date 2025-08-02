@@ -25,17 +25,21 @@
         <p>
           To illustrate this, we need a set of disk requests, and a current head position:
         </p>
-        <Figure src="/algorithms/disk-scheduling/c-look/disk-requests.svg" class="max-w-lg"></Figure>
+        <Figure src="/algorithms/disk-scheduling/c-look/disk-requests.svg" caption="A Set of Disk Requests"
+          class="max-w-lg"></Figure>
         <p>
           Then, lets order the requests from smallest to largest. Unlike C-SCAN, including the first and last track of
           the disk is unnecessary:
         </p>
-        <Figure src="/algorithms/disk-scheduling/c-look/ordered-disk-requests.svg" class="max-w-lg"></Figure>
+        <Figure src="/algorithms/disk-scheduling/c-look/ordered-disk-requests.svg"
+          caption="Disk Requests Sorted in Ascending Order" class="max-w-lg"></Figure>
         <p>
           Just like C-SCAN, C-LOOK assumes that the requests are ordered in a circular manner. To illustrate this, the
           first and last request need to be connected together:
         </p>
-        <Figure src="/algorithms/disk-scheduling/c-look/circular-disk-requests.svg" class="max-w-md"></Figure>
+        <Figure src="/algorithms/disk-scheduling/c-look/circular-disk-requests.svg"
+          caption="The Left-Most and Right-Most Tracks Connected Together" class="max-w-md">
+        </Figure>
         <p>
           The <span class="text-main">head direction</span> determines whether the C-SCAN algorithm goes towards the
           left or the right.
@@ -45,12 +49,13 @@
           left, responding to any pending requests. If you look carefully, you'll notice how there's a large gap from
           the first request and the last request (14 - 183):
         </p>
-        <Figure src="/algorithms/disk-scheduling/c-look/c-look-left.svg" class="max-w-lg"></Figure>
+        <Figure src="/algorithms/disk-scheduling/c-look/c-look-left.svg"
+          caption="C-LOOK Algorithm with a Left Head Direction" class="max-w-lg"></Figure>
         <p>
           Although there is a large gap, it is smaller than C-SCAN, as it avoids always scanning until the end of the
           disk.
         </p>
-        <Alert alert-style="note">
+        <Alert alertStyle="note">
           <p>
             The jump from 0 to 199 is important because in reality, the tracks of the disk are not arranged in a
             circular manner, so the disk head cannot go from 199 to 0 in 1 unit. It will actually have to travel back to
@@ -65,7 +70,8 @@
           Now, using the final order of the requests, a <span class="text-main">seek-time graph</span> can be plotted.
           The following graph illustrates the seek-time graph for the points shown earlier, with a left head direction:
         </p>
-        <Figure src="/algorithms/disk-scheduling/c-look/c-look-seek-time-graph.svg"></Figure>
+        <Figure src="/algorithms/disk-scheduling/c-look/c-look-seek-time-graph.svg"
+          caption="The Seek Time Graph for the C-LOOK Algorithm"></Figure>
       </div>
     </template>
 

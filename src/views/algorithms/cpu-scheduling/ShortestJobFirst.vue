@@ -58,7 +58,8 @@
         <p>
           The following diagram shows how these processes would be placed inside of the priority queue:
         </p>
-        <Figure src="/algorithms/cpu-scheduling/sjf/items-entering-priority-queue.svg" class="max-w-2xs"></Figure>
+        <Figure src="/algorithms/cpu-scheduling/sjf/items-entering-priority-queue.svg"
+          caption="How Items Enter a Priority Queue" class="max-w-2xs"></Figure>
         <Alert alertStyle="note">
           <div class="space-y-4">
             <p>
@@ -78,7 +79,8 @@
         </p>
         <p>
           For an in-depth guide, see the <span class="cursor-pointer text-main"
-            @click="$router.push('/cpu-scheduling/first-come-first-serve')">first-come first-serve (FCFS) algorithm</span>.
+            @click="$router.push('/cpu-scheduling/first-come-first-serve')">first-come first-serve (FCFS)
+            algorithm</span>.
         </p>
       </div>
     </template>

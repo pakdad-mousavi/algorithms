@@ -27,7 +27,8 @@
           To illustrate this, consider the following diagram, with disk requests plotted horizontally without any
           vertical order:
         </p>
-        <Figure src="/algorithms/disk-scheduling/look/direction-of-head.svg" class="max-w-2xl"></Figure>
+        <Figure src="/algorithms/disk-scheduling/look/direction-of-head.svg" caption="Direction of Head Variations"
+          class="max-w-2xl"></Figure>
         <p>
           The <span class="text-main">head direction</span> determines whether the LOOK algorithm first goes to the left
           most request, or towards the right most request.
@@ -36,13 +37,15 @@
           The following diagram shows how the algorithm would serve the pending disk requests if the direction of the
           head was towards the left. It also displays the final order of the requests served:
         </p>
-        <Figure src="/algorithms/disk-scheduling/look/look-left-to-right.svg" class="max-w-3xl"></Figure>
+        <Figure src="/algorithms/disk-scheduling/look/look-left-to-right.svg"
+          caption="An Example of Left Head Direction" class="max-w-3xl"></Figure>
         <p>
           Once the order in which the requests are served is determined, a <span class="text-main">seek time
             graph</span> can be drawn to determine the total seek time. The following diagram shows the seek time graph
           for the algorithm with a left head direction:
         </p>
-        <Figure src="/algorithms/disk-scheduling/look/look-seek-time-graph.svg"></Figure>
+        <Figure src="/algorithms/disk-scheduling/look/look-seek-time-graph.svg"
+          caption="The Seek Time Graph for the Look Algorithm"></Figure>
       </div>
     </template>
 
