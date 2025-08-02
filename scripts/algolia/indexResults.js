@@ -6,7 +6,7 @@ import fs from "fs/promises";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const TMP_RECORDS_FILEPATH = path.resolve(__dirname, "./tmp/algoliaRecords.json");
+const TMP_RECORDS_FILEPATH = path.resolve(__dirname, "tmp/algoliaRecords.json");
 
 const saveRecordsToFile = async (records) => {
   try {

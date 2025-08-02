@@ -7,7 +7,7 @@ import { algorithmRoutes } from "../../src/router/routes.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const ALGORITHMS_DIR = path.resolve(__dirname, "../src/views/algorithms");
+const ALGORITHMS_DIR = path.resolve(__dirname, "src/views/algorithms");
 
 const traverseChildrenNode = (parentNode) => {
   const parsedPage = [];
