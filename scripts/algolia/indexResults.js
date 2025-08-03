@@ -2,6 +2,9 @@ import generateAlgoliaRecords from "./generateRecords.js";
 import { algoliasearch } from "algoliasearch";
 import path from "path";
 import fs from "fs/promises";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const TMP_RECORDS_FILEPATH = path.resolve(process.cwd(), "scripts/tmp/algoliaRecords.json");
 
@@ -16,8 +19,18 @@ const saveRecordsToFile = async (records) => {
 
 const main = async () => {
   const { ALGOLIA_APP_ID, ALGOLIA_WRITE_API_KEY, NODE_ENV } = process.env;
+  // Ensure required Algolia environment variables are provided
+  if (!ALGOLIA_APP_ID || !ALGOLIA_WRITE_API_KEY) {
+    const missing = [
+      !ALGOLIA_APP_ID && "ALGOLIA_APP_ID",
+      !ALGOLIA_WRITE_API_KEY && "ALGOLIA_WRITE_API_KEY",
+    ]
+      .filter(Boolean)
+      .join(", ");
+    throw new Error(`Missing key(s): ${missing}`);
+  }
+
   const records = await generateAlgoliaRecords();
-  console.log(NODE_ENV);
   if (NODE_ENV === "production") {
     // Index algolia records
     const client = algoliasearch(ALGOLIA_APP_ID, ALGOLIA_WRITE_API_KEY);

@@ -30,5 +30,8 @@ coverage
 tmp
 *.tsbuildinfo
 
+# .env
+.env
+
 # other
 other
