@@ -36,7 +36,9 @@ Make sure you have:
 - Node.js (v16 or above)
 - `pnpm`, `npm`, or `yarn`
 
-Then open the terminal in the directory of the project and run:
+Then, copy `.env.example` to `.env` in the root of the project.
+
+Finally, open the terminal in the directory of the project and run:
 
 ```bash
 npm install
@@ -82,3 +84,23 @@ This script will:
 You can then begin adding your logic and UI. Once your work is complete, submit a pull request on your feature branch.
 
     🔁 Tip: If your changes affect the UI, include a screenshot or short description in your PR to help reviewers understand the context.
+
+### Searching for Algorithms with Algolia
+
+Due to rate limits, the searchbar only allows you to search 10 times/hour using the default demo API keys provided in `.env.example`. For extended development:
+
+1. Create an algolia account.
+2. Replace the default demo credentials in the .env, including the app ID, search key, and write key, with your own.
+3. Temporarily set the `NODE_ENV` to `production`. This is so that the following script imports the records to your project. Optionally, keep it on `development` to save the file to `scripts/tmp/algoliaRecords.json`, and manually import the records. 
+3. Then run:
+
+```bash
+npm run indexAlgoliaRecords
+```
+
+5. Set the `NODE_ENV` back to `development`.
+6. In Algolia, the primary text is set to `title`, secondary text is set to `sections.0.content`, tertiary text is set to `sections.0.title`, and image url is set to `figures.0.src`. The rest should be kept as-is.
+
+⚠️ **IMPORTANT NOTE:**
+
+If `NODE_ENV` is set to `production`, the script will automatically import the records to your project for indexing. If not, then it will be saved in `scripts/tmp/algoliaRecords.json` where you can manually import it to the project.
