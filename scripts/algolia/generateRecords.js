@@ -2,6 +2,7 @@ import fs from "fs/promises";
 import path from "path";
 import { parse } from "node-html-parser";
 import { algorithmRoutes } from "../../src/router/routes.js";
+import chalk from "chalk";
 
 const ALGORITHMS_DIR = path.resolve(process.cwd(), "src/views/algorithms");
 
@@ -105,11 +106,18 @@ const buildAlgoliaRecord = (parsedPage, objectID, title) => {
   return algoliaRecord;
 };
 
-const parseHTMLData = (data) => {
+const parseHTMLData = (data, algorithmFilePath) => {
   const root = parse(data);
   const howItWorksTemplate = root
     .querySelectorAll("template")
     .find((tmpl) => tmpl.rawAttrs.includes("#[tabs.howItWorks.id]"));
+
+  if (!howItWorksTemplate) {
+    const errorMessage =
+      chalk.red('Could not find "<template #[tabs.howItWorks.id]>" at:\n') +
+      chalk.bold.yellow(algorithmFilePath);
+    throw new Error(errorMessage);
+  }
 
   const templateRoot = howItWorksTemplate.firstElementChild;
   return traverseChildrenNode(templateRoot);
@@ -117,36 +125,43 @@ const parseHTMLData = (data) => {
 
 export default async () => {
   const algoliaRecords = [];
-
-  const algorithmEntries = await fs.readdir(ALGORITHMS_DIR, {
-    recursive: true,
-    withFileTypes: true,
-  });
-
-  for (const entry of algorithmEntries) {
-    if (entry.isDirectory()) continue;
-    const algorithmFilePath = path.join(entry.parentPath, entry.name);
-    const HTMLData = await fs.readFile(algorithmFilePath, { encoding: "utf-8" });
-
-    const parsedPage = parseHTMLData(HTMLData);
-
-    // Find the matching route for the current algorithm file
-    const route = algorithmRoutes.find((r) => {
-      // Get the componenent name from the import string
-      const componentStr = String(r.component);
-      const regex = /import\("(.*?)"\)/;
-      const componentPath = componentStr.match(regex)[1];
-      const componentName = path.basename(componentPath);
-      const componentDirname = path.basename(path.dirname(componentPath));
-      return entry.name === componentName && entry.parentPath.endsWith(componentDirname);
+  try {
+    const algorithmEntries = await fs.readdir(ALGORITHMS_DIR, {
+      recursive: true,
+      withFileTypes: true,
     });
 
-    const objectID = route?.path;
-    const title = route?.meta?.name;
+    for (const entry of algorithmEntries) {
+      if (entry.isDirectory()) continue;
+      const algorithmFilePath = path.join(entry.parentPath, entry.name);
+      const HTMLData = await fs.readFile(algorithmFilePath, { encoding: "utf-8" });
 
-    const algoliaRecord = buildAlgoliaRecord(parsedPage, objectID, title);
-    algoliaRecords.push(algoliaRecord);
+      const parsedPage = parseHTMLData(HTMLData, algorithmFilePath);
+
+      // Find the matching route for the current algorithm file
+      const route = algorithmRoutes.find((r) => {
+        // Get the componenent name from the import string
+        const componentStr = String(r.component);
+        const regex = /import\("(.*?)"\)/;
+        const componentPath = componentStr.match(regex)[1];
+        const componentName = path.basename(componentPath);
+        const componentDirname = path.basename(path.dirname(componentPath));
+        return entry.name === componentName && entry.parentPath.endsWith(componentDirname);
+      });
+
+      const objectID = route?.path;
+      const title = route?.meta?.name;
+
+      const algoliaRecord = buildAlgoliaRecord(parsedPage, objectID, title);
+      algoliaRecords.push(algoliaRecord);
+    }
+
+    return algoliaRecords;
+  } catch (e) {
+    const errorMessage = "Error generating algolia records.";
+    console.error(chalk.bold.red("-".repeat(errorMessage.length)));
+    console.error(chalk.bold.red(errorMessage));
+    console.error(chalk.bold.red("-".repeat(errorMessage.length) + "\n"));
+    throw e;
   }
-
-  return algoliaRecords;
 };
