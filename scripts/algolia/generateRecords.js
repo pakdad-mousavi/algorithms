@@ -33,19 +33,6 @@ const traverseChildrenNode = (parentNode) => {
         };
         break;
 
-      case "FIGURE":
-        const srcRegex = /src="(.*?)"/;
-        const captionRegex = /caption="(.*?)"/;
-        const src = node.rawAttrs.match(srcRegex)?.[1];
-        const content = node.rawAttrs.match(captionRegex)?.[1];
-        nodeData = {
-          type: "figure",
-          section: currentHeading,
-          src,
-          content,
-        };
-        break;
-
       case "ALERT":
         nodeData = {
           type: "alert",
@@ -93,16 +80,9 @@ const buildAlgoliaRecord = (parsedPage, objectID, title) => {
     algoliaSections.push(section);
   }
 
-  // Figures
-  const groupedFigures = Object.groupBy(parsedPage, ({ type }) => type);
-  const figures = groupedFigures.figure.map((node) => {
-    return { src: node.src, caption: node.content };
-  });
-
   // Create record
   algoliaRecord.headings = headings;
   algoliaRecord.sections = algoliaSections;
-  algoliaRecord.figures = figures;
   return algoliaRecord;
 };
 
