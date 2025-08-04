@@ -8,7 +8,7 @@
         :class="{ 'is-minimized': isMinimized[groupIndex] }">
         <div class="flex flex-1 font-medium">
           <Icon size="20px" class="mr-1">
-            <component :is="groupIcons[groupIndex]"></component>
+            <component :is="routeGroupIcons[groupName]"></component>
           </Icon>
           <div>{{ groupName }}</div>
         </div>
@@ -34,22 +34,8 @@
 import { nextTick, reactive, ref, watch } from 'vue';
 import { RouterLink, useRoute, useRouter } from 'vue-router'
 import { Icon } from '@vicons/utils';
-import {
-  ChevronRight24Filled,
-  DeveloperBoard24Regular,
-  LockClosed24Regular,
-  Storage24Regular,
-  Database20Regular
-} from "@vicons/fluent";
-import { VmdkDisk } from "@vicons/carbon";
-
-const groupIcons = [
-  DeveloperBoard24Regular,
-  LockClosed24Regular,
-  Storage24Regular,
-  Database20Regular,
-  VmdkDisk
-];
+import { ChevronRight24Filled } from '@vicons/fluent';
+import { routeGroupIcons } from '@/router/routeGroupIcons';
 
 const links = ref(null);
 
