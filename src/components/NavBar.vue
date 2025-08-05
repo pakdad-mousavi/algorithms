@@ -6,6 +6,9 @@
         <Logo class="w-6 h-6"></Logo>
         <span class="font-medium">Learning Algorithms</span>
       </div>
+      <div>
+        <SearchBar @toggle-search="toggleSearch"></SearchBar>
+      </div>
       <!-- Buttons -->
       <div class="flex gap-x-2">
         <a target="_blank" href="https://github.com/pakdad-mousavi/algorithms" class="flex items-center gap-x-2 btn">
@@ -29,18 +32,23 @@
 </template>
 
 <script setup>
-import { LayoutSidebarLeftExpand } from "@vicons/tabler";
+import { LayoutSidebarLeftExpand, Search } from "@vicons/tabler";
 import { Github } from "@vicons/fa";
 import { Icon } from "@vicons/utils";
 import { useRouter } from "vue-router";
 import Logo from "./Logo.vue";
+import SearchBar from "./SearchBar.vue";
 
-const emit = defineEmits(['toggle-sidebar']);
+const emit = defineEmits(['toggle-sidebar', 'toggle-search']);
 const router = useRouter();
 
 const goToHomePage = () => {
   // Send to home page
   router.push('/');
+};
+
+const toggleSearch = () => {
+  emit('toggle-search');
 };
 
 </script>

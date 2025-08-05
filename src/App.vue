@@ -1,6 +1,10 @@
 <template>
-  <main class="mx-auto max-w-7xl">
-    <NavBar @toggle-sidebar="isSidebarVisible = !isSidebarVisible">
+  <main class="mx-auto max-w-7xl main-container">
+    <Transition name="loading-fade">
+      <SearchPopup v-if="isSearchVisible" @toggle-search="toggleSearch">
+      </SearchPopup>
+    </Transition>
+    <NavBar @toggle-sidebar="isSidebarVisible = !isSidebarVisible" @toggle-search="toggleSearch">
     </NavBar>
     <div class="flex">
       <Sidebar :isSidebarVisible="isSidebarVisible" @toggle-sidebar="isSidebarVisible = !isSidebarVisible"></Sidebar>
@@ -35,8 +39,14 @@ import TabHeader from "./components/TabHeader.vue";
 import Footer from "./components/Footer.vue";
 import { isLoading } from "./state/loadingState";
 import TabFooter from "./components/TabFooter.vue";
+import SearchPopup from "./components/SearchPopup.vue";
 
 const isSidebarVisible = ref(false);
+const isSearchVisible = ref(false);
+
+const toggleSearch = () => {
+  isSearchVisible.value = !isSearchVisible.value;
+};
 
 watch(isSidebarVisible, (visible) => {
   document.body.classList.toggle('overflow-hidden', visible);
