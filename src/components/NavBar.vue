@@ -37,7 +37,7 @@ import { Github } from "@vicons/fa";
 import { Icon } from "@vicons/utils";
 import { useRouter } from "vue-router";
 import Logo from "./Logo.vue";
-import SearchBar from "./SearchBar.vue";
+import SearchBar from "./search/SearchBar.vue";
 
 const emit = defineEmits(['toggle-sidebar', 'toggle-search']);
 const router = useRouter();

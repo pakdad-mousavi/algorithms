@@ -13,8 +13,6 @@
 import { Search } from '@vicons/tabler';
 import { Icon } from '@vicons/utils';
 
-console.log(import.meta.env);
-
 const emit = defineEmits(['toggle-search']);
 
 const toggleSearch = () => {
