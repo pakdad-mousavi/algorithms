@@ -25,13 +25,11 @@
       </div>
       <hr class="border-zinc-700">
       <div class="relative w-full h-full">
-        <Transition name="loading-fade">
+        <TransitionGroup name="loading-fade">
           <div class="absolute z-10 flex flex-col items-center justify-center w-full h-full p-4" v-if="noResultsFound">
             <h1 class="text-xl font-medium">No Results to Display!</h1>
             <h1 class="text-neutral-500">Try searching for another algorithm.</h1>
           </div>
-        </Transition>
-        <Transition name="loading-fade">
           <div class="absolute flex flex-col w-full h-full px-4 pb-4 overflow-auto bg-neutral-900"
             v-if="!noResultsFound">
             <div v-for="[groupName, hits] in formattedResults" class="first:[&>div]:first:mt-4">
@@ -57,8 +55,6 @@
               </div>
             </div>
           </div>
-        </Transition>
-        <Transition name="loading-fade">
           <div
             class="absolute z-50 flex flex-col items-center justify-center w-full h-full p-4 gap-y-4 backdrop-blur-md"
             v-if="isFetching">
@@ -77,7 +73,7 @@
               </path>
             </svg>
           </div>
-        </Transition>
+        </TransitionGroup>
       </div>
       <div class="flex items-center justify-end w-full h-12 px-4 font-medium text-neutral-600 gap-x-2">
         <h3 class="text-sm">Powered by</h3>
