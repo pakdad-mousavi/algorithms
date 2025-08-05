@@ -163,17 +163,7 @@ const formattedResults = computed(() => {
   return Object.entries(groupedResults);
 });
 
-console.log(formattedResults);
-
 const search = async () => {
-  // isFetching.value = true;
-  // return new Promise((resolve) => {
-  //   window.setTimeout(() => {
-  //     hitResults.value = { nbHits: 10 };
-  //     isFetching.value = false;
-  //     resolve();
-  //   }, 5000);
-  // });
   // Return if the search is empty
   if (query.value.trim().length === 0) return;
 
@@ -204,10 +194,6 @@ const search = async () => {
   window.clearTimeout(timeout);
   isFetching.value = false;
 }
-
-watch(isFetching, (f) => {
-  console.log(f);
-});
 
 const closePopup = (e) => {
   if (e.key === "Escape") {
