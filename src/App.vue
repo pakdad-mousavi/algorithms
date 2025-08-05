@@ -1,8 +1,7 @@
 <template>
   <main class="mx-auto max-w-7xl main-container">
     <Transition name="loading-fade">
-      <SearchPopup v-if="isSearchVisible" @toggle-search="toggleSearch">
-      </SearchPopup>
+      <SearchPopup v-if="isSearchVisible" @toggle-search="toggleSearch"></SearchPopup>
     </Transition>
     <NavBar @toggle-sidebar="isSidebarVisible = !isSidebarVisible" @toggle-search="toggleSearch">
     </NavBar>
@@ -32,14 +31,15 @@
 
 <script setup>
 import { RouterView } from "vue-router";
-import { ref, Transition, watch } from "vue";
+import { defineAsyncComponent, ref, Transition, watch } from "vue";
 import Sidebar from "./components/Sidebar.vue";
 import NavBar from "./components/NavBar.vue";
 import TabHeader from "./components/TabHeader.vue";
 import Footer from "./components/Footer.vue";
 import { isLoading } from "./state/loadingState";
 import TabFooter from "./components/TabFooter.vue";
-import SearchPopup from "./components/SearchPopup.vue";
+
+const SearchPopup = defineAsyncComponent(() => import("./components/search/SearchPopup.vue"));
 
 const isSidebarVisible = ref(false);
 const isSearchVisible = ref(false);
