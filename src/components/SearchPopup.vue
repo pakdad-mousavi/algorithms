@@ -3,7 +3,7 @@
     class="fixed flex items-center justify-center w-full h-full p-4 -translate-x-1/2 -translate-y-1/2 z-100 top-1/2 left-1/2 bg-zinc-950/50 backdrop-blur-sm"
     @click.self="emit('toggle-search')">
     <div
-      class="flex flex-col rounded-md bg-neutral-900 w-full sm:w-130 h-[80vh] bg-[image:repeating-radial-gradient(var(--color-zinc-800)_0,var(--color-zinc-800)_1px,_transparent_1px,_transparent_100%)] bg-[size:20px_20px] shadow-[0_0px_50px_0_#15201f] border border-zinc-700 overflow-hidden">
+      class="flex flex-col rounded-md bg-neutral-900 w-full sm:w-130 h-[80vh] max-h-[580px] bg-[image:repeating-radial-gradient(var(--color-zinc-800)_0,var(--color-zinc-800)_1px,_transparent_1px,_transparent_100%)] bg-[size:20px_20px] shadow-[0_0px_50px_0_#15201f] border border-zinc-700 overflow-hidden">
       <!-- Searchbar -->
       <div class="flex items-center px-4 min-h-12 bg-neutral-900">
         <div class="px-2 mr-4 text-sm border rounded-md cursor-pointer text-neutral-500 border-neutral-500">esc</div>
@@ -35,7 +35,7 @@
           <div class="absolute flex flex-col w-full h-full px-4 pb-4 overflow-auto bg-neutral-900"
             v-if="!noResultsFound">
             <div v-for="[groupName, hits] in formattedResults" class="first:[&>div]:first:mt-4">
-              <div class="flex items-center mt-8 mb-4 font-medium gap-x-2">
+              <div class="flex flex-col items-center mt-8 mb-4 font-medium sm:flex-row gap-x-2">
                 <Icon size="24">
                   <Component :is="getGroupIcon(groupName)"></Component>
                 </Icon>
@@ -44,14 +44,15 @@
               <div class="flex flex-col gap-y-4">
                 <div v-for="hit in hits"
                   class="p-2 duration-75 border rounded-md cursor-pointer border-neutral-700 hover:bg-neutral-800">
-                  <div class="flex items-center mb-2 gap-x-2">
+                  <div class="flex flex-col mb-2 text-center sm:flex-row sm:items-center gap-x-2 sm:text-left">
                     <h2 class="font-medium text-neutral-200" v-html="hit.title"></h2>
-                    <Icon size=20 class="text-neutral-500">
+                    <Icon size=20 class="!hidden text-neutral-500 sm:!block">
                       <ChevronRight24Filled></ChevronRight24Filled>
                     </Icon>
                     <h3 class="text-sm text-neutral-500">{{ hit.section.title }}</h3>
                   </div>
-                  <p v-html="hit.section.content" class="text-sm text-neutral-200 line-clamp-2"></p>
+                  <p v-html="hit.section.content"
+                    class="text-sm text-center sm:text-left text-neutral-200 line-clamp-2"></p>
                 </div>
               </div>
             </div>
