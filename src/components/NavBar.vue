@@ -6,7 +6,7 @@
         <Logo class="w-6 h-6"></Logo>
         <span class="font-medium">Learning Algorithms</span>
       </div>
-      <div>
+      <div class="hidden sm:block">
         <SearchBar @toggle-search="toggleSearch"></SearchBar>
       </div>
       <!-- Buttons -->
@@ -19,14 +19,15 @@
         </a>
       </div>
     </div>
-    <div class="flex items-center gap-4 px-4 py-3.75 lg:hidden">
+    <div class="flex items-center gap-4 px-4 py-2 sm:py-3.75 lg:hidden">
       <!-- Sidebar toggle -->
-      <div class="flex items-center cursor-pointer gap-x-1" @click="emit('toggle-sidebar')">
+      <div class="flex items-center flex-1 cursor-pointer gap-x-1" @click="emit('toggle-sidebar')">
         <Icon size="18px" color="oklch(87% 0 0)">
           <LayoutSidebarLeftExpand></LayoutSidebarLeftExpand>
         </Icon>
-        <span>Menu</span>
+        <span>Algorithms</span>
       </div>
+      <SearchBar @toggle-search="toggleSearch" class="sm:hidden"></SearchBar>
     </div>
   </nav>
 </template>
