@@ -29,7 +29,7 @@ const toggleSearch = () => {
 };
 
 const handleCtrlKShortcut = (e) => {
-  const isModifierActive = e.ctrlKey === true || e.metaKey === true;
+  const isModifierActive = e.ctrlKey || e.metaKey;
   if (isModifierActive && e.key === 'k') {
     e.preventDefault();
     toggleSearch();

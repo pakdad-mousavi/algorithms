@@ -7,7 +7,7 @@
         <span class="font-medium">Learning Algorithms</span>
       </div>
       <div class="hidden sm:block">
-        <SearchBar @toggle-search="toggleSearch"></SearchBar>
+        <SearchBar @toggle-search="toggleSearch" v-if="!isMobile"></SearchBar>
       </div>
       <!-- Buttons -->
       <div class="flex gap-x-2">
@@ -27,20 +27,22 @@
         </Icon>
         <span>Algorithms</span>
       </div>
-      <SearchBar @toggle-search="toggleSearch" class="sm:hidden"></SearchBar>
+      <SearchBar @toggle-search="toggleSearch" v-if="isMobile"></SearchBar>
     </div>
   </nav>
 </template>
 
 <script setup>
-import { LayoutSidebarLeftExpand, Search } from "@vicons/tabler";
+import { LayoutSidebarLeftExpand } from "@vicons/tabler";
 import { Github } from "@vicons/fa";
 import { Icon } from "@vicons/utils";
 import { useRouter } from "vue-router";
 import Logo from "./Logo.vue";
 import SearchBar from "./search/SearchBar.vue";
+import { onMounted, onUnmounted, ref } from "vue";
 
 const emit = defineEmits(['toggle-sidebar', 'toggle-search']);
+const isMobile = ref(false);
 const router = useRouter();
 
 const goToHomePage = () => {
@@ -52,4 +54,16 @@ const toggleSearch = () => {
   emit('toggle-search');
 };
 
+const updateIsMobile = () => {
+  isMobile.value = window.innerWidth < 640
+}
+
+onMounted(() => {
+  updateIsMobile();
+  window.addEventListener('resize', updateIsMobile);
+});
+
+onUnmounted(() => {
+  window.removeEventListener('resize', updateIsMobile);
+});
 </script>
