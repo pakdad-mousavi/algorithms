@@ -12,10 +12,27 @@
 <script setup>
 import { Search } from '@vicons/tabler';
 import { Icon } from '@vicons/utils';
+import { onMounted, onUnmounted } from 'vue';
 
 const emit = defineEmits(['toggle-search']);
 
 const toggleSearch = () => {
   emit('toggle-search');
 };
+
+const handleCtrlKShortcut = (e) => {
+  const isModifierActive = e.ctrlKey === true || e.metaKey === true;
+  if (isModifierActive && e.key === 'k') {
+    e.preventDefault();
+    toggleSearch();
+  }
+};
+
+onMounted(() => {
+  document.addEventListener('keydown', handleCtrlKShortcut);
+});
+
+onUnmounted(() => {
+  document.removeEventListener('keydown', handleCtrlKShortcut);
+});
 </script>
