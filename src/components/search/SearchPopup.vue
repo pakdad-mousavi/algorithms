@@ -1,7 +1,7 @@
 <template>
   <div
     class="fixed flex items-center justify-center w-full h-full p-4 -translate-x-1/2 -translate-y-1/2 z-100 top-1/2 left-1/2 bg-zinc-950/50 backdrop-blur-sm"
-    @click.self="emit('toggle-search')">
+    @click.self="closePopup()">
     <div
       class="flex flex-col rounded-md bg-neutral-900 w-full sm:w-130 h-[80vh] max-h-[580px] bg-[image:repeating-radial-gradient(var(--color-zinc-800)_0,var(--color-zinc-800)_1px,_transparent_1px,_transparent_100%)] bg-[size:20px_20px] shadow-[0_0px_50px_0_#15201f] border border-zinc-700 overflow-hidden">
       <!-- Searchbar -->
@@ -43,7 +43,7 @@ import { ArrowRightAltRound } from '@vicons/material';
 import { Search } from '@vicons/tabler';
 import { Icon } from '@vicons/utils';
 import { algoliasearch } from 'algoliasearch';
-import { computed, onMounted, onUnmounted, ref } from 'vue';
+import { computed, onMounted, onUnmounted, provide, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import LoadingResults from './results/LoadingResults.vue';
 import NoResults from './results/NoResults.vue';
@@ -62,6 +62,12 @@ const isFetching = ref(false);
 const noResultsFound = computed(() => !hitResults.value || hitResults.value?.hits?.length === 0);
 
 const emit = defineEmits(['toggle-search']);
+
+const closePopup = () => {
+  emit('toggle-search');
+};
+
+provide('closePopup', closePopup);
 
 const getFirstRelevantSectionSnippet = (hit) => {
   const highlighted_sections = hit._highlightResult.sections;
@@ -135,7 +141,7 @@ const search = async () => {
 
 const handleEscShortcut = (e) => {
   if (e.key === "Escape") {
-    emit('toggle-search');
+    closePopup();
   }
 };
 
