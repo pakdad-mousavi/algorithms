@@ -133,7 +133,7 @@ const search = async () => {
   isFetching.value = false;
 }
 
-const closePopup = (e) => {
+const handleEscShortcut = (e) => {
   if (e.key === "Escape") {
     emit('toggle-search');
   }
@@ -155,10 +155,10 @@ onMounted(async () => {
     console.error('Error connecting to Algolia client:', error);
   }
 
-  document.addEventListener('keydown', closePopup);
+  document.addEventListener('keydown', handleEscShortcut);
 });
 
 onUnmounted(() => {
-  document.removeEventListener('keydown', closePopup);
+  document.removeEventListener('keydown', handleEscShortcut);
 });
 </script>
