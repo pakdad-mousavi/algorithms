@@ -11,7 +11,7 @@
           <Icon size="16" class="text-neutral-500">
             <Search></Search>
           </Icon>
-          <input type="text" class="w-full h-full text-sm outline-none caret-main" placeholder="Search..."
+          <input type="text" class="w-full h-full text-sm outline-none caret-main" placeholder="Search..." v-focus
             v-model="query" @keydown.enter="(async () => await search())()">
         </div>
         <div
