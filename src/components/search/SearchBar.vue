@@ -2,18 +2,26 @@
   <div
     class="w-60 bg-zinc-800 px-2 py-1.5 rounded-md border border-zinc-700 border-dashed flex items-center cursor-pointer hover:bg-zinc-900 text-gray-400 duration-100"
     @click="toggleSearch">
-    <span class="flex-1">Search...</span>
-    <Icon size="16px">
+    <Icon size="16px" class="mr-2">
       <Search></Search>
     </Icon>
+    <span class="flex-1">Search...</span>
+    <div class="flex px-1 text-xs border rounded-md gap-x-0.5 border-zinc-700 items-center">
+      <Icon size="14" v-if="isMacOs">
+        <Command></Command>
+      </Icon>
+      <span v-else>ctrl</span>
+      <span>K</span>
+    </div>
   </div>
 </template>
 
 <script setup>
-import { Search } from '@vicons/tabler';
+import { Command, Search } from '@vicons/tabler';
 import { Icon } from '@vicons/utils';
 import { onMounted, onUnmounted } from 'vue';
 
+const isMacOs = navigator.userAgent.includes("Mac");
 const emit = defineEmits(['toggle-search']);
 
 const toggleSearch = () => {
