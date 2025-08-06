@@ -6,7 +6,8 @@
       class="flex flex-col rounded-md bg-neutral-900 w-full sm:w-130 h-[80vh] max-h-[580px] bg-[image:repeating-radial-gradient(var(--color-zinc-800)_0,var(--color-zinc-800)_1px,_transparent_1px,_transparent_100%)] bg-[size:20px_20px] shadow-[0_0px_50px_0_#15201f] border border-zinc-700 overflow-hidden">
       <!-- Searchbar -->
       <div class="flex items-center px-4 min-h-12 bg-neutral-900">
-        <div class="px-2 mr-4 text-sm border rounded-md cursor-pointer text-neutral-500 border-neutral-500">esc</div>
+        <div class="px-2 mr-4 text-sm border rounded-md cursor-pointer text-neutral-500 border-neutral-500"
+          @click="closePopup()">esc</div>
         <div class="flex items-center flex-1 h-full mr-2 gap-x-2">
           <Icon size="16" class="text-neutral-500">
             <Search></Search>
