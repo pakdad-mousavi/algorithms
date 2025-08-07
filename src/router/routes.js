@@ -1,5 +1,13 @@
 export const algorithmRoutes = [
   {
+    path: "/sorting-numbers/bubble-sort",
+    component: () => import("@/views/algorithms/sorting-numbers/BubbleSort.vue"),
+    meta: {
+      groupName: "Sorting Numbers",
+      name: "Bubble Sort",
+    },
+  },
+  {
     path: "/cpu-scheduling/round-robin",
     meta: {
       groupName: "CPU Scheduling",
