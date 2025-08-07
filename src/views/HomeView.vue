@@ -19,7 +19,7 @@
         intuitive breakdowns to help you truly understand how algorithms work.
       </p>
       <div>
-        <div class="btn" @click="router.push('/cpu-scheduling/round-robin')">Start Learning</div>
+        <div class="btn" @click="router.push(firstRoute.path)">Start Learning</div>
       </div>
     </div>
   </div>
@@ -30,6 +30,7 @@ import Logo from '@/components/Logo.vue';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
+const firstRoute = router.getRoutes()[0];
 </script>
 
 <style scoped></style>
