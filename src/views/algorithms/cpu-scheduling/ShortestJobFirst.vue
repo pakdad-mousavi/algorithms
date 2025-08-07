@@ -155,7 +155,7 @@ import GanttChart from '@/components/algorithms/cpu-scheduling/GanttChart.vue';
 import ProcessDetails from '@/components/algorithms/cpu-scheduling/ProcessDetails.vue';
 import EmptySpace from '@/components/general/EmptySpace.vue';
 import Alert from '@/components/general/Alert.vue';
-import { useScheduler } from '../../../composables/useScheduler';
+import { useScheduler } from '../../../composables/use-scheduler';
 import { tabs } from '@/state/tabState';
 import TabSwitcher from '@/components/TabSwitcher.vue';
 import TrashButton from '@/components/general/TrashButton.vue';
