@@ -143,4 +143,12 @@ export const algorithmRoutes = [
       name: "C-LOOK (Circular LOOK)",
     },
   },
+  {
+    path: "/sorting-numbers/selection-sort",
+    component: () => import("@/views/algorithms/sorting-numbers/SelectionSort.vue"),
+    meta: {
+      groupName: "Sorting Numbers",
+      name: "Selection Sort",
+    },
+  },
 ];
