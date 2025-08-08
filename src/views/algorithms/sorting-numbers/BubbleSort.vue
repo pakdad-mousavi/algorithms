@@ -197,7 +197,7 @@ const runAlgorithm = () => {
   if (!isFormValid) return form.value.reportValidity();
 
   // Run the algorithm
-  const { log } = bubbleSort(unsortedNumbers, isAscending.value, 'bubble');
+  const log = bubbleSort(unsortedNumbers, isAscending.value, 'bubble');
   algResults.log = log;
 
   // Display results

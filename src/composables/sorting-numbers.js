@@ -31,7 +31,5 @@ export const bubbleSort = (numbers, isAscending) => {
     });
     log.push(currentPass);
   } while (swapped);
-  console.log(sortedNumbers);
-  console.log(log);
-  return { log };
+  return log;
 };
