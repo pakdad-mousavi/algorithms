@@ -1,24 +1,24 @@
 export const bubbleSort = (numbers, isAscending) => {
-  const sortedNumbers = [...numbers];
+  const numArray = [...numbers];
   const log = [];
   let swapped;
   do {
     const currentPass = [];
     // reset swapped
     swapped = false;
-    for (let i = 0; i < sortedNumbers.length - 1; i++) {
+    for (let i = 0; i < numArray.length - 1; i++) {
       const stateObj = {
         pairStart: i,
-        state: sortedNumbers.slice(),
+        state: numArray.slice(),
         swapped: null,
       };
       // Ascending or descending order
       const condition = isAscending
-        ? sortedNumbers[i] > sortedNumbers[i + 1]
-        : sortedNumbers[i] < sortedNumbers[i + 1];
+        ? numArray[i] > numArray[i + 1]
+        : numArray[i] < numArray[i + 1];
       // swap items
       if (condition) {
-        [sortedNumbers[i], sortedNumbers[i + 1]] = [sortedNumbers[i + 1], sortedNumbers[i]];
+        [numArray[i], numArray[i + 1]] = [numArray[i + 1], numArray[i]];
         swapped = true;
       }
       stateObj.swapped = condition;
@@ -26,7 +26,7 @@ export const bubbleSort = (numbers, isAscending) => {
     }
     currentPass.push({
       pairStart: null,
-      state: sortedNumbers.slice(),
+      state: numArray.slice(),
       swapped: null,
     });
     log.push(currentPass);
