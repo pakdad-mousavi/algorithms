@@ -159,10 +159,10 @@ import Figure from '@/components/general/Figure.vue';
 import TrashButton from '@/components/general/TrashButton.vue';
 import TabSwitcher from '@/components/TabSwitcher.vue';
 import { computed, reactive, ref, watch } from 'vue';
-import { sortingAlgorithms } from '@/composables/sorting-numbers';
 import EmptySpace from '@/components/general/EmptySpace.vue';
 import Alert from '@/components/general/Alert.vue';
 import BubbleSort from '@/components/algorithms/sorting-numbers/BubbleSort.vue';
+import { bubbleSort } from '@/composables/sorting-numbers';
 
 const form = ref(null);
 const MAX_NUM = 100;
@@ -197,7 +197,7 @@ const runAlgorithm = () => {
   if (!isFormValid) return form.value.reportValidity();
 
   // Run the algorithm
-  const { log } = sortingAlgorithms.bubble(unsortedNumbers, isAscending.value, 'bubble');
+  const { log } = bubbleSort(unsortedNumbers, isAscending.value, 'bubble');
   algResults.log = log;
 
   // Display results
