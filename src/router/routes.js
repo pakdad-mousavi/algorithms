@@ -8,6 +8,30 @@ export const algorithmRoutes = [
     },
   },
   {
+    path: "/sorting-numbers/selection-sort",
+    component: () => import("@/views/algorithms/sorting-numbers/SelectionSort.vue"),
+    meta: {
+      groupName: "Sorting Numbers",
+      name: "Selection Sort",
+    },
+  },
+  {
+    path: "/sorting-numbers/insertion-sort",
+    component: () => import("@/views/algorithms/sorting-numbers/InsertionSort.vue"),
+    meta: {
+      groupName: "Sorting Numbers",
+      name: "Insertion Sort",
+    },
+  },
+  {
+    path: "/deadlock-management/banker's-algorithm",
+    meta: {
+      groupName: "Deadlock Management",
+      name: "Banker's Algorithm",
+    },
+    component: () => import("@/views/algorithms/deadlock-management/BankersAlgorithm.vue"),
+  },
+  {
     path: "/cpu-scheduling/round-robin",
     meta: {
       groupName: "CPU Scheduling",
@@ -38,14 +62,6 @@ export const algorithmRoutes = [
       name: "Shortest Job First Scheduling",
     },
     component: () => import("@/views/algorithms/cpu-scheduling/ShortestJobFirst.vue"),
-  },
-  {
-    path: "/deadlock-management/banker's-algorithm",
-    meta: {
-      groupName: "Deadlock Management",
-      name: "Banker's Algorithm",
-    },
-    component: () => import("@/views/algorithms/deadlock-management/BankersAlgorithm.vue"),
   },
   {
     path: "/memory-management/first-fit",
@@ -141,22 +157,6 @@ export const algorithmRoutes = [
     meta: {
       groupName: "Disk Scheduling",
       name: "C-LOOK (Circular LOOK)",
-    },
-  },
-  {
-    path: "/sorting-numbers/selection-sort",
-    component: () => import("@/views/algorithms/sorting-numbers/SelectionSort.vue"),
-    meta: {
-      groupName: "Sorting Numbers",
-      name: "Selection Sort",
-    },
-  },
-  {
-    path: "/sorting-numbers/insertion-sort",
-    component: () => import("@/views/algorithms/sorting-numbers/InsertionSort.vue"),
-    meta: {
-      groupName: "Sorting Numbers",
-      name: "Insertion Sort",
     },
   },
 ];
