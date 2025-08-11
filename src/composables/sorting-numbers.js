@@ -58,3 +58,37 @@ export const selectionSort = (numbers, isAscending) => {
 
   return log;
 };
+
+export const insertionSort = (numbers, isAscending) => {
+  const log = [];
+  const numArray = [...numbers];
+
+  for (let i = 1; i < numArray.length; i++) {
+    const currentNum = numArray[i];
+    const sortedSection = numArray.slice(0, i);
+    const pos = sortedSection.findIndex((num) =>
+      isAscending ? num > currentNum : num < currentNum
+    );
+
+    const oldState = numArray.slice();
+
+    let intermediateState = null;
+
+    if (pos > -1) {
+      numArray.splice(pos, 0, null);
+      numArray.splice(i + 1, 1);
+      intermediateState = numArray.slice();
+      numArray[pos] = currentNum;
+    }
+
+    log.push({
+      pos,
+      oldState,
+      intermediateState,
+      newState: numArray.slice(),
+      currentNum,
+    });
+  }
+
+  return log;
+};

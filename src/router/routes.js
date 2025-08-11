@@ -151,4 +151,12 @@ export const algorithmRoutes = [
       name: "Selection Sort",
     },
   },
+  {
+    path: "/sorting-numbers/insertion-sort",
+    component: () => import("@/views/algorithms/sorting-numbers/InsertionSort.vue"),
+    meta: {
+      groupName: "Sorting Numbers",
+      name: "Insertion Sort",
+    },
+  },
 ];
