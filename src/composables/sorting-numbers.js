@@ -92,3 +92,60 @@ export const insertionSort = (numbers, isAscending) => {
 
   return log;
 };
+
+export const mergeSort = (numbers, isAscending) => {
+  const log = [];
+  const numArray = [...numbers];
+
+  const maxDepth = Math.ceil(Math.log2(numArray.length));
+
+  const merge = (left, right) => {
+    const result = [];
+    let i = 0;
+    let j = 0;
+
+    while (i < left.length && j < right.length) {
+      const condition = isAscending ? left[i] <= right[j] : left[i] >= right[j];
+
+      if (condition) {
+        result.push(left[i]);
+        i++;
+      } else {
+        result.push(right[j]);
+        j++;
+      }
+    }
+
+    return result.concat(left.slice(i)).concat(right.slice(j));
+  };
+
+  const sortAndMerge = (array, splitDepth) => {
+    if (array.length <= 1) {
+      return array;
+    }
+
+    const mergeDepth = maxDepth - splitDepth + 1;
+
+    const mid = Math.ceil(array.length / 2);
+    const left = array.slice(0, mid);
+    const right = array.slice(mid);
+
+    const sortedLeft = sortAndMerge(left, splitDepth + 1);
+    const sortedRight = sortAndMerge(right, splitDepth + 1);
+
+    log.push({
+      splitDepth,
+      left: left.slice(),
+      right: right.slice(),
+      mergeDepth,
+      mergedLeft: sortedLeft.slice(),
+      mergedRight: sortedRight.slice(),
+    });
+
+    return merge(sortedLeft, sortedRight);
+  };
+
+  sortAndMerge(numArray, 1); // start depth at 1
+
+  return log;
+};

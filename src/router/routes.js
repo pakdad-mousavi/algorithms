@@ -159,4 +159,12 @@ export const algorithmRoutes = [
       name: "C-LOOK (Circular LOOK)",
     },
   },
+  {
+    path: "/sorting-numbers/merge-sort",
+    component: () => import("@/views/algorithms/sorting-numbers/MergeSort.vue"),
+    meta: {
+      groupName: "Sorting Numbers",
+      name: "Merge Sort",
+    },
+  },
 ];
