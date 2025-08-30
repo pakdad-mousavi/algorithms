@@ -226,7 +226,5 @@ export const quickSort = (numbers, isAscending) => {
   };
 
   const log = quicksortLevelsOneSplitPerStep(numArray);
-  console.log(log);
-
   return log;
 };
