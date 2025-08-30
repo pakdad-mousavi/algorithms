@@ -24,6 +24,30 @@ export const algorithmRoutes = [
     },
   },
   {
+    path: "/sorting-numbers/merge-sort",
+    component: () => import("@/views/algorithms/sorting-numbers/MergeSort.vue"),
+    meta: {
+      groupName: "Sorting Numbers",
+      name: "Merge Sort",
+    },
+  },
+  {
+    path: "/sorting-numbers/quick-sort",
+    component: () => import("@/views/algorithms/sorting-numbers/QuickSort.vue"),
+    meta: {
+      groupName: "Sorting Numbers",
+      name: "Quick Sort",
+    },
+  },
+  {
+    path: "/searching-algorithms/linear-search",
+    component: () => import("@/views/algorithms/searching-algorithms/LinearSearch.vue"),
+    meta: {
+      groupName: "Searching Algorithms",
+      name: "Linear Search",
+    },
+  },
+  {
     path: "/deadlock-management/banker's-algorithm",
     meta: {
       groupName: "Deadlock Management",
@@ -157,22 +181,6 @@ export const algorithmRoutes = [
     meta: {
       groupName: "Disk Scheduling",
       name: "C-LOOK (Circular LOOK)",
-    },
-  },
-  {
-    path: "/sorting-numbers/merge-sort",
-    component: () => import("@/views/algorithms/sorting-numbers/MergeSort.vue"),
-    meta: {
-      groupName: "Sorting Numbers",
-      name: "Merge Sort",
-    },
-  },
-  {
-    path: "/sorting-numbers/quick-sort",
-    component: () => import("@/views/algorithms/sorting-numbers/QuickSort.vue"),
-    meta: {
-      groupName: "Sorting Numbers",
-      name: "Quick Sort",
     },
   },
 ];

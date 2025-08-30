@@ -5,10 +5,11 @@ import {
   Database20Regular,
 } from "@vicons/fluent";
 import { VmdkDisk } from "@vicons/carbon";
-import { Binary, SortAscendingNumbers } from "@vicons/tabler";
+import { Binary, SortAscendingNumbers, ListSearch } from "@vicons/tabler";
 
 const routeGroupIcons = {
   "Sorting Numbers": SortAscendingNumbers,
+  "Searching Algorithms": ListSearch,
   "CPU Scheduling": DeveloperBoard24Regular,
   "Deadlock Management": LockClosed24Regular,
   "Memory Management": Storage24Regular,
