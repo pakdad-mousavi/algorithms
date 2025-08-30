@@ -149,3 +149,84 @@ export const mergeSort = (numbers, isAscending) => {
 
   return log;
 };
+
+export const quickSort = (numbers, isAscending) => {
+  const numArray = [...numbers];
+
+  let idCounter = 1;
+
+  // split a single group into [left?, pivot, right?].
+  // pivot keeps the same id; left/right (if present) get new ids.
+  const splitGroup = ({ id, group }) => {
+    const mid = Math.ceil(group.length / 2) - 1; // subtract 1 to account for array indexing
+    const pivot = group[mid];
+
+    const left = [];
+    const right = [];
+    for (let i = 0; i < group.length; i++) {
+      if (i === mid) continue; // skip the pivot itself (by index)
+      const v = group[i];
+      if (v < pivot) {
+        isAscending ? left.push(v) : right.push(v); // partition by VALUE
+      } else isAscending ? right.push(v) : left.push(v); // (>= pivot) goes right
+    }
+
+    const out = [];
+    if (left.length) out.push({ id: idCounter++, group: left });
+    out.push({ id, group: [pivot] }); // pivot inherits parent id
+    if (right.length) out.push({ id: idCounter++, group: right });
+    return out;
+  };
+
+  const snapshot = (state) => {
+    // deep copy for the history
+    return state.map(({ id, group }) => ({ id, group: [...group] }));
+  };
+
+  // Build levels where each level reflects ONE split applied to the current state.
+  const quicksortLevelsOneSplitPerStep = (arr) => {
+    idCounter = 1;
+
+    const levels = [];
+    const rootId = idCounter++; // id for the whole array
+    let state = splitGroup({ id: rootId, group: arr }); // first split shown as level 1
+    levels.push({
+      before: { id: 1, group: arr }, // Subgroup before the split
+      after: snapshot(state), // Subgroup after the split
+      state: snapshot(state), // Entire state after the split
+    });
+
+    // queue of ids of groups that still need splitting (length > 1)
+    const queue = state.filter((g) => g.group.length > 1).map((g) => g.id);
+
+    while (queue.length) {
+      const gid = queue.shift();
+
+      // find current position of this group by id (indices shift as we edit state)
+      const idx = state.findIndex((g) => g.id === gid);
+      if (idx === -1 || state[idx].group.length <= 1) continue;
+
+      // Make a copy of the unsplit state
+      const copy = snapshot(state)[idx];
+
+      // split that ONE group and replace it in place
+      const pieces = splitGroup(state[idx]);
+      state.splice(idx, 1, ...pieces);
+
+      // enqueue newly created multi-element groups (left then right)
+      for (const piece of pieces) {
+        if (piece.id !== gid && piece.group.length > 1) queue.push(piece.id);
+      }
+
+      // record this step
+      levels.push({ before: copy, after: pieces, state: snapshot(state) });
+    }
+
+    return levels;
+  };
+
+  const log = quicksortLevelsOneSplitPerStep(numArray);
+  console.log(log);
+
+  return log;
+};

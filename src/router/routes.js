@@ -167,4 +167,12 @@ export const algorithmRoutes = [
       name: "Merge Sort",
     },
   },
+  {
+    path: "/sorting-numbers/quick-sort",
+    component: () => import("@/views/algorithms/sorting-numbers/QuickSort.vue"),
+    meta: {
+      groupName: "Sorting Numbers",
+      name: "Quick Sort",
+    },
+  },
 ];
