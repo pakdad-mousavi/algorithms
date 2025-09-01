@@ -241,7 +241,7 @@ import BinarySearch from '@/components/algorithms/searching-algorithms/BinarySea
 const form = ref(null);
 
 // Initialize sample data
-const numbers = reactive([14, 5, 83, 3, 59, 76,]);
+const numbers = reactive([14, 5, 83, 3, 59, 76, 84, 34, 54]);
 const target = ref(3);
 
 // Store results and keep track of algorithm state
