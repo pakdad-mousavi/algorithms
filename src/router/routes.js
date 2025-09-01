@@ -1,5 +1,21 @@
 export const algorithmRoutes = [
   {
+    path: "/searching-algorithms/linear-search",
+    component: () => import("@/views/algorithms/searching-algorithms/LinearSearch.vue"),
+    meta: {
+      groupName: "Searching Algorithms",
+      name: "Linear Search",
+    },
+  },
+  {
+    path: "/searching-algorithms/binary-search",
+    component: () => import("@/views/algorithms/searching-algorithms/BinarySearch.vue"),
+    meta: {
+      groupName: "Searching Algorithms",
+      name: "Binary Search",
+    },
+  },
+  {
     path: "/sorting-numbers/bubble-sort",
     component: () => import("@/views/algorithms/sorting-numbers/BubbleSort.vue"),
     meta: {
@@ -37,22 +53,6 @@ export const algorithmRoutes = [
     meta: {
       groupName: "Sorting Numbers",
       name: "Quick Sort",
-    },
-  },
-  {
-    path: "/searching-algorithms/linear-search",
-    component: () => import("@/views/algorithms/searching-algorithms/LinearSearch.vue"),
-    meta: {
-      groupName: "Searching Algorithms",
-      name: "Linear Search",
-    },
-  },
-  {
-    path: "/searching-algorithms/binary-search",
-    component: () => import("@/views/algorithms/searching-algorithms/BinarySearch.vue"),
-    meta: {
-      groupName: "Searching Algorithms",
-      name: "Binary Search",
     },
   },
   {
