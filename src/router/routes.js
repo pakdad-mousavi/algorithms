@@ -48,6 +48,14 @@ export const algorithmRoutes = [
     },
   },
   {
+    path: "/searching-algorithms/binary-search",
+    component: () => import("@/views/algorithms/searching-algorithms/BinarySearch.vue"),
+    meta: {
+      groupName: "Searching Algorithms",
+      name: "Binary Search",
+    },
+  },
+  {
     path: "/deadlock-management/banker's-algorithm",
     meta: {
       groupName: "Deadlock Management",
