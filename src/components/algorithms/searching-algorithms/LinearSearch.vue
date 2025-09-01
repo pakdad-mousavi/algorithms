@@ -30,15 +30,16 @@
   </div>
 
   <div>
-    <div class="w-3/5 p-2 mx-auto mt-20 text-center border rounded-md border-zinc-700">
+    <div class="max-w-md p-2 mx-auto mt-20 text-center border rounded-md border-zinc-700">
       <div v-if="position === -1">
-        <h4 class="text-lg font-medium underline text-rose-500">No Match Found</h4>
+        <h4 class="mb-2 text-lg font-medium underline text-rose-500">No Match Found</h4>
         <p>The target number is not in the list of numbers above.</p>
       </div>
       <div v-else>
-        <h4 class="text-lg font-medium underline text-emerald-500">Match Found</h4>
+        <h4 class="mb-2 text-lg font-medium underline text-emerald-500">Match Found</h4>
         <p>
-          The target number is in the list of numbers above at <span class="font-medium">position {{ position + 1 }}</span>.
+          The target number is in the list of numbers above at <span class="font-medium">position {{ position + 1
+          }}</span>.
         </p>
       </div>
     </div>
