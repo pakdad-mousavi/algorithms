@@ -41,3 +41,37 @@ export const binarySearch = (arr, target) => {
 
   return { sortedArr, log, position };
 };
+
+export const interpolationSearch = (arr, target) => {
+  const log = [];
+  let position = -1;
+  let low = 0;
+  let high = arr.length - 1;
+
+  const sortedArr = arr.slice().sort((a, b) => a - b);
+
+  while (low <= high && target >= sortedArr[low] && target <= sortedArr[high]) {
+    if (sortedArr[low] === sortedArr[high]) {
+      if (sortedArr[low] === target) position = low;
+      break;
+    }
+
+    const ratio = (target - sortedArr[low]) / (sortedArr[high] - sortedArr[low]);
+    const pos = low + Math.floor(ratio * (high - low));
+    log.push({
+      low,
+      pos,
+      high,
+    });
+    if (sortedArr[pos] === target) {
+      position = pos;
+      break;
+    } else if (target > sortedArr[pos]) {
+      low = pos + 1;
+    } else {
+      high = pos - 1;
+    }
+  }
+
+  return { sortedArr, log, position };
+};

@@ -16,6 +16,14 @@ export const algorithmRoutes = [
     },
   },
   {
+    path: "/searching-algorithms/interpolation-search",
+    component: () => import("@/views/algorithms/searching-algorithms/InterpolationSearch.vue"),
+    meta: {
+      groupName: "Searching Algorithms",
+      name: "Interpolation Search",
+    },
+  },
+  {
     path: "/sorting-numbers/bubble-sort",
     component: () => import("@/views/algorithms/sorting-numbers/BubbleSort.vue"),
     meta: {
