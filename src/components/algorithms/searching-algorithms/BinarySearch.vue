@@ -7,7 +7,7 @@
     </div>
   </div>
 
-  <h4 class="mb-4 text-lg font-medium text-center underline">Binary Search</h4>
+  <h4 class="mb-4 text-lg font-medium text-center underline" v-if="log.length">Binary Search</h4>
   <div class="space-y-28">
     <div v-for="(entry, entryIndex) in log">
       <div class="flex justify-center mb-4 text-sm text-center gap-x-2">

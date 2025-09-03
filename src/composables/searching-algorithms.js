@@ -22,7 +22,7 @@ export const binarySearch = (arr, target) => {
 
   const sortedArr = arr.slice().sort((a, b) => a - b);
 
-  while (low <= high) {
+  while (low <= high && target >= sortedArr[low] && target <= sortedArr[high]) {
     const mid = Math.floor((low + high) / 2);
     log.push({
       low,
