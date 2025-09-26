@@ -275,3 +275,42 @@ export const countSort = (numbers, isAscending = true) => {
 
   return log;
 };
+
+export const bucketSort = (numbers, isAscending) => {
+  const log = {
+    k: Math.floor(Math.sqrt(numbers.length)),
+    unsortedBuckets: null,
+    sortedBuckets: null,
+    sortedNums: null,
+  };
+
+  const n = numbers.length;
+  if (n <= 1) return numbers;
+
+  // Create k empty buckets
+  let buckets = Array.from({ length: log.k }, () => []);
+
+  // Distribute elements into buckets
+  for (let i = 0; i < n; i++) {
+    // Scale value into bucket index
+    let idx = Math.floor(numbers[i] * log.k);
+    if (idx === log.k) idx = log.k - 1; // fix edge case
+    buckets[idx].push(numbers[i]);
+  }
+
+  // Update log
+  log.unsortedBuckets = buckets.map((b) => b.slice());
+
+  // Sort inside each bucket
+  for (let i = 0; i < log.k; i++) {
+    buckets[i].sort((a, b) => a - b);
+  }
+
+  // Update log
+  log.sortedBuckets = buckets.map((b) => b.slice());
+
+  // Merge all buckets
+  log.sortedNums = [].concat(...buckets);
+  
+  return log;
+};

@@ -207,4 +207,12 @@ export const algorithmRoutes = [
       name: "Counting Sort",
     },
   },
+  {
+    path: "/sorting-numbers/bucket-sort",
+    component: () => import("@/views/algorithms/sorting-numbers/BucketSort.vue"),
+    meta: {
+      groupName: "Sorting Numbers",
+      name: "Bucket Sort",
+    },
+  },
 ];
