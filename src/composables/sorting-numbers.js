@@ -228,3 +228,50 @@ export const quickSort = (numbers, isAscending) => {
   const log = quicksortLevelsOneSplitPerStep(numArray);
   return log;
 };
+
+export const countSort = (numbers, isAscending = true) => {
+  const min = Math.min(...numbers);
+  const max = Math.max(...numbers);
+
+  const log = {
+    range: max - min + 1,
+    counts: [],
+    reconstructedArrays: [],
+  };
+
+  // Initialize counts with zeros
+  const counts = new Array(max - min + 1).fill(0);
+
+  // Fill counts
+  for (const number of numbers) {
+    counts[number - min]++; // shift by min to fit in array
+  }
+  log.counts = counts;
+
+  // Reconstruct step by step
+  const reconstructedArray = [];
+  const indices = isAscending
+    ? [...Array(counts.length).keys()] // 0..len-1
+    : [...Array(counts.length).keys()].reverse(); // len-1..0
+
+  for (const idx of indices) {
+    const value = idx + min;
+    const freq = counts[idx];
+    if (freq === 0) continue;
+
+    // Add "freq" copies of the current value
+    for (let i = 0; i < freq; i++) {
+      reconstructedArray.push(value);
+    }
+
+    // Create a snapshot padded with nulls
+    const snapshot = reconstructedArray.slice();
+    while (snapshot.length < numbers.length) {
+      snapshot.push(null);
+    }
+
+    log.reconstructedArrays.push(snapshot);
+  }
+
+  return log;
+};

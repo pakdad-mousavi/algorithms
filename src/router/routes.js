@@ -199,4 +199,12 @@ export const algorithmRoutes = [
       name: "C-LOOK (Circular LOOK)",
     },
   },
+  {
+    path: "/sorting-numbers/counting-sort",
+    component: () => import("@/views/algorithms/sorting-numbers/CountingSort.vue"),
+    meta: {
+      groupName: "Sorting Numbers",
+      name: "Counting Sort",
+    },
+  },
 ];
