@@ -64,6 +64,22 @@ export const algorithmRoutes = [
     },
   },
   {
+    path: "/sorting-numbers/counting-sort",
+    component: () => import("@/views/algorithms/sorting-numbers/CountingSort.vue"),
+    meta: {
+      groupName: "Sorting Numbers",
+      name: "Counting Sort",
+    },
+  },
+  {
+    path: "/sorting-numbers/bucket-sort",
+    component: () => import("@/views/algorithms/sorting-numbers/BucketSort.vue"),
+    meta: {
+      groupName: "Sorting Numbers",
+      name: "Bucket Sort",
+    },
+  },
+  {
     path: "/deadlock-management/banker's-algorithm",
     meta: {
       groupName: "Deadlock Management",
@@ -197,22 +213,6 @@ export const algorithmRoutes = [
     meta: {
       groupName: "Disk Scheduling",
       name: "C-LOOK (Circular LOOK)",
-    },
-  },
-  {
-    path: "/sorting-numbers/counting-sort",
-    component: () => import("@/views/algorithms/sorting-numbers/CountingSort.vue"),
-    meta: {
-      groupName: "Sorting Numbers",
-      name: "Counting Sort",
-    },
-  },
-  {
-    path: "/sorting-numbers/bucket-sort",
-    component: () => import("@/views/algorithms/sorting-numbers/BucketSort.vue"),
-    meta: {
-      groupName: "Sorting Numbers",
-      name: "Bucket Sort",
     },
   },
 ];
