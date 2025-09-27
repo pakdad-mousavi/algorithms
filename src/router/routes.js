@@ -80,6 +80,14 @@ export const algorithmRoutes = [
     },
   },
   {
+    path: "/number-theory/euclids-algorithm",
+    component: () => import("@/views/algorithms/number-theory/EuclidsAlgorithm.vue"),
+    meta: {
+      groupName: "Number Theory",
+      name: "Euclid's Algorithm",
+    },
+  },
+  {
     path: "/deadlock-management/banker's-algorithm",
     meta: {
       groupName: "Deadlock Management",
