@@ -167,7 +167,7 @@ const form = ref(null);
 
 // Initialize sample data
 const numberOne = ref(660);
-const numberTwo = ref(440);
+const numberTwo = ref(420);
 
 // Keep track of algorithm state
 const hasAlgorithmBeenRan = ref(false);
