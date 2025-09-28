@@ -223,4 +223,12 @@ export const algorithmRoutes = [
       name: "C-LOOK (Circular LOOK)",
     },
   },
+  {
+    path: "/number-theory/sieve-of-eratosthenes",
+    component: () => import("@/views/algorithms/number-theory/SieveOfEratosthenes.vue"),
+    meta: {
+      groupName: "Number Theory",
+      name: "Sieve of Eratosthenes",
+    },
+  },
 ];
