@@ -2,7 +2,6 @@
   <TabSwitcher>
     <template #[tabs.howItWorks.id]>
       <div class="mb-10 space-y-4">
-        <!-- Explanation for "Euclid's Algorithm" goes here -->
         <p>
           <span class="text-main">Euclid's Algorithm</span> is a method of finding the <span class="text-main">greatest
             common divisor (GCD)</span> of two numbers. The GCD of two numbers is the largest number that can divide
@@ -123,11 +122,11 @@
           <div class="flex gap-x-4">
             <div class="flex flex-col w-1/2 gap-2">
               <label class="font-medium">Number 1:</label>
-              <input type="number" class="!w-full field" v-model="numberOne">
+              <input type="number" class="!w-full field" v-model="numberOne" min="50" max="1000">
             </div>
             <div class="flex flex-col w-1/2 gap-2">
               <label class="font-medium">Number 2:</label>
-              <input type="number" class="!w-full field" v-model="numberTwo">
+              <input type="number" class="!w-full field" v-model="numberTwo" min="50" max="1000">
             </div>
           </div>
           <button type="submit" class="btn" @click.prevent="runAlgorithm">Run Algorithm</button>
